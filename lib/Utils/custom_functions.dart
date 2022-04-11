@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:math';
 
 Widget addVerticalSpace(double height){
   return SizedBox(
@@ -32,4 +33,8 @@ class MyClipper extends CustomClipper<Path> {
     return true;
   }
 
+}
+
+int random(min, max) {
+  return min + Random().nextInt(max - min);
 }

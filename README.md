@@ -7,3 +7,4 @@
 
 Attribution:
 https://www.flaticon.com/free-icons/food => Food icons created by Freepik - Flaticon
+https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Becris - Flaticon

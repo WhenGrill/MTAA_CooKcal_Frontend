@@ -25,39 +25,57 @@ class _UserListScreenState extends State<UserListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints){
-        return Container(
-            width: constraints.maxWidth,
-            color: Colors.grey.shade200,
-            height: constraints.maxHeight,
-            child: Column(
-              children: [
-                RoundedSearchInput(
-                  hintText: 'Search here',
-                  textController: myController,
+        return Column(
+          children: [
+            RoundedSearchInput(
+              hintText: 'Search here',
+              textController: myController,
+            ),
+            addVerticalSpace(constraints.maxHeight * 0.02),
+            ButtonTheme(
+              minWidth: 500,
+              height: 200,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(150,50),
+                    primary: COLOR_GREEN,
+                    shadowColor: Colors.grey.shade50,
+                    textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)
+                    )
                 ),
-                addVerticalSpace(constraints.maxHeight * 0.02),
-                ButtonTheme(
-                  minWidth: 500,
-                  height: 200,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(150,50),
-                        primary: COLOR_GREEN,
-                        shadowColor: Colors.grey.shade50,
-                        textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)
+                onPressed: () {
+                  print(myController.text);
+                },
+                child: Text('Search'),
+              ),
+            ),
+            addVerticalSpace(constraints.maxHeight * 0.02),
+            const Divider(
+              color: COLOR_GREEN,
+              thickness: 2,
+            ),
+            Expanded(
+                child: ListView.builder(
+                  itemCount: users.length,
+                  itemBuilder: (context, index){
+                    final user = users[index];
+                    return Card(
+                        child: ListTile(
+                          onTap: () {},
+                          leading: CircleAvatar(
+                            backgroundColor: COLOR_WHITE,
+                            backgroundImage: AssetImage(user_icons[user.gender]), // no matter how big it is, it won't overflow
+                          ),
+                          title: Text('${user.first_name} ${user.last_name}'),
+
                         )
-                    ),
-                    onPressed: () {
-                      print(myController.text);
-                    },
-                    child: Text('Search'),
-                  ),
-                ),
-              ],
+                    );
+                  },
+                )
             )
-        );
+          ],);
       }
       ),
     );
