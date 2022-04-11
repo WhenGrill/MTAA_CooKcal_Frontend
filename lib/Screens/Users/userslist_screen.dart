@@ -1,6 +1,9 @@
+import 'package:cookcal/HTTP/all_users.dart';
+import 'package:cookcal/HTTP/login_register.dart';
 import 'package:cookcal/Screens/Users/userProfile_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../Utils/custom_functions.dart';
 import '../../Widgets/searchBar.dart';
@@ -14,12 +17,24 @@ class UserListScreen extends StatefulWidget {
 
 class _UserListScreenState extends State<UserListScreen> {
   final myController = TextEditingController();
+  List<UserOut> users = [];
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     myController.dispose();
     super.dispose();
+  }
+
+  load_data() async {
+    var tmp = await GetAllUsers().get_all_users(myController.text);
+    print(tmp);
+    print(tmp.runtimeType);
+    users.clear();
+    tmp?.forEach((element) {
+      users.add(element);
+      print(element.id);
+    });
   }
 
   @override
@@ -46,8 +61,10 @@ class _UserListScreenState extends State<UserListScreen> {
                         borderRadius: BorderRadius.circular(50)
                     )
                 ),
-                onPressed: () {
+                onPressed: () async {
                   print(myController.text);
+                  load_data();
+                  setState(() {});
                 },
                 child: Text('Search'),
               ),
@@ -57,8 +74,9 @@ class _UserListScreenState extends State<UserListScreen> {
               color: COLOR_GREEN,
               thickness: 2,
             ),
-            Expanded(
+            Container(
                 child: ListView.builder(
+                  key: UniqueKey(),
                   itemCount: users.length,
                   itemBuilder: (context, index){
                     final user = users[index];

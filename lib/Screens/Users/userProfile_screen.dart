@@ -6,19 +6,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../HTTP/login.dart';
+import '../../HTTP/login_register.dart';
 import '../../model/users.dart';
 import '../MainNavigation_screen.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  final UserExample user;
+  final UserOut user;
   const UserProfileScreen({Key? key, required this.user}) : super(key: key);
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  late UserExample user = widget.user;
+  late UserOut user = widget.user;
   @override
   Widget build(BuildContext context) {
 

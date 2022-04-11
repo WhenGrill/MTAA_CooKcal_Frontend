@@ -71,3 +71,48 @@ class UserLogin {
   });
 
 }
+
+/* GET ALL USERS */
+class UserOut {
+  final int id;
+  final String first_name;
+  final String last_name;
+  final int gender;
+  final int age;
+  final int state;
+  final bool is_nutr_adviser;
+
+  UserOut({
+    required this.id,
+    required this.first_name,
+    required this.last_name,
+    required this.gender,
+    required this.age,
+    required this.state,
+    required this.is_nutr_adviser
+  });
+
+  factory UserOut.fromJson(Map<String, dynamic> json) {
+    return UserOut(
+      id: json['id'],
+      first_name: json['first_name'],
+      last_name: json['last_name'],
+      gender: json['gender'],
+      age: json['age'],
+      state: json['state'],
+      is_nutr_adviser: json['is_nutr_adviser'],
+    );
+  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'first_name': first_name,
+    'last_name': last_name,
+    'gender': gender,
+    'age': age,
+    'state': state,
+    'is_nutr_adviser': is_nutr_adviser,
+  };
+
+  static List<UserOut> listFromJson(List<dynamic> list) =>
+      List<UserOut>.from(list.map((x) => UserOut.fromJson(x)));
+}
