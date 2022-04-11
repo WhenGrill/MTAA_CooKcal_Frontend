@@ -94,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           child: TextField(
                             controller: passController,
+                            obscureText: true,
                             decoration: const InputDecoration(
                               icon: Icon(
                                 Icons.key_outlined,
@@ -119,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   )
                               ),
                               onPressed: () {
-                                Provider.of<Userauth>(context, listen:false).login(UserLogin(email: emailController.text, password: passController.text));
+                                Provider.of<Userauth>(context, listen:false).login(UserLogin(username: emailController.text, password: passController.text));
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const MainNavigationScreen()),

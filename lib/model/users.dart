@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 class UserCreate {
   final String email;
   final String password;
@@ -55,17 +57,17 @@ class UserCreate {
 }
 
 class UserLogin {
-  final String email;
+  final String username;
   final String password;
 
   UserLogin({
-    required this.email,
+    required this.username,
     required this.password,
   });
 
-  Map<String, dynamic> toJson() => {
-      'email': email,
+  FormData toFormData() => FormData.fromMap({
+      'username': username,
       'password': password,
-  };
+  });
 
 }

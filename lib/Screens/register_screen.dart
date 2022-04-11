@@ -2,6 +2,12 @@ import 'package:cookcal/Screens/MainNavigation_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'dart:convert';
+
+import '../HTTP/login.dart';
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -17,6 +23,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     "Male", "Female", "Other"
   ];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final emailController = TextEditingController();
+  final passController = TextEditingController();
+  final fnameController = TextEditingController();
+  final lnameController = TextEditingController();
+  final ageController = TextEditingController();
+  final currweightController = TextEditingController();
+  final goalweightController = TextEditingController();
+  final heightController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextFormField(
+                      controller: emailController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter something';
@@ -92,6 +108,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextFormField(
+                      controller: passController,
+                      obscureText: true,
                       decoration: const InputDecoration(
                         icon: Icon(
                           Icons.key_outlined,
@@ -115,6 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextFormField(
+                      controller: fnameController,
                       decoration: const InputDecoration(
                         icon: Icon(
                           Icons.account_circle_outlined,
@@ -139,6 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextFormField(
+                      controller: lnameController,
                       decoration: const InputDecoration(
                         icon: Icon(
                           Icons.account_circle_rounded,
@@ -195,6 +215,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextFormField(
+                      controller: ageController,
                       decoration: const InputDecoration(
                         icon: Icon(
                           Icons.access_time,
@@ -219,6 +240,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextFormField(
+                      controller: currweightController,
                       decoration: const InputDecoration(
                         icon: Icon(
                           Icons.restaurant,
@@ -243,6 +265,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextFormField(
+                      controller: goalweightController,
                       decoration: const InputDecoration(
                         icon: Icon(
                           Icons.restaurant_menu,
@@ -267,6 +290,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextFormField(
+                      controller: heightController,
                       decoration: const InputDecoration(
                         icon: Icon(
                           Icons.accessibility_new_outlined,
@@ -314,9 +338,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (!_formKey.currentState!.validate()){
                           return;
                         }
+                        int gender = 0;
+                        bool nutradviser = false;
+
+                        /* GENDER */
+                        if (valueChose == 'Female'){
+                          gender = 1;
+                        }
+                        else if (valueChose == 'Other'){
+                          gender = 2;
+                        }
+
+                        /*NUTR ADVISER*/
+                        if (isChecked == true){
+                          nutradviser = true;
+                        }
+                        var data = UserCreate
+                          (
+                            email: emailController.text,
+                            password: passController.text,
+                            first_name: fnameController.text,
+                            last_name: lnameController.text,
+                            gender: gender,
+                            age: int.parse(ageController.text),
+                            goal_weight: double.parse(goalweightController.text),
+                            height: double.parse(heightController.text),
+                            state: 0,
+                            is_nutr_adviser: nutradviser
+                          );
+                        Provider.of<Userauth>(context, listen: false).register(data);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
+                          MaterialPageRoute(builder: (context) => const LoginScreen()),
                         );
                       },
                       child: Text('Register'),
