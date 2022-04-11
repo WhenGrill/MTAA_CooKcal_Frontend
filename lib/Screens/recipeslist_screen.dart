@@ -1,3 +1,4 @@
+import 'package:cookcal/Screens/recipeProfile_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,10 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                     final recipe = recipes[index];
                     return Card(
                         child: ListTile(
-                          onTap: () {},
+                          trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe)));
+                          },
                           leading: CircleAvatar(
                             backgroundColor: COLOR_WHITE,
                             backgroundImage: AssetImage(food_icons[random(0,4)]), // no matter how big it is, it won't overflow
