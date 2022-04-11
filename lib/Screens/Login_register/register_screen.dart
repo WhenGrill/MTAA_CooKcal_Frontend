@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'dart:convert';
 
-import '../HTTP/login.dart';
+import '../../HTTP/login.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:cookcal/HTTP/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cookcal/Screens/home_screen.dart';
-import 'package:cookcal/Screens/login_screen.dart';
+import 'package:cookcal/Screens/Login_register/login_screen.dart';
 import 'package:cookcal/utils/constants.dart';
 import 'package:provider/provider.dart';
 

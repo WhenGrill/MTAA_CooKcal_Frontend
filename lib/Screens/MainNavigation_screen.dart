@@ -2,8 +2,8 @@ import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/main.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Screens/home_screen.dart';
-import 'package:cookcal/Screens/recipeslist_screen.dart';
-import 'package:cookcal/Screens/userslist_screen.dart';
+import 'package:cookcal/Screens/Recipes/recipeslist_screen.dart';
+import 'package:cookcal/Screens/Users/userslist_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);

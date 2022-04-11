@@ -1,9 +1,9 @@
-import 'package:cookcal/Screens/userProfile_screen.dart';
+import 'package:cookcal/Screens/Users/userProfile_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:flutter/material.dart';
 
-import '../Utils/custom_functions.dart';
-import '../Widgets/searchBar.dart';
+import '../../Utils/custom_functions.dart';
+import '../../Widgets/searchBar.dart';
 
 class UserListScreen extends StatefulWidget {
   const UserListScreen({Key? key}) : super(key: key);

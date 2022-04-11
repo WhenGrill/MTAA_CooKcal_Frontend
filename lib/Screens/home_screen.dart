@@ -1,11 +1,11 @@
-import 'package:cookcal/Screens/addRecipe_screen.dart';
-import 'package:cookcal/Screens/foodEatlist_screen.dart';
+import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
+import 'package:cookcal/Screens/Food/foodEatlist_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/CircleProgress.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
-import 'package:cookcal/Screens/foodlist_screen.dart';
+import 'package:cookcal/Screens/FoodList/foodlist_screen.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 

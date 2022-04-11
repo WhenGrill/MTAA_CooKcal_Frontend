@@ -1,18 +1,18 @@
-import 'package:cookcal/Screens/recipeProfile_screen.dart';
+import 'package:cookcal/Screens/Recipes/recipeProfile_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/searchBar.dart';
 
 
-class FoodEatListScreen extends StatefulWidget {
-  const FoodEatListScreen({Key? key}) : super(key: key);
+class RecipeListScreen extends StatefulWidget {
+  const RecipeListScreen({Key? key}) : super(key: key);
 
   @override
-  _FoodEatListScreenState createState() => _FoodEatListScreenState();
+  _RecipeListScreenState createState() => _RecipeListScreenState();
 }
 
-class _FoodEatListScreenState extends State<FoodEatListScreen> {
+class _RecipeListScreenState extends State<RecipeListScreen> {
 
   final myController = TextEditingController();
 
@@ -26,14 +26,6 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('CooKcal'),
-        centerTitle: true,
-        backgroundColor: COLOR_GREEN,
-        actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.settings))
-        ],
-      ),
       body: LayoutBuilder(builder: (context, constraints){
         return Column(
           children: [
@@ -89,8 +81,8 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                   },
                 )
             )
-          ],);
-      }
+        ],);
+            }
       ),
     );
   }
