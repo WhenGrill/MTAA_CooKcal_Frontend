@@ -61,7 +61,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 Container(
                   margin: EdgeInsets.all(10),
                   width: constraints.maxWidth,
-                  height: constraints.maxWidth* 0.7,
+                  height: constraints.maxHeight * 0.35,
                   decoration: BoxDecoration(
                     color: COLOR_GREEN,
                     border: Border.all(
@@ -73,8 +73,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   //child: Text("INFO O MNE", style: TextStyle(color: COLOR_WHITE, fontSize: 50),),
                 ),
             SizedBox(
-              width: 95,
-              height: 95,
+              width: 80,
+              height: 80,
               child: FloatingActionButton(
                   heroTag: 'btnrecipes',
                   backgroundColor: COLOR_GREEN,

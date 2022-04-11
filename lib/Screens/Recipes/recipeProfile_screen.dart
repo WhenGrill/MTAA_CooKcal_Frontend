@@ -18,6 +18,7 @@ class RecipeProfileScreen extends StatefulWidget {
 }
 
 class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
+  late Recipe recipe = widget.recipe;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +33,71 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
           }, icon: Icon(Icons.settings))
         ],
       ),
-      body: Container(
-        color: COLOR_WHITE,
-      )
+      body: LayoutBuilder(builder: (context, constraints) {
+        return Container(
+          color: COLOR_WHITE,
+          child: Column(
+            children: [
+              addVerticalSpace(10),
+              Container(
+                width: 220.0,
+                height: 220.0,
+                decoration: BoxDecoration(
+                  color: COLOR_ORANGE,
+                  image: DecorationImage(
+                    image: AssetImage(food_icons[random(0,4)]),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.all( Radius.circular(110.0)),
+                  border: Border.all(
+                    color: COLOR_ORANGE,
+                    width: 5.0,
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('${recipe.creator}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text('${recipe.title}',
+                    style: TextStyle(fontSize: 50),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.all(10),
+                width: constraints.maxWidth,
+                height: constraints.maxHeight * 0.15,
+                decoration: BoxDecoration(
+                  color: COLOR_GREEN,
+                  border: Border.all(
+                      color: COLOR_ORANGE,// set border color
+                      width: 3.0),   // set border width
+                  borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0)), // set rounded corner radius
+                ),
+                //child: Text("INFO O MNE", style: TextStyle(color: COLOR_WHITE, fontSize: 50),),
+              ),
+              Container(
+                margin: EdgeInsets.all(10),
+                width: constraints.maxWidth,
+                height: constraints.maxHeight * 0.3,
+                decoration: BoxDecoration(
+                  color: COLOR_GREEN,
+                  border: Border.all(
+                      color: COLOR_ORANGE,// set border color
+                      width: 3.0),   // set border width
+                  borderRadius: const BorderRadius.all(
+                      Radius.circular(10.0)), // set rounded corner radius
+                ),
+                //child: Text("INFO O MNE", style: TextStyle(color: COLOR_WHITE, fontSize: 50),),
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 }

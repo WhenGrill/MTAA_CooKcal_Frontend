@@ -69,7 +69,7 @@ List<Recipe> recipes = [
   Recipe(title: 'S chlebom', ingredients: 'bread, hotdog, whatever', kcal: '125', instructions: 'make the damn burger', creator: 'Jan Balazia'),
   Recipe(title: 'makova', ingredients: 'bread, hotdog, whatever', kcal: '125', instructions: 'make the damn burger', creator: 'Jan Balazia'),
   Recipe(title: 'Dentík', ingredients: 'bread, hotdog, whatever', kcal: '125', instructions: 'make the damn burger', creator: 'Andrej Zbytčan'),
-  Recipe(title: 'vreckovka', ingredients: 'bread, hotdog, whatever', kcal: '125', instructions: 'make the damn burger', creator: 'Jan Balazia'),
+  Recipe(title: 'vreckovkaaaaaaaa', ingredients: 'bread, hotdog, whatever', kcal: '125', instructions: 'make the damn burger', creator: 'Jan Balazia'),
   Recipe(title: 'Ponožka', ingredients: 'bread, hotdog, whatever', kcal: '125', instructions: 'make the damn burger', creator: 'Jan Balazia'),
   Recipe(title: 'burger', ingredients: 'bread, hotdog, whatever', kcal: '125', instructions: 'make the damn burger', creator: 'Jan Balazia'),
   Recipe(title: 'figa', ingredients: 'bread, hotdog, whatever', kcal: '125', instructions: 'make the damn burger', creator: 'Jan Balazia'),
