@@ -2,8 +2,12 @@ import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/register_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../HTTP/login.dart';
+import '../model/users.dart';
 import 'MainNavigation_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,6 +18,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  final emailController = TextEditingController();
+  final passController = TextEditingController();
+
+  /*
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose(); } */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,8 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: const BorderRadius.all(
                                 Radius.circular(10.0)), // set rounded corner radius
                           ),
-                          child: const TextField(
-                            decoration: InputDecoration(
+                          child: TextField(
+                            controller: emailController,
+                            decoration: const InputDecoration(
                               icon: Icon(
                                 Icons.local_post_office_outlined,
                                 color: COLOR_GREEN,
@@ -76,8 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: const BorderRadius.all(
                                 Radius.circular(10.0)), // set rounded corner radius
                           ),
-                          child: const TextField(
-                            decoration: InputDecoration(
+                          child: TextField(
+                            controller: passController,
+                            decoration: const InputDecoration(
                               icon: Icon(
                                 Icons.key_outlined,
                                 color: COLOR_ORANGE,
@@ -102,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   )
                               ),
                               onPressed: () {
+                                Provider.of<Userauth>(context, listen:false).login(UserLogin(email: emailController.text, password: passController.text));
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
