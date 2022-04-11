@@ -117,3 +117,66 @@ class UserExample {
 
 
   ];
+
+class FoodList {
+  late int id;
+  late String title;
+  late int kcal_100g;
+  late int amount;
+
+  FoodList({
+    required this.id,
+    required this.title,
+    required this.kcal_100g,
+    required this.amount,
+  });
+
+}
+
+List<FoodList> food_list = [
+  FoodList(id: 1, title: "Repa raňajková", kcal_100g: 124, amount: 468),
+  FoodList(id: 1, title: "Repa desiatová", kcal_100g: 124, amount: 550),
+  FoodList(id: 1, title: "Repa obedová", kcal_100g: 124, amount: 658),
+  FoodList(id: 1, title: "Repa olovrantová", kcal_100g: 124, amount: 1234),
+  FoodList(id: 1, title: "Repa večerová", kcal_100g: 124, amount: 214),
+  FoodList(id: 1, title: "Repa mid-night-snacková", kcal_100g: 124, amount: 246),
+
+];
+
+class UserIdExample {
+  late int id;
+  late String first_name;
+  late String last_name;
+  late int gender;
+  late int age;
+  late int state;
+  late bool is_nutr_adviser;
+  late String email;
+  late int goal_weight;
+  late int height;
+
+  UserIdExample({
+    required this.id,
+    required this.first_name,
+    required this.last_name,
+    required this.gender,
+    required this.age,
+    required this.state,
+    required this.is_nutr_adviser,
+    required this.email,
+    required this.goal_weight,
+    required this.height,
+  });
+}
+
+UserIdExample userIdExample = UserIdExample(
+    id: 5,
+    first_name: "Peťko",
+    last_name: "Kladkostroj",
+    gender: 0,
+    age: 35,
+    state: 0,
+    is_nutr_adviser: false,
+    email: "kladostroj.petko@gmail.com",
+    goal_weight: 79,
+    height: 168);

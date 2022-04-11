@@ -1,9 +1,11 @@
+import 'package:cookcal/Screens/addRecipe_screen.dart';
+import 'package:cookcal/Screens/foodEatlist_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/CircleProgress.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
-
+import 'package:cookcal/Screens/foodlist_screen.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -132,21 +134,36 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           FloatingActionButton(
-                            heroTag: 'btneat',
-                            backgroundColor: COLOR_DARKGREEN,
-                            onPressed: () {  },
-                            child: const Icon(Icons.fastfood_outlined),
-                          ),
-                          FloatingActionButton(
                             heroTag: 'btnfood',
                             backgroundColor: COLOR_DARKGREEN,
-                            onPressed: () {  },
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const FoodEatListScreen()),
+                              );
+                            },
                             child: Icon(Icons.add),
+                          ),
+                          FloatingActionButton(
+                            heroTag: 'btneat',
+                            backgroundColor: COLOR_DARKGREEN,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const FoodListScreen()),
+                              );
+                            },
+                            child: const Icon(Icons.fastfood_outlined),
                           ),
                           FloatingActionButton(
                             heroTag: 'btnrecipes',
                             backgroundColor: COLOR_DARKGREEN,
-                            onPressed: () {  },
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const AddRecipeScreen()),
+                              );
+                            },
                             child: Icon(Icons.list_alt),
                           )
                         ],

@@ -1,18 +1,19 @@
-import 'package:cookcal/Screens/userProfile_screen.dart';
+import 'package:cookcal/Screens/recipeProfile_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
+import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:cookcal/Widgets/searchBar.dart';
 
-import '../Utils/custom_functions.dart';
-import '../Widgets/searchBar.dart';
 
-class UserListScreen extends StatefulWidget {
-  const UserListScreen({Key? key}) : super(key: key);
+class FoodEatListScreen extends StatefulWidget {
+  const FoodEatListScreen({Key? key}) : super(key: key);
 
   @override
-  _UserListScreenState createState() => _UserListScreenState();
+  _FoodEatListScreenState createState() => _FoodEatListScreenState();
 }
 
-class _UserListScreenState extends State<UserListScreen> {
+class _FoodEatListScreenState extends State<FoodEatListScreen> {
+
   final myController = TextEditingController();
 
   @override
@@ -25,6 +26,14 @@ class _UserListScreenState extends State<UserListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('CooKcal'),
+        centerTitle: true,
+        backgroundColor: COLOR_GREEN,
+        actions: [
+          IconButton(onPressed: (){}, icon: Icon(Icons.settings))
+        ],
+      ),
       body: LayoutBuilder(builder: (context, constraints){
         return Column(
           children: [
@@ -59,20 +68,21 @@ class _UserListScreenState extends State<UserListScreen> {
             ),
             Expanded(
                 child: ListView.builder(
-                  itemCount: users.length,
+                  itemCount: recipes.length,
                   itemBuilder: (context, index){
-                    final user = users[index];
+                    final recipe = recipes[index];
                     return Card(
                         child: ListTile(
                           trailing: const Icon(Icons.arrow_forward_ios_rounded),
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserProfileScreen(user: user)));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe)));
                           },
                           leading: CircleAvatar(
                             backgroundColor: COLOR_WHITE,
-                            backgroundImage: AssetImage(user_icons[user.gender]), // no matter how big it is, it won't overflow
+                            backgroundImage: AssetImage(food_icons[random(0,4)]), // no matter how big it is, it won't overflow
                           ),
-                          title: Text('${user.first_name} ${user.last_name}'),
+                          title: Text(recipe.title),
+                          subtitle: Text(recipe.creator),
 
                         )
                     );

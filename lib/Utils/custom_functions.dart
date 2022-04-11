@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cookcal/Utils/constants.dart';
 import 'dart:math';
 
 Widget addVerticalSpace(double height){
@@ -37,4 +38,26 @@ class MyClipper extends CustomClipper<Path> {
 
 int random(min, max) {
   return min + Random().nextInt(max - min);
+}
+
+double calculate_eaten(List<FoodList> foodList){
+  double sum = 0;
+  for (FoodList food in foodList){
+    sum = sum + food.amount * food.kcal_100g / 100;
+  }
+
+  return sum;
+}
+
+int weight = 69;
+
+double calculate_howmucheat(UserIdExample user){
+  double toEat = 0;
+  if (user.gender == 1) {
+    toEat = 9.99 * weight + 6.25 * user.height - 4.92 * user.age + 5;
+  } else {
+    toEat = 9.99 * weight + 6.25 * user.height - 4.92 * user.age - 161;
+  }
+
+  return toEat;
 }
