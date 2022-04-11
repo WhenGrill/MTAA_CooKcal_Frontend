@@ -18,9 +18,10 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-
+  late UserExample user = widget.user;
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           title: Text('CooKcal'),
@@ -32,9 +33,65 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             }, icon: Icon(Icons.settings))
           ],
         ),
-        body: Container(
-          color: COLOR_WHITE,
-        )
+        body: LayoutBuilder(builder: (context, constraints) {
+          return Container(
+            color: COLOR_WHITE,
+            child: Column(
+              children: [
+                addVerticalSpace(10),
+                Container(
+                  width: 220.0,
+                  height: 220.0,
+                  decoration: BoxDecoration(
+                    color: COLOR_ORANGE,
+                    image: DecorationImage(
+                      image: AssetImage(user_icons[user.gender]),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.all( Radius.circular(110.0)),
+                    border: Border.all(
+                      color: COLOR_ORANGE,
+                      width: 5.0,
+                    ),
+                  ),
+                ),
+                Text('${user.first_name} ${user.last_name}',
+                  style: TextStyle(fontSize: 40),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  width: constraints.maxWidth,
+                  height: constraints.maxWidth* 0.7,
+                  decoration: BoxDecoration(
+                    color: COLOR_GREEN,
+                    border: Border.all(
+                        color: COLOR_ORANGE,// set border color
+                        width: 3.0),   // set border width
+                    borderRadius: const BorderRadius.all(
+                        Radius.circular(10.0)), // set rounded corner radius
+                  ),
+                  //child: Text("INFO O MNE", style: TextStyle(color: COLOR_WHITE, fontSize: 50),),
+                ),
+            SizedBox(
+              width: 95,
+              height: 95,
+              child: FloatingActionButton(
+                  heroTag: 'btnrecipes',
+                  backgroundColor: COLOR_GREEN,
+                  enableFeedback: false,
+                  child: const SizedBox(
+                    width: 95,
+                    height: 95,
+                    child: Icon(Icons.phone, size: 50),
+                  ),
+                  onPressed: () {
+
+                  })
+            )
+              ],
+            ),
+          );
+        }),
     );
   }
 }
