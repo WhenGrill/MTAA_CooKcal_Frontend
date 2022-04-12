@@ -18,7 +18,6 @@ class UserListScreen extends StatefulWidget {
 class _UserListScreenState extends State<UserListScreen> {
   final myController = TextEditingController();
   List<UserOut> users = [];
-
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -27,7 +26,7 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 
   load_data() async {
-    var tmp = await GetAllUsers().get_all_users(myController.text);
+    var tmp = await UsersOperations().get_all_users(myController.text);
     print(tmp);
     print(tmp.runtimeType);
     users.clear();
@@ -63,8 +62,9 @@ class _UserListScreenState extends State<UserListScreen> {
                 ),
                 onPressed: () async {
                   print(myController.text);
-                  load_data();
+                  await load_data();
                   setState(() {});
+                  print('set has been stated');
                 },
                 child: Text('Search'),
               ),
@@ -74,9 +74,8 @@ class _UserListScreenState extends State<UserListScreen> {
               color: COLOR_GREEN,
               thickness: 2,
             ),
-            Container(
+            Expanded(
                 child: ListView.builder(
-                  key: UniqueKey(),
                   itemCount: users.length,
                   itemBuilder: (context, index){
                     final user = users[index];

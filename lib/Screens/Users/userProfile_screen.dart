@@ -23,6 +23,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('CooKcal'),
           centerTitle: true,
@@ -30,7 +31,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           actions: [
             IconButton(onPressed: (){
 
-            }, icon: Icon(Icons.settings))
+            }, icon: const Icon(Icons.settings))
           ],
         ),
         body: LayoutBuilder(builder: (context, constraints) {
@@ -39,6 +40,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             child: Column(
               children: [
                 addVerticalSpace(10),
+
                 Container(
                   width: 220.0,
                   height: 220.0,
@@ -56,10 +58,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
                 Text('${user.first_name} ${user.last_name}',
-                  style: TextStyle(fontSize: 40),
+                  style: const TextStyle(fontSize: 40),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   width: constraints.maxWidth,
                   height: constraints.maxHeight * 0.35,
                   decoration: BoxDecoration(

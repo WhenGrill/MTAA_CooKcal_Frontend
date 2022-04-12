@@ -116,3 +116,58 @@ class UserOut {
   static List<UserOut> listFromJson(List<dynamic> list) =>
       List<UserOut>.from(list.map((x) => UserOut.fromJson(x)));
 }
+
+class UserOneOut {
+  final int id;
+  final String first_name;
+  final String last_name;
+  final int gender;
+  final int age;
+  final int state;
+  final bool is_nutr_adviser;
+  final String email;
+  final double goal_weight;
+  final double height;
+
+  UserOneOut({
+    required this.id,
+    required this.first_name,
+    required this.last_name,
+    required this.gender,
+    required this.age,
+    required this.state,
+    required this.is_nutr_adviser,
+    required this.email,
+    required this.goal_weight,
+    required this.height
+  });
+
+  factory UserOneOut.fromJson(Map<String, dynamic> json) {
+    return UserOneOut(
+        id: json['id'],
+        first_name: json['first_name'],
+        last_name: json['last_name'],
+        gender: json['gender'],
+        age: json['age'],
+        state: json['state'],
+        is_nutr_adviser: json['is_nutr_adviser'],
+        email: json['email'],
+        goal_weight: json['goal_weight'],
+        height: json['height']
+    );
+  }
+}
+
+class UpdateUser{
+  final double goal_weight;
+  final double height;
+  final int state;
+  final bool is_nutr_adviser;
+
+  UpdateUser({
+    this.goal_weight = 0,
+    this.height = 0,
+    this.state = -1,
+    this.is_nutr_adviser = false,
+});
+}
