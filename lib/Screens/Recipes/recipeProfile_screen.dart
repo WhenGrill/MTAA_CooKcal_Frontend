@@ -73,8 +73,8 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                 decoration: BoxDecoration(
                   color: COLOR_GREEN,
                   border: Border.all(
-                      color: COLOR_ORANGE,// set border color
-                      width: 3.0),   // set border width
+                      color: COLOR_ORANGE,
+                      width: 3.0),
                   borderRadius: const BorderRadius.all(
                       Radius.circular(10.0)), // set rounded corner radius
                 ),

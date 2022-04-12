@@ -54,7 +54,72 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                     final food = food_list[index];
                     return Card(
                         child: ListTile(
-                          onTap: () {},
+                          onLongPress: () {
+                            showDialog(
+                                context: context,
+                                builder: (context){
+                                  return AlertDialog(
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                    backgroundColor: COLOR_WHITE,
+                                    content: Container(
+                                      width: constraints.maxWidth * 0.3,
+                                      height: constraints.maxHeight * 0.20,
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Do you wish to delete ${food.title}?",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                  color: COLOR_BLACK,
+                                                  fontSize: 20
+                                              ),
+                                            ),
+                                            addVerticalSpace(constraints.maxHeight * 0.02),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: 50,
+                                                  height: 50,
+                                                  child: FloatingActionButton(
+                                                    backgroundColor: Colors.green,
+                                                    onPressed: () {
+                                                      food_list.removeWhere((element) => food_list.indexOf(element) == index);
+                                                      setState(() {
+
+                                                      });
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Icon(Icons.check),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 50,
+                                                  height: 50,
+                                                  child: FloatingActionButton(
+                                                    backgroundColor: Colors.red,
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Icon(Icons.arrow_back),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                            );
+                          },
                           leading: CircleAvatar(
                             backgroundColor: COLOR_WHITE,
                             backgroundImage: AssetImage(food_icons[random(0,4)]), // no matter how big it is, it won't overflow
