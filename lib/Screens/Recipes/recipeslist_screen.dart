@@ -48,6 +48,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
       body: LayoutBuilder(builder: (context, constraints){
         return Column(
           children: [
+            addVerticalSpace(constraints.maxHeight * 0.02),
             RoundedSearchInput(
               hintText: 'Search here',
               textController: myController,
@@ -58,10 +59,10 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
               height: 200,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(150,50),
+                    fixedSize: const Size(300,40),
                     primary: COLOR_GREEN,
                     shadowColor: Colors.grey.shade50,
-                    textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)
                     )
@@ -72,7 +73,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   setState(() {});
                   print('set has been stated');
                 },
-                child: Text('Search'),
+                child: const Text('Search Recipes'),
               ),
             ),
             addVerticalSpace(constraints.maxHeight * 0.017),
