@@ -20,11 +20,13 @@ class UsersOperations {
       Dio d = Dio();
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
+      var id = prefs.getInt('user_id');
       d.options.headers['authorization'] = 'Bearer ' + token!;
       Response response = await d.get(apiURL + '/users/?name=' + name);
       print(response.data);
 
       List<UserOut> users = List<UserOut>.from(response.data.map((x)=> UserOut.fromJson(x)));
+      users.removeWhere((element) => element.id == id);
       // List<UserOut> users = (response.data).map((e) => UserOut.fromJson(e)).toList();
       print(users);
       return users;
