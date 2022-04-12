@@ -2,6 +2,7 @@ import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final emailController = TextEditingController();
   final passController = TextEditingController();
+
+  var user_auth = Userauth();
 
   /*
   @override
@@ -122,12 +125,60 @@ class _LoginScreenState extends State<LoginScreen> {
                                           borderRadius: BorderRadius.circular(50)
                                       )
                                   ),
-                                  onPressed: () {
-                                    Provider.of<Userauth>(context, listen:false).login(UserLogin(username: emailController.text, password: passController.text));
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
-                                    );
+                                  onPressed: () async {
+                                    var response = await user_auth.login(UserLogin(username: emailController.text, password: passController.text));
+                                    if (response != null){
+                                      print("now");
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
+                                      );
+                                    }
+                                    else{
+                                      showDialog(
+                                          context: context,
+                                          builder: (context){
+                                            return AlertDialog(
+                                              shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                              backgroundColor: COLOR_WHITE,
+                                              content: Container(
+                                                width: constraints.maxWidth * 0.8,
+                                                height: constraints.maxHeight * 0.12,
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Column(
+                                                    children: [
+                                                      const Text(
+                                                        "Invalid E-mail or Password",
+                                                        overflow: TextOverflow.ellipsis,
+                                                        maxLines: 2,
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(
+                                                            color: COLOR_BLACK,
+                                                            fontSize: 20
+                                                        ),
+                                                      ),
+                                                      addVerticalSpace(constraints.maxHeight * 0.01),
+                                                      SizedBox(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child: FloatingActionButton(
+                                                          backgroundColor: Colors.red,
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: const Icon(Icons.arrow_back),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                      );
+                                    }
                                   },
                                   child: Text('Login'),
                                 ),

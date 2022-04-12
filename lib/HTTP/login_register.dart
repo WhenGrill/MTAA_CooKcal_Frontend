@@ -30,7 +30,7 @@ class Userauth with ChangeNotifier{
       final String? token = shStorage.getString('token');
       print(token);
       */
-      return response.data;
+      return response;
     }
     catch (e) {
       print(e);
