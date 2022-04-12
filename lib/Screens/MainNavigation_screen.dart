@@ -72,7 +72,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                                 width: 50,
                                 height: 50,
                                 child: FloatingActionButton(
-                                  backgroundColor: Colors.green,
+                                  backgroundColor: COLOR_GREEN,
                                   onPressed: () {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
@@ -85,7 +85,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                                 width: 50,
                                 height: 50,
                                 child: FloatingActionButton(
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: COLOR_ORANGE,
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },

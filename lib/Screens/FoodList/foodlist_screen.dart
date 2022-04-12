@@ -88,7 +88,7 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                                   width: 50,
                                                   height: 50,
                                                   child: FloatingActionButton(
-                                                    backgroundColor: Colors.green,
+                                                    backgroundColor: COLOR_GREEN,
                                                     onPressed: () {
                                                       food_list.removeWhere((element) => food_list.indexOf(element) == index);
                                                       setState(() {
@@ -103,7 +103,7 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                                   width: 50,
                                                   height: 50,
                                                   child: FloatingActionButton(
-                                                    backgroundColor: Colors.red,
+                                                    backgroundColor: COLOR_ORANGE,
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },

@@ -59,7 +59,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('${recipe.creator["first_name"]} ${recipe.creator["first_name"]}',
+                  Text('${recipe.creator["first_name"]} ${recipe.creator["last_name"]}',
                     style: TextStyle(fontSize: 20),
                   ),
                   Text('${recipe.title}',

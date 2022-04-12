@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                         width: 50,
                                                         height: 50,
                                                         child: FloatingActionButton(
-                                                          backgroundColor: Colors.red,
+                                                          backgroundColor: COLOR_ORANGE,
                                                           onPressed: () {
                                                             Navigator.pop(context);
                                                           },
