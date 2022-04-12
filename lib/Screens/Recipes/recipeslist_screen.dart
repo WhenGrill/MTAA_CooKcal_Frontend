@@ -1,8 +1,11 @@
+import 'package:cookcal/HTTP/all_recipes.dart';
 import 'package:cookcal/Screens/Recipes/recipeProfile_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/searchBar.dart';
+
+import '../../model/recipes.dart';
 
 
 class RecipeListScreen extends StatefulWidget {
@@ -16,6 +19,9 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
 
   final myController = TextEditingController();
 
+  List<RecipeOut> recipes = [];
+
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -23,9 +29,22 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
     super.dispose();
   }
 
+  load_data() async {
+    var tmp = await RecipesOperations().get_all_recipes(myController.text);
+
+    print(tmp);
+    print(tmp.runtimeType);
+    recipes.clear();
+    tmp?.forEach((element) {
+      recipes.add(element);
+      print(element.id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: LayoutBuilder(builder: (context, constraints){
         return Column(
           children: [
@@ -47,13 +66,16 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                         borderRadius: BorderRadius.circular(50)
                     )
                 ),
-                onPressed: () {
+                onPressed: () async {
                   print(myController.text);
+                  await load_data();
+                  setState(() {});
+                  print('set has been stated');
                 },
                 child: Text('Search'),
               ),
             ),
-            addVerticalSpace(constraints.maxHeight * 0.02),
+            addVerticalSpace(constraints.maxHeight * 0.017),
             const Divider(
               color: COLOR_GREEN,
               thickness: 2,
@@ -74,7 +96,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                             backgroundImage: AssetImage(food_icons[random(0,4)]), // no matter how big it is, it won't overflow
                           ),
                           title: Text(recipe.title),
-                          subtitle: Text(recipe.creator),
+                          subtitle: Text("${recipe.creator["first_name"]} ${recipe.creator["last_name"]}"),
 
                         )
                     );

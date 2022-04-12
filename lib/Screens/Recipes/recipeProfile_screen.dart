@@ -7,18 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../HTTP/login_register.dart';
+import '../../model/recipes.dart';
 import '../../model/users.dart';
 import '../MainNavigation_screen.dart';
 
 class RecipeProfileScreen extends StatefulWidget {
-  final Recipe recipe;
+  final RecipeOut recipe;
   const RecipeProfileScreen({Key? key, required this.recipe}) : super(key: key);
   @override
   _RecipeProfileScreenState createState() => _RecipeProfileScreenState();
 }
 
 class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
-  late Recipe recipe = widget.recipe;
+  late RecipeOut recipe = widget.recipe;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('${recipe.creator}',
+                  Text('${recipe.creator["first_name"]} ${recipe.creator["first_name"]}',
                     style: TextStyle(fontSize: 20),
                   ),
                   Text('${recipe.title}',

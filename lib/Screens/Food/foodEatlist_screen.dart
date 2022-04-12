@@ -75,7 +75,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                         child: ListTile(
                           trailing: const Icon(Icons.arrow_forward_ios_rounded),
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe)));
+                           // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe)));
                           },
                           leading: CircleAvatar(
                             backgroundColor: COLOR_WHITE,
