@@ -9,6 +9,14 @@ const COLOR_GREEN = Color(0xff244026);
 const COLOR_DARKGREEN = Color(0xff003004);
 const COLOR_GREY = Color(0xffeeeeee);
 
+OutlineInputBorder formBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(20.0),
+  borderSide: const BorderSide(
+    width: 3,
+    color: COLOR_ORANGE,
+  ),
+);
+
 const gradientColors = [
   COLOR_GREEN, COLOR_ORANGE, COLOR_GREEN,
 ];
