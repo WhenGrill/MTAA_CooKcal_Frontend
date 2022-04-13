@@ -279,7 +279,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                     child: TextFormField(
                                                     controller: ipController,
                                                     validator: (value) {
-                                                      if (validator.ip(value!) && value != '') {
+                                                      if (validator.ip(value!) || value == '') {
                                                         return null;
                                                       }
                                                       else{
@@ -314,7 +314,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                             if (!_formKey.currentState!.validate()){
                                                               return;
                                                             } else {
-                                                              webrtc_ip = ipController.text;
+                                                              if (ipController.text != '') {
+                                                                webrtc_ip = ipController.text;
+                                                              }
                                                               Navigator.pop(context);
                                                             }
                                                           });
