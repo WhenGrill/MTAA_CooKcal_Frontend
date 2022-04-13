@@ -12,3 +12,10 @@ authDio() async {
   d.options.headers['authorization'] = 'Bearer ' + token!;
   return d;
 }
+
+Map<String, int> state_of_weight_lodd =
+  {
+    'Normal': 0,
+    'Weight loss': 1,
+    'Rapid weight loss': 2
+  };

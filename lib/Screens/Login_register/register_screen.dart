@@ -366,7 +366,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             state: 0,
                             is_nutr_adviser: nutradviser
                           );
-                        Provider.of<Userauth>(context, listen: false).register(data);
+                        Provider.of<Userauth>(context, listen: false).register(data, double.parse(currweightController.text));
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const LoginScreen()),

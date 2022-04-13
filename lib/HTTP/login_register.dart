@@ -37,7 +37,7 @@ class Userauth with ChangeNotifier{
     }
   }
 
-  register(UserCreate userData) async {
+  register(UserCreate userData, double curr_weight) async {
     try {
       print(userData.toJson());
       Response response = await _dio.post(apiURL + '/users/',
@@ -45,6 +45,17 @@ class Userauth with ChangeNotifier{
       /*print('+++++++++++');
       print(response.data);
       print('++++++++++++');*/
+      
+      await login(UserLogin(username: userData.email, password: userData.password));
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+      _dio.options.headers['authorization'] = 'Bearer ' + token!;
+      Response resp_weight = await _dio.post(apiURL + '/weight_measurement/',
+      data: {
+        'weight': curr_weight
+      });
+      
+      
     }
     catch (e){
       print(e);

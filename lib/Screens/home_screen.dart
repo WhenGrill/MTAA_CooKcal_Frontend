@@ -17,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   late AnimationController _animationController;
   late Animation<double> _animation;
+  // TODO this
   double current_progress = 69;
   int max_kcal = 1600;
   int current_kcal = 1104;
@@ -77,13 +78,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                  ),
                 Container(
                   height: constraints.maxHeight * 0.58,
-                  color: Colors.grey.shade200,
+                  color:  COLOR_WHITE,
                   width: constraints.maxWidth,
                   child: Column(
                     children: [
                       Container(
                         height: constraints.maxHeight * 0.45,
-                        color: Colors.grey.shade200,
+                        color: COLOR_WHITE,
                         width: constraints.maxWidth,
                         child: Column(
                           children: [

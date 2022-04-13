@@ -1,3 +1,4 @@
+import 'package:cookcal/Screens/Users/userSettings_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/main.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +110,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             centerTitle: true,
             backgroundColor: COLOR_GREEN,
             actions: [
-              IconButton(onPressed: (){}, icon: Icon(Icons.settings))
+              IconButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => UserSettingsScreen()));
+              }, icon: Icon(Icons.settings))
             ],
           ),
           body: screens[current_index],
