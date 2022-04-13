@@ -213,11 +213,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: TextFormField(
                       controller: ageController,
                       validator: (value) {
-                        print(RegExp(r'^[0]+[0-9]*$').hasMatch(value!));
+
                         if (value == null || value.isEmpty) {
                           return 'Age field is required';
                         }
-                        else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (int.parse(value) < 1) || (!RegExp(r'^[0]+[0-9]*$').hasMatch(value))){
+                        else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (RegExp(r'^[0]+[0-9]*$').hasMatch(value)) || (int.parse(value) < 1)){
+                          print("here");
                           return 'Please enter a valid age';
                         }
                         return null;
@@ -242,6 +243,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: TextFormField(
                       controller: currweightController,
                       validator: (value) {
+
+                        print(!RegExp(r'^[0]+[0-9]*$').hasMatch(value!));
+
                         if (value == null || value.isEmpty) {
                           return 'Current Weight field is required';
                         }

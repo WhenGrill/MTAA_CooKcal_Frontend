@@ -78,6 +78,7 @@ class _UserListScreenState extends State<UserListScreen> {
             ),
             Expanded(
                 child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
                   itemCount: users.length,
                   itemBuilder: (context, index){
                     final user = users[index];

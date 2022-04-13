@@ -83,6 +83,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
             ),
             Expanded(
                 child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
                   itemCount: recipes.length,
                   itemBuilder: (context, index){
                     final recipe = recipes[index];

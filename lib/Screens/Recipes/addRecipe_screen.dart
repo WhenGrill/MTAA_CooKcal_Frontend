@@ -20,7 +20,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return LayoutBuilder(builder: (context, constraints)
+    {
+      return Scaffold(
         appBar: AppBar(
           title: Text('CooKcal'),
           centerTitle: true,
@@ -31,9 +33,50 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
             }, icon: Icon(Icons.settings))
           ],
         ),
-        body: Container(
-          color: COLOR_WHITE,
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child:  Container(
+            margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            color: COLOR_WHITE,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Card(
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(10,0,10,0),
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      minLines: 5,
+                      maxLines: null,
+                    ),
+                  )
+                ),
+                ButtonTheme(
+                  minWidth: 500,
+                  height: 200,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(300,40),
+                        primary: COLOR_GREEN,
+                        shadowColor: Colors.grey.shade50,
+                        textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)
+                        )
+                    ),
+                    onPressed: () {},
+                    child: const Text('Post Recipe'),
+                  ),
+                ),
+              ],
+            ),
+          ),
         )
+    );
+    }
     );
   }
 }

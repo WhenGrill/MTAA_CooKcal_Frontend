@@ -128,7 +128,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   onPressed: () async {
                                     var response = await user_auth.login(UserLogin(username: emailController.text, password: passController.text));
                                     if (response != null){
-                                      print("now");
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
