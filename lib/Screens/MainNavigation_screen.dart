@@ -1,3 +1,5 @@
+import 'package:cookcal/HTTP/all_users.dart';
+import 'package:cookcal/HTTP/login_register.dart';
 import 'package:cookcal/Screens/Users/userSettings_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/main.dart';
@@ -7,6 +9,7 @@ import 'package:cookcal/Screens/Recipes/recipeslist_screen.dart';
 import 'package:cookcal/Screens/Users/userslist_screen.dart';
 
 import '../Utils/custom_functions.dart';
+import '../model/users.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);
@@ -110,8 +113,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             centerTitle: true,
             backgroundColor: COLOR_GREEN,
             actions: [
-              IconButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => UserSettingsScreen()));
+              IconButton(onPressed: () async{
+                UsersOperations obj = UsersOperations();
+                UserOneOut user = await obj.get_current_user_info();
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSettingsScreen(user: user)));
               }, icon: Icon(Icons.settings))
             ],
           ),

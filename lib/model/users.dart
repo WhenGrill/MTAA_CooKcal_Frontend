@@ -156,6 +156,16 @@ class UserOneOut {
         height: json['height']
     );
   }
+
+
+  Map<String, dynamic> toJson() => {
+    'Meno': first_name,
+    'Priezvisko': last_name,
+    'Pohlavie': gender,
+    'Vek': age,
+    'Stav': state,
+    'Nutričný poradca': is_nutr_adviser,
+  };
 }
 
 class UpdateUser{

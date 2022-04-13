@@ -52,6 +52,10 @@ TextTheme defaultText = TextTheme(
     button: GoogleFonts.nunito(fontSize: 14, fontWeight: FontWeight.w400),
     caption: GoogleFonts.nunito(fontSize: 12, fontWeight: FontWeight.normal));
 
+const List genderItems = [
+  "Male", "Female", "Other"
+];
+
 //delete later
 class Recipe {
   late String title;

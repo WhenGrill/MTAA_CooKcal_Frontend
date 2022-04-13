@@ -20,9 +20,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   bool isChecked = false;
   String valueChose = "Male";
-  List genderItems = [
-    "Male", "Female", "Other"
-  ];
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
