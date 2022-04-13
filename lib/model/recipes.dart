@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import 'package:cookcal/model/users.dart';
 
 class RecipeCreate {
@@ -73,4 +75,25 @@ class RecipeOut {
   static List<RecipeOut> listFromJson(List<dynamic> list) =>
       List<RecipeOut>.from(list.map((x) => RecipeOut.fromJson(x)));
 
+}
+
+class RecipeIn {
+  final String title;
+  final String ingredients;
+  final String instructions;
+  final double kcal_100g;
+
+  RecipeIn({
+    required this.title,
+    required this.ingredients,
+    required this.instructions,
+    required this.kcal_100g,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'ingredients': ingredients,
+    'instructions': instructions,
+    'kcal_100g': kcal_100g
+  };
 }

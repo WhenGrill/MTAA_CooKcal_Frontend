@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
@@ -20,6 +22,7 @@ class RecipeProfileScreen extends StatefulWidget {
 
 class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
   late RecipeOut recipe = widget.recipe;
+  File? image;
 
   @override
   Widget build(BuildContext context) {
@@ -39,22 +42,48 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
           color: COLOR_WHITE,
           child: Column(
             children: [
-              addVerticalSpace(10),
-              Container(
-                width: 220.0,
-                height: 220.0,
-                decoration: BoxDecoration(
-                  color: COLOR_ORANGE,
-                  image: DecorationImage(
-                    image: AssetImage(food_icons[random(0,4)]),
-                    fit: BoxFit.cover,
+              Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Container(
+                    width: constraints.maxWidth,
+                    height: 220.0,
+                    decoration: BoxDecoration(
+                      color: COLOR_ORANGE,
+                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                      border: Border.all(
+                        color: COLOR_GREEN,
+                        width: 5.0,
+                      ),
+                    ),
+                    child: image != null
+                        ? Image.file(
+                        image!,
+                        fit: BoxFit.cover
+                    ): assert_to_image(context, food_icons[random(0, 4)]),
                   ),
-                  borderRadius: BorderRadius.all( Radius.circular(110.0)),
-                  border: Border.all(
-                    color: COLOR_ORANGE,
-                    width: 5.0,
-                  ),
-                ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(100),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 7,
+                            blurRadius: 7,
+                            offset: const Offset(3, 5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

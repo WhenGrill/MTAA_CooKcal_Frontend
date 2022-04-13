@@ -49,9 +49,8 @@ double calculate_eaten(List<FoodList> foodList){
   return sum;
 }
 
-int weight = 69;
-
 double calculate_howmucheat(UserIdExample user){
+  int weight = 69;
   double toEat = 0;
   if (user.gender == 1) {
     toEat = 9.99 * weight + 6.25 * user.height - 4.92 * user.age + 5;
@@ -60,4 +59,10 @@ double calculate_howmucheat(UserIdExample user){
   }
 
   return toEat;
+}
+
+Widget assert_to_image(BuildContext context, String path) {
+
+  return Image(image: AssetImage(path));
+
 }
