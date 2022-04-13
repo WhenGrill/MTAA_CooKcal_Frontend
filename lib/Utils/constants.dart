@@ -60,6 +60,8 @@ const List stateItems = [
   "Normal", "Weight loss", "Gain"
 ];
 
+const List adviserItems = ['YES', 'NO'];
+
 //delete later
 class Recipe {
   late String title;
