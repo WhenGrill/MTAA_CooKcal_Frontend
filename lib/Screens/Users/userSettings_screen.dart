@@ -35,7 +35,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                 color: COLOR_WHITE,
                 child: Column(
                     children: [
-                      addVerticalSpace(60),
+                      addVerticalSpace(40),
                       const Text(
                           'Account settings',
                           style: TextStyle(fontSize: 40)
@@ -62,8 +62,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                               children: [
                                 Text('Profile Picture'),
                                 Container(
-                                  width: 100.0,
-                                  height: 100.0,
+                                  width: 105.0,
+                                  height: 105.0,
                                   decoration: const BoxDecoration(
                                     image: DecorationImage(
                                         image: AssetImage(
@@ -79,7 +79,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                 )
                               ]
                           )),
-                      addVerticalSpace(20),
+                      addVerticalSpace(5),
                       Card(
                           child: ListTile(
                             onLongPress: () {},
@@ -98,7 +98,14 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                           child: ListTile(
                             onLongPress: () {},
                             title: Text("${user.age} "),
-                            subtitle: Text("Vek"),
+                            subtitle: Text("Age"),
+                          )
+                      ),
+                      Card(
+                          child: ListTile(
+                            onLongPress: () {},
+                            title: Text("${user.height} cm"),
+                            subtitle: Text("Height"),
                           )
                       ),
                       Card(
@@ -111,30 +118,58 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                       Card(
                           child: ListTile(
                             onLongPress: () {},
-                            title: Text("${genderItems[user.gender]} "),
-                            subtitle: Text("Gender"),
-                          )
-                      ),
-                      const Divider(
-                        color: COLOR_BLACK,
-                        //color of divider
-                        height: 5,
-                        //height spacing of divider
-                        thickness: 3,
-                        //thickness of divier line
-                        indent: 25,
-                        //spacing at the start of divider
-                        endIndent: 25, //spacing at the end of divider
-                      ),
-                      Card(
-                          child: ListTile(
-                            onLongPress: () {},
-                            title: Text("${genderItems[user.gender]} "),
-                            subtitle: Text("Gender"),
+                            title: Text("${user.goal_weight} kg"),
+                            subtitle: Text("Goal weight"),
                           )
 
                       ),
+                      Card(
+                          child: ListTile(
+                            onLongPress: () {},
+                            title: Text("${stateItems[user.state]} "),
+                            subtitle: Text("State"),
+                          )
 
+                      ),
+                      Card(
+                          child: ListTile(
+                            onLongPress: () {},
+                            title: Text(user.is_nutr_adviser ? 'YES' : 'NO'),
+                            subtitle: Text("Nutrition adviser"),
+                          )
+
+                      ),
+                      addVerticalSpace(30),
+                      SizedBox(
+                          height: 40, // <-- match-parent
+                          width: 300,
+                          child:  ElevatedButton(onPressed: () {},
+                              child: const Text('Edit account',
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                              style: ElevatedButton.styleFrom(
+                                  primary: COLOR_GREEN,
+                                  shape: StadiumBorder())
+                          )
+                      ),
+                      addVerticalSpace(15),
+                      TextButton(
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.red.shade700),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                          );
+                        },
+                        child: const Text('Delete account',
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            decorationThickness: 2,
+                            fontWeight: FontWeight.bold)
+                        ),
+                      ),
+                    addVerticalSpace(10)
                     ])
             ),
           );

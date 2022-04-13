@@ -56,6 +56,10 @@ const List genderItems = [
   "Male", "Female", "Other"
 ];
 
+const List stateItems = [
+  "Normal", "Weight loss", "Gain"
+];
+
 //delete later
 class Recipe {
   late String title;
