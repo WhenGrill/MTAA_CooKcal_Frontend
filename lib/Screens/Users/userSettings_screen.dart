@@ -1,3 +1,4 @@
+import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
 import 'package:cookcal/Utils/api_const.dart';
@@ -26,11 +27,13 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   TextEditingController goalweightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
 
-  late String valueChose = stateItems[user.state];
+  late String stateChose = stateItems[user.state];
   late bool isChecked = user.is_nutr_adviser;
   late String adviserChose = adviserItems[user.is_nutr_adviser ? 0 : 1];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  UsersOperations obj = UsersOperations();
 
   @override
   Widget build(BuildContext context) {
@@ -259,14 +262,19 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                           onLongPress: () {
                               setState(() {
                                 showDialog(
+
                                     context: context,
                                     builder: (context){
                                       return AlertDialog(
                                         shape: const RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(Radius.circular(20.0))),
                                         backgroundColor: COLOR_WHITE,
-                                        content: Container(
-                                          width: constraints.maxWidth * 0.4,
+                                        content:
+                                        SingleChildScrollView(
+                                          physics: NeverScrollableScrollPhysics(),
+                                          child:
+                                        Container(
+                                        width: constraints.maxWidth * 0.4,
                                           height: constraints.maxHeight * 0.28,
                                           child: Align(
                                             alignment: Alignment.center,
@@ -275,27 +283,27 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                 Container(
                                                   margin: EdgeInsets.all(5),
                                                   child: Form(
-                                                    key: _formKey,
-                                                    child: TextFormField(
-                                                    controller: ipController,
-                                                    validator: (value) {
-                                                      if (validator.ip(value!) || value == '') {
-                                                        return null;
-                                                      }
-                                                      else{
-                                                        return '        Not a valid IP address format';
-                                                      }
-                                                    },
-                                                    decoration: InputDecoration(
-                                                      filled: true,
-                                                      fillColor: Colors.grey.shade200,
-                                                      hintText: webrtc_ip,
-                                                      focusedBorder: formBorder,
-                                                      errorBorder: formBorder,
-                                                      focusedErrorBorder: formBorder,
-                                                      enabledBorder: formBorder,
-                                                    ),
-                                                  )
+                                                      key: _formKey,
+                                                      child: TextFormField(
+                                                        controller: ipController,
+                                                        validator: (value) {
+                                                          if (validator.ip(value!) || value == '') {
+                                                            return null;
+                                                          }
+                                                          else{
+                                                            return '        Not a valid IP address format';
+                                                          }
+                                                        },
+                                                        decoration: InputDecoration(
+                                                          filled: true,
+                                                          fillColor: Colors.grey.shade200,
+                                                          hintText: webrtc_ip,
+                                                          focusedBorder: formBorder,
+                                                          errorBorder: formBorder,
+                                                          focusedErrorBorder: formBorder,
+                                                          enabledBorder: formBorder,
+                                                        ),
+                                                      )
                                                   ),
                                                 ),
                                                 addVerticalSpace(constraints.maxHeight * 0.04),
@@ -342,6 +350,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                             ),
                                           ),
                                         ),
+                                        )
                                       );
                                     }
                                 );
@@ -455,7 +464,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                               DropdownButton<String>(
                                                 alignment: Alignment.center,
                                                 dropdownColor: Colors.grey.shade200,
-                                                value: valueChose,
+                                                value: stateChose,
                                                 style: const TextStyle(
                                                     fontSize: 20,
                                                     color: Colors.black
@@ -468,7 +477,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                 }).toList(),
                                                 onChanged: (newValue) {
                                                   setState(() {
-                                                    valueChose = newValue!;
+                                                    stateChose = newValue!;
                                                   });
                                                 },
                                               ),
@@ -521,9 +530,17 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
                                                       setState(() {
                                                         if (!_formKey.currentState!.validate()){
-                                                          return;
+                                                          return;  // TODO Returning future as this is async !!
                                                         } else {
-                                                          // UPDATE BACKEND
+                                                          Map<String, dynamic> upUserData = {
+                                                            "goal_weight": ((goalweightController.text == '') ? null : double.parse(goalweightController.text)),
+                                                            "height": ((heightController.text == '') ? null : double.parse(heightController.text)),
+                                                            "state": ((stateChose == stateItems[user.state]) ? null : stateItems.indexOf(stateChose)),
+                                                            "is_nutr_adviser": ((adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) ? null : !user.is_nutr_adviser)
+                                                          };
+                                                          print(upUserData);
+
+                                                          // await obj.update_user_data(upUserData);
                                                           Navigator.pop(context);
                                                         }
                                                       });
@@ -602,11 +619,19 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                 height: 50,
                                                 child: FloatingActionButton(
                                                   backgroundColor: Colors.red.shade700,
-                                                  onPressed: () {
-                                                    setState(() {
-
-                                                    });
-                                                    Navigator.pop(context);
+                                                  onPressed: () async {
+                                                    try {
+                                                      await obj.delete_user_account();
+                                                      setState(() {
+                                                      });
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                    } catch (e) {
+                                                      setState(() {
+                                                      });
+                                                      print(e);
+                                                    }
                                                   },
                                                   child: const Icon(Icons.delete_forever_rounded),
                                                 ),

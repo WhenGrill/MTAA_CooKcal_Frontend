@@ -1,4 +1,4 @@
-import 'package:cookcal/HTTP/all_users.dart';
+import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/HTTP/login_register.dart';
 import 'package:cookcal/Screens/Users/userSettings_screen.dart';
 import 'package:cookcal/Utils/constants.dart';

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
@@ -121,12 +122,37 @@ class UsersOperations {
 
   }
 
-  update_user_data() async{
+  update_user_data(Map<String, dynamic> upUserData) async{
+    try {
+      Dio d = Dio();
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+      var id = prefs.getInt('user_id');
+      d.options.headers['authorization'] = 'Bearer ' + token!;
 
+      Map<String, dynamic> tmp =  Map<String, dynamic>.from(upUserData);
+      for (var x in tmp.entries) {
+        if (x.value == null) {
+          upUserData.remove(x.key);
+        }
+      }
+      print(upUserData);
+      Response response = await d.put(apiURL + '/users/' + id.toString() + '/');
+      print(response.statusCode);
+    }
+    catch (e){
+      print(e);
+    }
   }
 
   delete_user_account() async{
-
+    Dio d = Dio();
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var id = prefs.getInt('user_id');
+    d.options.headers['authorization'] = 'Bearer ' + token!;
+    Response response = await d.delete(apiURL + '/users/' + id.toString() + '/');
+    print(response.statusCode);
   }
 
 
