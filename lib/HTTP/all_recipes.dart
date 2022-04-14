@@ -50,4 +50,26 @@ class RecipesOperations {
     }
   }
 
+  UpdateRecipe(Map<String, dynamic> upRecipeData, int recipe_id) async{
+    try {
+      Dio d = Dio();
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+      d.options.headers['authorization'] = 'Bearer ' + token!;
+
+      Map<String, dynamic> tmp =  Map<String, dynamic>.from(upRecipeData);
+      for (var x in tmp.entries) {
+        if (x.value == null) {
+          upRecipeData.remove(x.key);
+        }
+      }
+      print(upRecipeData);
+      Response response = await d.put(apiURL + '/recipes/' + recipe_id.toString(), data: upRecipeData);
+      print(response.statusCode);
+    }
+    catch (e){
+      print(e);
+    }
+  }
+
 }

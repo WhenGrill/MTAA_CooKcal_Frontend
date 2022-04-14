@@ -97,3 +97,17 @@ class RecipeIn {
     'kcal_100g': kcal_100g
   };
 }
+
+class RecipeUpdate{
+  final String title;
+  final String ingredients;
+  final String instructions;
+  final double kcal_100g;
+
+  RecipeUpdate({
+    this.title = "0",
+    this.ingredients = "0",
+    this.instructions = "1",
+    this.kcal_100g = 5,
+  });
+}

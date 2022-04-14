@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
@@ -12,6 +13,7 @@ import '../../HTTP/login_register.dart';
 import '../../model/recipes.dart';
 import '../../model/users.dart';
 import '../MainNavigation_screen.dart';
+import 'editRecipe_screen.dart';
 
 class RecipeProfileScreen extends StatefulWidget {
   final RecipeOut recipe;
@@ -89,7 +91,16 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                               ),
                               child: FloatingActionButton(
                                 heroTag: "edit",
-                                onPressed: () {},
+                                onPressed: () {
+                                  RecipeUpdate data = RecipeUpdate(
+                                      title: recipe.title,
+                                      ingredients: recipe.ingredients,
+                                      instructions: recipe.instructions,
+                                      kcal_100g: recipe.kcal_100g,
+                                  );
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> EditRecipeScreen(data: data, id: recipe.id)));
+
+                                },
                                 backgroundColor: COLOR_GREEN,
                                 child: Icon(Icons.edit),
                               ),
