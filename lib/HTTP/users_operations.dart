@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 import 'package:cookcal/Utils/api_const.dart';
 import 'package:dio/dio.dart';
@@ -83,43 +84,36 @@ class UsersOperations {
     }
   }
 
-  upload_user_image() async{
+  upload_user_image(File pickedImage) async {
+    String filePath = pickedImage.path;
+
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     var id = prefs.getInt('user_id');
 
-    FilePickerResult? pickedImage = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'png', 'jpeg'],
+    var uri = Uri.parse(apiURL + '/users/' + id.toString() + '/image');
+    var request = http.MultipartRequest("PUT", uri);
+
+    request.headers['authorization'] = 'Bearer ' + token!;
+
+    request.files.add(http.MultipartFile.fromBytes(
+        'prof_picture',
+        await pickedImage.readAsBytes(),
+        filename: filePath.split('/').last,
+        contentType: MediaType('image', filePath.split('.').last))
     );
 
-    if (pickedImage != null) {
-      File file = File(pickedImage.files.single.path!);
-      var stream = http.ByteStream(DelegatingStream.typed(file.openRead()));
-      var length = await file.length();
-
-      var uri = Uri.parse(apiURL + '/users/' + id.toString() + '/image/');
-
-
-      var request = http.MultipartRequest('PUT', uri);
-      request.headers['authorization'] = 'Bearer ' + token!;
-
-      var multipartFile = http.MultipartFile('prof_picture', stream, length,
-          filename: basename(file.path));
-      //contentType: new MediaType('image', 'png'));
-
-      request.files.add(multipartFile);
-      var response = await request.send();
-      print(response.statusCode);
-      response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
+      request.send().then((response) {
+        if (response.statusCode == 200)
+        {
+          print("Uploaded!");
+          return 200;
+        }
+        else
+        {
+          return null;
+        }
       });
-
-    } else {
-      // User canceled the picker
-      print('What do I do here');
-    }
-
   }
 
   Future<Map<String, dynamic>?>update_user_data(Map<String, dynamic> upUserData) async{

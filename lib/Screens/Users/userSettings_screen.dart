@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
@@ -6,6 +8,8 @@ import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +40,21 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   UsersOperations obj = UsersOperations();
+
+  File? image;
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+    } on PlatformException catch (e) {
+      print("failed to pick image: $e");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -116,15 +135,16 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                               alignment: Alignment.center,
                                               child: Column(
                                                 children: [
-                                                  Container(
+                                                  Stack(
+                                                    children: [
+                                                    Container(
                                                     width: 105.0,
-                                                    height: 105.0,
-                                                    decoration: const BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              'assets/images/man.png'),
-                                                          fit: BoxFit.cover),
-                                                    ),
+                                                        height: 105.0,
+                                                        decoration: const BoxDecoration(),
+                                                        child: image != null ? Image.file(image!, fit: BoxFit.cover) : assert_to_image(context, user_icons[user.gender]) //DecorationImage(image: AssetImage('assets/images/man.png'), fit: BoxFit.cover),
+
+                                          ),
+                                                    ],
                                                   ),
                                                   addVerticalSpace(constraints.maxHeight * 0.02),
                                                   const Text(
@@ -147,12 +167,39 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                         height: 50,
                                                         child: FloatingActionButton(
                                                           backgroundColor: COLOR_GREEN,
-                                                          onPressed: () {
-
+                                                          onPressed: () async{
+                                                            var resp = await obj.upload_user_image(image!);
                                                             setState(() {
 
                                                             });
                                                             Navigator.pop(context);
+                                                            if (resp != null){
+                                                              final snackBar = SnackBar(backgroundColor: COLOR_ORANGE,
+                                                                  content: Row(
+                                                                    children: const [
+                                                                      Icon(Icons.check_circle),
+                                                                      SizedBox(width: 20),
+                                                                      Expanded(child: Text('Profile picture successfully uploaded',
+                                                                          style: TextStyle(color: COLOR_BLACK)))
+                                                                    ],
+                                                                  ));
+
+                                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                            } else {
+                                                              final snackBar = SnackBar(backgroundColor:  Colors.red.shade700,
+                                                                  content: Row(
+                                                                    children: const [
+                                                                      Icon(Icons.cloud_off_rounded),
+                                                                      SizedBox(width: 20),
+                                                                      Expanded(child: Text('Failed to upload image!',
+                                                                          style: TextStyle(color: COLOR_BLACK)))
+                                                                    ],
+                                                                  ));
+
+                                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                            }
+
+
                                                           },
                                                           child: const Icon(Icons.cloud_upload),
                                                         ),
@@ -162,13 +209,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   height: 50,
                                                   child: FloatingActionButton(
                                                     backgroundColor: COLOR_CREAME,
-                                                    onPressed: () {
+                                                    onPressed: () async {await pickImage(); setState(() {
 
-                                                      setState(() {
-
-                                                      });
-                                                      Navigator.pop(context);
-                                                    },
+                                                    });},
                                                     child: const Icon(Icons.photo_size_select_actual),
                                                   ),
                                                 ),

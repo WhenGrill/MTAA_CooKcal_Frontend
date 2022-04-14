@@ -87,11 +87,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             width: 5.0,
                           ),
                         ),
-                        child: image != null
-                            ? Image.file(
-                            image!,
-                            fit: BoxFit.cover
-                        ): assert_to_image(context, food_icons[random(0, 4)]),
+                        child: image != null ? Image.file(image!, fit: BoxFit.cover): assert_to_image(context, food_icons[random(0, 4)]),
                       ),
                       Align(
                         alignment: Alignment.centerRight,
