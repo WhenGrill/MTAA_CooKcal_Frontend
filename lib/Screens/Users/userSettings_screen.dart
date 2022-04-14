@@ -66,9 +66,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         MaterialState.focused,
       };
       if (states.any(interactiveStates.contains)) {
-        return COLOR_ORANGE;
+        return COLOR_MINT;
       }
-      return COLOR_GREEN;
+      return COLOR_DARKPURPLE;
     }
 
     return Scaffold(
@@ -76,7 +76,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         appBar: AppBar(
             title: Text('CooKcal'),
             centerTitle: true,
-            backgroundColor: COLOR_GREEN),
+            backgroundColor: COLOR_DARKPURPLE),
         body: LayoutBuilder(builder: (context, constraints) {
           return SingleChildScrollView(
             child:
@@ -166,7 +166,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                         width: 50,
                                                         height: 50,
                                                         child: FloatingActionButton(
-                                                          backgroundColor: COLOR_GREEN,
+                                                          backgroundColor: COLOR_DARKPURPLE,
                                                           onPressed: () async{
                                                             var resp = await obj.upload_user_image(image!);
                                                             setState(() {
@@ -174,7 +174,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                             });
                                                             Navigator.pop(context);
                                                             if (resp != null){
-                                                              final snackBar = SnackBar(backgroundColor: COLOR_ORANGE,
+                                                              final snackBar = SnackBar(backgroundColor: COLOR_MINT,
                                                                   content: Row(
                                                                     children: const [
                                                                       Icon(Icons.check_circle),
@@ -208,7 +208,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   width: 50,
                                                   height: 50,
                                                   child: FloatingActionButton(
-                                                    backgroundColor: COLOR_CREAME,
+                                                    backgroundColor: COLOR_DARKMINT,
                                                     onPressed: () async {await pickImage(); setState(() {
 
                                                     });},
@@ -219,7 +219,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                         width: 50,
                                                         height: 50,
                                                         child: FloatingActionButton(
-                                                          backgroundColor: COLOR_ORANGE,
+                                                          backgroundColor: COLOR_MINT,
                                                           onPressed: () {
                                                             Navigator.pop(context);
                                                           },
@@ -238,7 +238,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                 },
                                     child: const Icon(Icons.edit_outlined),
                                     style: ElevatedButton.styleFrom(
-                                        primary: COLOR_GREEN,
+                                        primary: COLOR_DARKPURPLE,
                                         shape: StadiumBorder())
                                 )
                               ]
@@ -360,7 +360,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                       width: 50,
                                                       height: 50,
                                                       child: FloatingActionButton(
-                                                        backgroundColor: COLOR_GREEN,
+                                                        backgroundColor: COLOR_DARKPURPLE,
                                                         onPressed: () {
 
                                                           setState(() {
@@ -382,7 +382,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                       width: 50,
                                                       height: 50,
                                                       child: FloatingActionButton(
-                                                        backgroundColor: COLOR_ORANGE,
+                                                        backgroundColor: COLOR_MINT,
                                                         onPressed: () {
                                                           Navigator.pop(context);
                                                         },
@@ -459,7 +459,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   fillColor: Colors.grey.shade200,
                                                   icon: const Icon(
                                                     Icons.restaurant_menu,
-                                                    color: COLOR_GREEN,
+                                                    color: COLOR_DARKPURPLE,
                                                   ),
                                                   hintText: 'Goal Weight',
                                                   focusedBorder: formBorder,
@@ -487,7 +487,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   fillColor: Colors.grey.shade200,
                                                   icon: const Icon(
                                                     Icons.accessibility_new_outlined,
-                                                    color: COLOR_GREEN,
+                                                    color: COLOR_DARKPURPLE,
                                                   ),
                                                   hintText: 'Height in CM',
                                                   focusedBorder: formBorder,
@@ -570,7 +570,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   width: 50,
                                                   height: 50,
                                                   child: FloatingActionButton(
-                                                    backgroundColor: COLOR_GREEN,
+                                                    backgroundColor: COLOR_DARKPURPLE,
                                                     onPressed: () async {
                                                       if (_formKey.currentState!.validate()){
                                                         Map<String, dynamic> upUserData = {
@@ -589,7 +589,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                         if(ret != null){
                                                               Navigator.pop(context);
 
-                                                              final snackBar = SnackBar(backgroundColor: COLOR_ORANGE,
+                                                              final snackBar = SnackBar(backgroundColor: COLOR_MINT,
                                                                   content: Row(
                                                               children: const [
                                                                 Icon(Icons.check_circle),
@@ -602,7 +602,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                                                       } else {
-                                                          final snackBar = SnackBar(backgroundColor: COLOR_ORANGE,
+                                                          final snackBar = SnackBar(backgroundColor: COLOR_MINT,
                                                               content: Row(
                                                                 children: const [
                                                                   Icon(Icons.check_circle),
@@ -623,7 +623,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   width: 50,
                                                   height: 50,
                                                   child: FloatingActionButton(
-                                                    backgroundColor: COLOR_ORANGE,
+                                                    backgroundColor: COLOR_MINT,
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },
@@ -643,7 +643,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                               child: const Text('Edit account',
                                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                               style: ElevatedButton.styleFrom(
-                                  primary: COLOR_GREEN,
+                                  primary: COLOR_DARKPURPLE,
                                   shape: StadiumBorder())
                           )
                       ),
@@ -712,7 +712,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                 width: 50,
                                                 height: 50,
                                                 child: FloatingActionButton(
-                                                  backgroundColor: COLOR_ORANGE,
+                                                  backgroundColor: COLOR_MINT,
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                   },

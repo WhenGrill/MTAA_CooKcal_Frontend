@@ -44,9 +44,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     _animationController.forward();
     return Scaffold(
+      backgroundColor: COLOR_WHITE,
       body: LayoutBuilder(builder: (context, constraints){
         return Container(
-          color: COLOR_GREY,
+          color: COLOR_WHITE,
           child: Column(
               children: [
                Align(
@@ -54,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                  child: ClipPath(
                    clipper: MyClipper(),
                    child:  Container(
-                       color: COLOR_GREEN,
+                       color: COLOR_DARKPURPLE,
                        height: constraints.maxHeight * 0.40,
                        width: constraints.maxWidth,
                        child: CustomPaint(
@@ -115,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                 const FlSpot(7, 63),
                                               ],
                                             isCurved: true,
-                                            colors: [COLOR_GREEN, COLOR_ORANGE, COLOR_GREEN],
+                                            colors: [COLOR_DARKPURPLE, COLOR_MINT, COLOR_DARKPURPLE],
                                             barWidth: 5,
                                             belowBarData: BarAreaData(
                                               show: true,
@@ -130,45 +131,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ),
                       addVerticalSpace(constraints.maxHeight*0.02),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          FloatingActionButton(
-                            heroTag: 'btnfood',
-                            backgroundColor: COLOR_DARKGREEN,
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const FoodEatListScreen()),
-                              );
-                            },
-                            child: Icon(Icons.add),
-                          ),
-                          FloatingActionButton(
-                            heroTag: 'btneat',
-                            backgroundColor: COLOR_DARKGREEN,
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const FoodListScreen()),
-                              );
-                            },
-                            child: const Icon(Icons.fastfood_outlined),
-                          ),
-                          FloatingActionButton(
-                            heroTag: 'btnrecipes',
-                            backgroundColor: COLOR_DARKGREEN,
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const AddRecipeScreen()),
-                              );
-                            },
-                            child: Icon(Icons.list_alt),
-                          )
-                        ],
-                      )
                     ],
                   )
                 )

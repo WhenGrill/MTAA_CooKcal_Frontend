@@ -16,16 +16,6 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('CooKcal'),
-    centerTitle: true,
-    backgroundColor: COLOR_GREEN,
-    actions: [
-    IconButton(onPressed: (){
-
-    }, icon: Icon(Icons.settings))
-    ],
-    ),
       body: LayoutBuilder(builder: (context, constraints){
         return Container(
             color: COLOR_GREY,
@@ -44,7 +34,7 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                 ),
               ),
               const Divider(
-                color: COLOR_GREEN,
+                color: COLOR_DARKPURPLE,
                 thickness: 2,
               ),
               Expanded(
@@ -88,7 +78,7 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                                   width: 50,
                                                   height: 50,
                                                   child: FloatingActionButton(
-                                                    backgroundColor: COLOR_GREEN,
+                                                    backgroundColor: COLOR_DARKPURPLE,
                                                     onPressed: () {
                                                       food_list.removeWhere((element) => food_list.indexOf(element) == index);
                                                       setState(() {
@@ -103,7 +93,7 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                                   width: 50,
                                                   height: 50,
                                                   child: FloatingActionButton(
-                                                    backgroundColor: COLOR_ORANGE,
+                                                    backgroundColor: COLOR_MINT,
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },

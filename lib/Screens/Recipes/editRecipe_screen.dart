@@ -56,7 +56,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
           appBar: AppBar(
             title: Text('CooKcal'),
             centerTitle: true,
-            backgroundColor: COLOR_GREEN,
+            backgroundColor: COLOR_DARKPURPLE,
             actions: [
               IconButton(onPressed: (){
 
@@ -82,10 +82,10 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                               width: constraints.maxWidth,
                               height: 220.0,
                               decoration: BoxDecoration(
-                                color: COLOR_ORANGE,
+                                color: COLOR_VERYDARKPURPLE,
                                 borderRadius: const BorderRadius.all(Radius.circular(0)),
                                 border: Border.all(
-                                  color: COLOR_GREEN,
+                                  color: COLOR_DARKPURPLE,
                                   width: 5.0,
                                 ),
                               ),
@@ -114,7 +114,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                 ),
                                 child: FloatingActionButton(
                                   onPressed: () => pickImage(),
-                                  backgroundColor: COLOR_ORANGE,
+                                  backgroundColor: COLOR_MINT,
                                   child: Icon(Icons.photo),
                                 ),
                               ),
@@ -161,13 +161,13 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                           },
                                           decoration: const InputDecoration(
                                             enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                              borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                             ),
                                             focusedBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
+                                              borderSide: BorderSide(color: COLOR_MINT, width: 2),
                                             ),
                                             border: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                              borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                             ),
                                           )
                                       ),
@@ -216,13 +216,13 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                           },
                                           decoration: const InputDecoration(
                                             enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                              borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                             ),
                                             focusedBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
+                                              borderSide: BorderSide(color: COLOR_MINT, width: 2),
                                             ),
                                             border: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                              borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                             ),
                                           )
                                       ),
@@ -271,13 +271,13 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                           },
                                           decoration: const InputDecoration(
                                             enabledBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                              borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                             ),
                                             focusedBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
+                                              borderSide: BorderSide(color: COLOR_MINT, width: 2),
                                             ),
                                             border: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                              borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                             ),
                                           )
                                       ),
@@ -319,7 +319,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 fixedSize: const Size(300,40),
-                                primary: COLOR_GREEN,
+                                primary: COLOR_DARKPURPLE,
                                 shadowColor: Colors.grey.shade50,
                                 textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                 shape: RoundedRectangleBorder(
@@ -337,6 +337,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                 "kcal_100g": double.parse(kcalController.text)
                                 };
                               var response = recipesOperations.UpdateRecipe(data, widget.id);
+                              Navigator.pop(context);
                               Navigator.pop(context);
                             },
                             child: const Text('Update Recipe'),

@@ -66,7 +66,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     fixedSize: const Size(300,40),
-                    primary: COLOR_GREEN,
+                    primary: COLOR_DARKPURPLE,
                     shadowColor: Colors.grey.shade50,
                     textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
@@ -84,7 +84,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
             ),
             addVerticalSpace(constraints.maxHeight * 0.017),
             const Divider(
-              color: COLOR_GREEN,
+              color: COLOR_DARKPURPLE,
               thickness: 2,
             ),
             Expanded(
@@ -94,7 +94,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   itemBuilder: (context, index){
                     final recipe = recipes[index];
                     return Card(
-                      color: curr_id == recipe.creator["id"] ? COLOR_ORANGE : COLOR_WHITE,
+                      color: curr_id == recipe.creator["id"] ? COLOR_MINT : COLOR_WHITE,
                         child: ListTile(
                           trailing: const Icon(Icons.arrow_forward_ios_rounded),
                           onTap: () {
@@ -111,7 +111,8 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                     );
                   },
                 )
-            )
+            ),
+            
         ],);
             }
       ),

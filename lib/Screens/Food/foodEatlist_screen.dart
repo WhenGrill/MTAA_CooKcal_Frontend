@@ -26,14 +26,6 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('CooKcal'),
-        centerTitle: true,
-        backgroundColor: COLOR_GREEN,
-        actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.settings))
-        ],
-      ),
       body: LayoutBuilder(builder: (context, constraints){
         return Column(
           children: [
@@ -48,7 +40,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     fixedSize: const Size(150,50),
-                    primary: COLOR_GREEN,
+                    primary: COLOR_DARKPURPLE,
                     shadowColor: Colors.grey.shade50,
                     textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
@@ -63,7 +55,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
             ),
             addVerticalSpace(constraints.maxHeight * 0.02),
             const Divider(
-              color: COLOR_GREEN,
+              color: COLOR_DARKPURPLE,
               thickness: 2,
             ),
             Expanded(

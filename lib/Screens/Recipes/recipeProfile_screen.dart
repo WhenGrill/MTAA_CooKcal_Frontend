@@ -35,7 +35,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
       appBar: AppBar(
         title: Text('CooKcal'),
         centerTitle: true,
-        backgroundColor: COLOR_GREEN,
+        backgroundColor: COLOR_DARKPURPLE,
         actions: [
           IconButton(onPressed: (){
 
@@ -56,10 +56,10 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                       width: constraints.maxWidth,
                       height: 220.0,
                       decoration: BoxDecoration(
-                        color: COLOR_ORANGE,
+                        color: COLOR_VERYDARKPURPLE,
                         borderRadius: BorderRadius.all(Radius.circular(0)),
                         border: Border.all(
-                          color: COLOR_GREEN,
+                          color: COLOR_DARKPURPLE,
                           width: 5.0,
                         ),
                       ),
@@ -101,7 +101,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> EditRecipeScreen(data: data, id: recipe.id)));
 
                                 },
-                                backgroundColor: COLOR_GREEN,
+                                backgroundColor: COLOR_DARKPURPLE,
                                 child: Icon(Icons.edit),
                               ),
                             ),
@@ -127,7 +127,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                               child: FloatingActionButton(
                                 heroTag: "photo",
                                 onPressed: () {},
-                                backgroundColor: COLOR_ORANGE,
+                                backgroundColor: COLOR_MINT,
                                 child: Icon(Icons.photo),
                               ),
                             ),

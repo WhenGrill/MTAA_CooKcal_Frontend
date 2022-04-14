@@ -27,7 +27,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         appBar: AppBar(
           title: Text('CooKcal'),
           centerTitle: true,
-          backgroundColor: COLOR_GREEN,
+          backgroundColor: COLOR_DARKPURPLE,
           actions: [
             IconButton(onPressed: (){
 
@@ -45,14 +45,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   width: 220.0,
                   height: 220.0,
                   decoration: BoxDecoration(
-                    color: COLOR_ORANGE,
+                    color: COLOR_MINT,
                     image: DecorationImage(
                       image: AssetImage(user_icons[user.gender]),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.all( Radius.circular(110.0)),
                     border: Border.all(
-                      color: COLOR_ORANGE,
+                      color: COLOR_MINT,
                       width: 5.0,
                     ),
                   ),
@@ -65,9 +65,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   width: constraints.maxWidth,
                   height: constraints.maxHeight * 0.35,
                   decoration: BoxDecoration(
-                    color: COLOR_GREEN,
+                    color: COLOR_DARKPURPLE,
                     border: Border.all(
-                        color: COLOR_ORANGE,// set border color
+                        color: COLOR_MINT,// set border color
                         width: 3.0),   // set border width
                     borderRadius: const BorderRadius.all(
                         Radius.circular(10.0)), // set rounded corner radius
@@ -79,7 +79,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               height: 80,
               child: FloatingActionButton(
                   heroTag: 'btnrecipes',
-                  backgroundColor: COLOR_GREEN,
+                  backgroundColor: COLOR_DARKPURPLE,
                   enableFeedback: false,
                   child: const SizedBox(
                     width: 95,

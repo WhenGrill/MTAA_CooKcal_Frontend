@@ -1,9 +1,9 @@
 import 'package:cookcal/HTTP/login_register.dart';
+import 'package:cookcal/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/login_screen.dart';
-import 'package:cookcal/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -13,7 +13,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: COLOR_GREEN));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: COLOR_DARKPURPLE));
 
     return ChangeNotifierProvider(create: (ctx) => Userauth(),
     child: MaterialApp(

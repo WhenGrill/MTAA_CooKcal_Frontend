@@ -58,7 +58,7 @@ class _UserListScreenState extends State<UserListScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     fixedSize: const Size(300,40),
-                    primary: COLOR_GREEN,
+                    primary: COLOR_DARKPURPLE,
                     shadowColor: Colors.grey.shade50,
                     textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
@@ -76,7 +76,7 @@ class _UserListScreenState extends State<UserListScreen> {
             ),
             addVerticalSpace(constraints.maxHeight * 0.017),
             const Divider(
-              color: COLOR_GREEN,
+              color: COLOR_DARKPURPLE,
               thickness: 2,
             ),
             Expanded(

@@ -1,12 +1,19 @@
+import 'dart:math';
+
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/HTTP/login_register.dart';
+import 'package:cookcal/Screens/Food/foodEatlist_screen.dart';
+import 'package:cookcal/Screens/FoodList/foodlist_screen.dart';
+import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/Users/userSettings_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Recipes/recipeslist_screen.dart';
 import 'package:cookcal/Screens/Users/userslist_screen.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Utils/custom_functions.dart';
@@ -20,19 +27,19 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int current_index = 1;
-
-  final screens = [
-    RecipeListScreen(),
-    HomeScreen(),
-    UserListScreen()
-  ];
+  int currentTab= 4;
+  Widget currentScreen = HomeScreen();
+  final isDialOpen = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
 
     return WillPopScope(
         onWillPop: () async {
+          if (isDialOpen.value) {
+            isDialOpen.value = false;
+            return false;
+          }
           showDialog(
               context: context,
               builder: (context){
@@ -77,7 +84,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                                 width: 50,
                                 height: 50,
                                 child: FloatingActionButton(
-                                  backgroundColor: COLOR_GREEN,
+                                  backgroundColor: COLOR_DARKPURPLE,
                                   onPressed: () async{
                                     SharedPreferences prefs = await SharedPreferences.getInstance();
                                     prefs.clear();
@@ -92,7 +99,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                                 width: 50,
                                 height: 50,
                                 child: FloatingActionButton(
-                                  backgroundColor: COLOR_ORANGE,
+                                  backgroundColor: COLOR_MINT,
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -115,7 +122,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           appBar: AppBar(
             title: Text('CooKcal'),
             centerTitle: true,
-            backgroundColor: COLOR_GREEN,
+            backgroundColor: COLOR_DARKPURPLE,
             actions: [
               IconButton(onPressed: () async{
                 UsersOperations obj = UsersOperations();
@@ -124,34 +131,145 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               }, icon: Icon(Icons.settings))
             ],
           ),
-          body: screens[current_index],
-          bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.shifting,
-              backgroundColor: COLOR_GREEN,
-              selectedItemColor: COLOR_ORANGE,
-              iconSize: 27,
-              showUnselectedLabels: true,
-              currentIndex: current_index,
-              onTap: (index) => setState(() {
-                current_index = index;
-              }),
-              items: const [
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.fastfood),
-                    backgroundColor: COLOR_GREEN,
-                    label: 'Recipes'
-                ),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    backgroundColor: COLOR_GREEN,
-                    label: 'Home'
-                ),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    backgroundColor: COLOR_GREEN,
-                    label: 'Users'
+          body: currentScreen,
+          floatingActionButton: SpeedDial(
+            animatedIcon: AnimatedIcons.menu_close,
+            backgroundColor: COLOR_DARKPURPLE,
+            overlayColor: Colors.black,
+            overlayOpacity: 0.4,
+            openCloseDial: isDialOpen,
+            children: [
+              SpeedDialChild(
+                  child: Icon(Icons.add),
+                  label: 'Add Food',
+                  onTap: () {
+                    setState(() {
+                      currentScreen = FoodEatListScreen();
+                      currentTab = 0;
+                    });
+                  }
+              ),
+              SpeedDialChild(
+                child: Icon(Icons.restaurant),
+                label: 'Food I ate today',
+                onTap: () {
+                  setState(() {
+                    currentScreen = FoodListScreen();
+                    currentTab = 0;
+                  });
+                }
+              )
+            ],
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          resizeToAvoidBottomInset: false,
+          bottomNavigationBar: BottomAppBar(
+            color: Colors.white,
+              shape: CircularNotchedRectangle(),
+              notchMargin: 10,
+              child: Container(
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MaterialButton(
+                          minWidth: 40,
+                            onPressed: (){
+                                setState(() {
+                                  currentScreen = RecipeListScreen();
+                                  currentTab = 1;
+                                });
+                        },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.list_alt,
+                                color: currentTab == 1 ? COLOR_DARKMINT : COLOR_DARKPURPLE,
+                              ),
+                              Text(
+                                "Recipes",
+                                style: TextStyle(color: currentTab == 1 ? COLOR_DARKMINT : COLOR_DARKPURPLE),
+                              )
+                            ],
+                          ),
+                        ),
+                        MaterialButton(
+                          minWidth: 40,
+                          onPressed: (){
+                            setState(() {
+                              currentScreen = AddRecipeScreen();
+                              currentTab = 2;
+                            });
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.edit,
+                                color: currentTab == 2 ? COLOR_DARKMINT : COLOR_DARKPURPLE,
+                              ),
+                              Text(
+                                "Add Recipe",
+                                style: TextStyle(color: currentTab == 2 ? COLOR_DARKMINT : COLOR_DARKPURPLE),
+                              )
+                            ],
+                          ),
+                        ),
+                        addHorizontalSpace(40),
+                        MaterialButton(
+                          minWidth: 40,
+                          onPressed: (){
+                            setState(() {
+                              currentScreen = HomeScreen();
+                              currentTab = 4;
+                            });
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.home,
+                                color: currentTab == 4 ? COLOR_DARKMINT : COLOR_DARKPURPLE,
+                              ),
+                              Text(
+                                "Home",
+                                style: TextStyle(color: currentTab == 4 ? COLOR_DARKMINT : COLOR_DARKPURPLE),
+                              )
+                            ],
+                          ),
+                        ),
+                        addHorizontalSpace(10),
+                        MaterialButton(
+                          minWidth: 40,
+                          onPressed: (){
+                            setState(() {
+                              currentScreen = UserListScreen();
+                              currentTab = 3;
+                            });
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.people_alt_outlined,
+                                color: currentTab == 3 ? COLOR_DARKMINT : COLOR_DARKPURPLE,
+                              ),
+                              Text(
+                                "Users",
+                                style: TextStyle(color: currentTab == 3 ? COLOR_DARKMINT : COLOR_DARKPURPLE),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    )
+                  ],
                 )
-              ]
+              )
           ),
         )
     );

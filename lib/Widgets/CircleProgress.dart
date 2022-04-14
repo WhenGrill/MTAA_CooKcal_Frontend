@@ -22,7 +22,7 @@ class CircleProgress extends CustomPainter {
 
   Paint animationArc = Paint()
   ..strokeWidth = strikeCircle
-  ..color = COLOR_ORANGE
+  ..color = COLOR_MINT
   ..style = PaintingStyle.stroke
   ..strokeCap = StrokeCap.round;
 

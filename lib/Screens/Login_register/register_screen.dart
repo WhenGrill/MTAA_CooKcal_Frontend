@@ -42,9 +42,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         MaterialState.focused,
       };
       if (states.any(interactiveStates.contains)) {
-        return COLOR_ORANGE;
+        return COLOR_MINT;
       }
-      return COLOR_GREEN;
+      return COLOR_DARKPURPLE;
     }
 
     return Scaffold(
@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fillColor: Colors.grey.shade200,
                         icon: const Icon(
                           Icons.local_post_office_outlined,
-                          color: COLOR_GREEN,
+                          color: COLOR_DARKPURPLE,
                         ),
                         hintText: 'Enter your E-mail',
                         focusedBorder: formBorder,
@@ -109,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fillColor: Colors.grey.shade200,
                         icon: const Icon(
                           Icons.key,
-                          color: COLOR_GREEN,
+                          color: COLOR_DARKPURPLE,
                         ),
                         hintText: 'Password',
                         focusedBorder: formBorder,
@@ -136,7 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fillColor: Colors.grey.shade200,
                         icon: const Icon(
                           Icons.account_circle_outlined,
-                          color: COLOR_GREEN,
+                          color: COLOR_DARKPURPLE,
                         ),
                         hintText: 'First Name',
                         focusedBorder: formBorder,
@@ -164,7 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fillColor: Colors.grey.shade200,
                         icon: const Icon(
                           Icons.account_circle_rounded,
-                          color: COLOR_GREEN,
+                          color: COLOR_DARKPURPLE,
                         ),
                         hintText: 'Last Name',
                         focusedBorder: formBorder,
@@ -226,7 +226,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fillColor: Colors.grey.shade200,
                         icon: const Icon(
                           Icons.access_time,
-                          color: COLOR_GREEN,
+                          color: COLOR_DARKPURPLE,
                         ),
                         hintText: 'Age',
                         focusedBorder: formBorder,
@@ -254,7 +254,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fillColor: Colors.grey.shade200,
                         icon: const Icon(
                           Icons.restaurant,
-                          color: COLOR_GREEN,
+                          color: COLOR_DARKPURPLE,
                         ),
                         hintText: 'Current Weight',
                         focusedBorder: formBorder,
@@ -282,7 +282,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fillColor: Colors.grey.shade200,
                         icon: const Icon(
                           Icons.restaurant_menu,
-                          color: COLOR_GREEN,
+                          color: COLOR_DARKPURPLE,
                         ),
                         hintText: 'Goal Weight',
                         focusedBorder: formBorder,
@@ -310,7 +310,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fillColor: Colors.grey.shade200,
                         icon: const Icon(
                           Icons.accessibility_new_outlined,
-                          color: COLOR_GREEN,
+                          color: COLOR_DARKPURPLE,
                         ),
                         hintText: 'Height in CM',
                         focusedBorder: formBorder,
@@ -344,7 +344,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           fixedSize: const Size(260,40),
-                          primary: COLOR_GREEN,
+                          primary: COLOR_DARKPURPLE,
                           shadowColor: Colors.grey.shade50,
                           textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                           shape: RoundedRectangleBorder(

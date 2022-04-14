@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fit: StackFit.expand,
                           children: [
                             Container(
-                              color: COLOR_GREEN,
+                              color: COLOR_DARKPURPLE,
 
                             ),
                             Image.asset("assets/images/fast-food.png"),
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade200,
                                   border: Border.all(
-                                      color: COLOR_ORANGE,// set border color
+                                      color: COLOR_DARKMINT,// set border color
                                       width: 3.0),   // set border width
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(10.0)), // set rounded corner radius
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   decoration: const InputDecoration(
                                     icon: Icon(
                                       Icons.local_post_office_outlined,
-                                      color: COLOR_GREEN,
+                                      color: COLOR_DARKPURPLE,
                                     ),
                                     hintText: 'E-mail',
                                     border: InputBorder.none,
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade200,
                                   border: Border.all(
-                                      color: COLOR_GREEN,// set border color
+                                      color: COLOR_DARKPURPLE,// set border color
                                       width: 3.0),   // set border width
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(10.0)), // set rounded corner radius
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   decoration: const InputDecoration(
                                     icon: Icon(
                                       Icons.key_outlined,
-                                      color: COLOR_ORANGE,
+                                      color: COLOR_DARKMINT,
                                     ),
                                     hintText: 'Password',
                                     border: InputBorder.none,
@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       fixedSize: const Size(200,80),
-                                      primary: COLOR_GREEN,
+                                      primary: COLOR_DARKPURPLE,
                                       shadowColor: Colors.grey.shade50,
                                       textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                                       shape: RoundedRectangleBorder(
@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                         width: 50,
                                                         height: 50,
                                                         child: FloatingActionButton(
-                                                          backgroundColor: COLOR_ORANGE,
+                                                          backgroundColor: COLOR_MINT,
                                                           onPressed: () {
                                                             Navigator.pop(context);
                                                           },
@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               TextButton(
                                 style: ButtonStyle(
-                                  foregroundColor: MaterialStateProperty.all<Color>(COLOR_DARKGREEN),
+                                  foregroundColor: MaterialStateProperty.all<Color>(COLOR_DARKMINT),
                                 ),
                                 onPressed: () {
                                   Navigator.push(

@@ -51,16 +51,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     return LayoutBuilder(builder: (context, constraints)
     {
       return Scaffold(
-        appBar: AppBar(
-          title: Text('CooKcal'),
-          centerTitle: true,
-          backgroundColor: COLOR_GREEN,
-          actions: [
-            IconButton(onPressed: (){
-
-            }, icon: Icon(Icons.settings))
-          ],
-        ),
         body: Container(
           width: constraints.maxWidth,
           height: constraints.maxHeight,
@@ -80,10 +70,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         width: constraints.maxWidth,
                         height: 220.0,
                         decoration: BoxDecoration(
-                          color: COLOR_ORANGE,
+                          color: COLOR_VERYDARKPURPLE,
                           borderRadius: const BorderRadius.all(Radius.circular(0)),
                           border: Border.all(
-                            color: COLOR_GREEN,
+                            color: COLOR_DARKPURPLE,
                             width: 5.0,
                           ),
                         ),
@@ -108,7 +98,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           ),
                           child: FloatingActionButton(
                             onPressed: () => pickImage(),
-                            backgroundColor: COLOR_ORANGE,
+                            backgroundColor: COLOR_MINT,
                             child: Icon(Icons.photo),
                           ),
                         ),
@@ -155,13 +145,13 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                     },
                                     decoration: const InputDecoration(
                                       enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                       ),
                                       focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
+                                        borderSide: BorderSide(color: COLOR_MINT, width: 2),
                                       ),
                                       border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                       ),
                                     )
                                 ),
@@ -210,13 +200,13 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                     },
                                     decoration: const InputDecoration(
                                       enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                       ),
                                       focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
+                                        borderSide: BorderSide(color: COLOR_MINT, width: 2),
                                       ),
                                       border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                       ),
                                     )
                                 ),
@@ -265,13 +255,13 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                     },
                                     decoration: const InputDecoration(
                                       enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                       ),
                                       focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
+                                        borderSide: BorderSide(color: COLOR_MINT, width: 2),
                                       ),
                                       border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
                                       ),
                                     )
                                 ),
@@ -313,7 +303,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           fixedSize: const Size(300,40),
-                          primary: COLOR_GREEN,
+                          primary: COLOR_DARKPURPLE,
                           shadowColor: Colors.grey.shade50,
                           textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           shape: RoundedRectangleBorder(
@@ -336,7 +326,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       child: const Text('Post Recipe'),
                     ),
                   ),
-
+                addVerticalSpace(constraints.maxHeight * 0.07)
                 ],
               ),
             )
