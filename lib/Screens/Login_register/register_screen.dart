@@ -241,13 +241,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: TextFormField(
                       controller: currweightController,
                       validator: (value) {
-
-                        print(!RegExp(r'^[0]+[0-9]*$').hasMatch(value!));
-
                         if (value == null || value.isEmpty) {
                           return 'Current Weight field is required';
                         }
-                        else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (double.parse(value) < 5) || (!RegExp(r'^[0]+[0-9]*$').hasMatch(value))){
+                        else if (!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value) || (double.parse(value) < 5)){
                           return 'Please enter a valid weight';
                         }
                         return null;
@@ -275,7 +272,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Goal Weight field is required';
                         }
-                        else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (double.parse(value) < 5) || (!RegExp(r'^[0]+[0-9]*$').hasMatch(value))){
+                        else if (!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value) || (double.parse(value) < 5)){
                           return 'Please enter a valid weight';
                         }
                         return null;
@@ -303,7 +300,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Height field is required';
                         }
-                        else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || double.parse(value) < 40 || double.parse(value) > 300 || (!RegExp(r'^[0]+[0-9]*$').hasMatch(value))){
+                        else if (!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value) || double.parse(value) < 40 || double.parse(value) > 300){
                           return 'Please enter a valid height';
                         }
                         return null;
