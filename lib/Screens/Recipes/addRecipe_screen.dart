@@ -100,6 +100,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           height: 50,
                           decoration: BoxDecoration(
                             color: Colors.transparent,
+                            borderRadius: BorderRadius.all(Radius.circular(180)),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.5),
@@ -150,7 +151,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Kcal/100g field is required';
-
                         }
                         else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (RegExp(r'^[0]+[0-9]*$').hasMatch(value)) || (int.parse(value) < 1)){
                           print("here");
@@ -169,94 +169,115 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       ),
                     ),
                   ),
-
-                  Card(
-                      child: Container(
-                          margin: const EdgeInsets.fromLTRB(10,10,10,10),
-                          child: Column(
-                            children: [
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Ingredients",
-                                  style: TextStyle(
-                                    fontSize: 23,
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.4),
+                          blurRadius: 10.0,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: Card(
+                        child: Container(
+                            margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                            child: Column(
+                              children: [
+                                const Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Ingredients",
+                                    style: TextStyle(
+                                      fontSize: 23,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              TextFormField(
-                                controller: ingredientsController,
-                                  keyboardType: TextInputType.multiline,
-                                  minLines: 3,
-                                  maxLines: null,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Ingredients field is required';
-                                    }
-                                    else if (value.length < 10){
-                                      return 'Please enter at least 10 characters';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: COLOR_GREEN, width: 2),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
-                                    ),
-                                    border: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: COLOR_GREEN, width: 2),
-                                    ),
-                                  )
-                              ),
-                            ],
-                          )
-                      )
+                                TextFormField(
+                                    controller: ingredientsController,
+                                    keyboardType: TextInputType.multiline,
+                                    minLines: 3,
+                                    maxLines: null,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Ingredients field is required';
+                                      }
+                                      else if (value.length < 10){
+                                        return 'Please enter at least 10 characters';
+                                      }
+                                      return null;
+                                    },
+                                    decoration: const InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
+                                      ),
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                      ),
+                                    )
+                                ),
+                              ],
+                            )
+                        )
+                    ),
                   ),
-                  Card(
-                      child: Container(
-                          margin: const EdgeInsets.fromLTRB(10,10,10,10),
-                          child: Column(
-                            children: [
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Instructions",
-                                  style: TextStyle(
-                                    fontSize: 23,
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.4),
+                          blurRadius: 10.0,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: Card(
+                        child: Container(
+                            margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                            child: Column(
+                              children: [
+                                const Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Instructions",
+                                    style: TextStyle(
+                                      fontSize: 23,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              TextFormField(
-                                controller: instructionsController,
-                                  keyboardType: TextInputType.multiline,
-                                  minLines: 7,
-                                  maxLines: null,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Ingredients field is required';
-                                    }
-                                    else if (value.length < 10){
-                                      return 'Please enter at least 10 characters';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: COLOR_GREEN, width: 2),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
-                                    ),
-                                    border: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: COLOR_GREEN, width: 2),
-                                    ),
-                                  )
-                              ),
-                            ],
-                          )
-                      )
+                                TextFormField(
+                                    controller: instructionsController,
+                                    keyboardType: TextInputType.multiline,
+                                    minLines: 7,
+                                    maxLines: null,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Ingredients field is required';
+                                      }
+                                      else if (value.length < 10){
+                                        return 'Please enter at least 10 characters';
+                                      }
+                                      return null;
+                                    },
+                                    decoration: const InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
+                                      ),
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                      ),
+                                    )
+                                ),
+                              ],
+                            )
+                        )
+                    ),
                   ),
                   addVerticalSpace(5),
                   ButtonTheme(

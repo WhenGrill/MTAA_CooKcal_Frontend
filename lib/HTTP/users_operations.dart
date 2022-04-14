@@ -155,5 +155,11 @@ class UsersOperations {
     print(response.statusCode);
   }
 
+  get_curr_user_id() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    int? id = prefs.getInt('user_id');
+    return id;
+  }
 
 }

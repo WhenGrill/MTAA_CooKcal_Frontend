@@ -1,9 +1,11 @@
 import 'package:cookcal/HTTP/all_recipes.dart';
+import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/Screens/Recipes/recipeProfile_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/searchBar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/recipes.dart';
 
@@ -18,9 +20,9 @@ class RecipeListScreen extends StatefulWidget {
 class _RecipeListScreenState extends State<RecipeListScreen> {
 
   final myController = TextEditingController();
-
+  UsersOperations usersOperations = UsersOperations();
   List<RecipeOut> recipes = [];
-
+  late int curr_id = 0;
 
   @override
   void dispose() {
@@ -31,7 +33,8 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
 
   load_data() async {
     var tmp = await RecipesOperations().get_all_recipes(myController.text);
-
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    curr_id = prefs.getInt("user_id")!;
     print(tmp);
     print(tmp.runtimeType);
     recipes.clear();
@@ -88,10 +91,11 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   itemBuilder: (context, index){
                     final recipe = recipes[index];
                     return Card(
+                      color: curr_id == recipe.creator["id"] ? COLOR_ORANGE : COLOR_WHITE,
                         child: ListTile(
                           trailing: const Icon(Icons.arrow_forward_ios_rounded),
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe)));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id)));
                           },
                           leading: CircleAvatar(
                             backgroundColor: COLOR_WHITE,
