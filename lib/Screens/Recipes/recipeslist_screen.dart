@@ -47,14 +47,17 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: COLOR_WHITE,
       resizeToAvoidBottomInset: false,
       body: LayoutBuilder(builder: (context, constraints){
         return Column(
           children: [
-            addVerticalSpace(constraints.maxHeight * 0.02),
-            RoundedSearchInput(
-              hintText: 'Search here',
-              textController: myController,
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: RoundedSearchInput(
+                hintText: 'Search here',
+                textController: myController,
+              ),
             ),
             addVerticalSpace(constraints.maxHeight * 0.02),
             ButtonTheme(

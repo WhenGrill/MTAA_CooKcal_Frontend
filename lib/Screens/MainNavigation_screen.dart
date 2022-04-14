@@ -108,6 +108,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           return false;
         },
         child: Scaffold(
+          backgroundColor: COLOR_WHITE,
           appBar: AppBar(
             title: Text('CooKcal'),
             centerTitle: true,

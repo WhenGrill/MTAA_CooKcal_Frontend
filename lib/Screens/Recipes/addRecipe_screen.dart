@@ -120,53 +120,58 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: titleController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Title field is required';
-                        }
-                        else if (!RegExp(r'^[ľščťžýáíéďôäňŕĺóúĽŠČŤŽÝÁÍÉĎÔÄŇŔĹÓÚA-Za-z0-9 ]{2,40}$').hasMatch(value)){
-                          return 'Title too short or too long';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: 'Title',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
-                      ),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.4),
+                          blurRadius: 10.0,
+                          spreadRadius: 1,
+                        ),
+                      ],
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    width: constraints.maxWidth * 0.5,
-                    child: TextFormField(
-                      controller: kcalController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Kcal/100g field is required';
-                        }
-                        else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (RegExp(r'^[0]+[0-9]*$').hasMatch(value)) || (int.parse(value) < 1)){
-                          print("here");
-                          return 'Please enter a valid Kcal/100g';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: 'Kcal/100g',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
-                      ),
+                    child: Card(
+                        child: Container(
+                            margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                            child: Column(
+                              children: [
+                                const Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Title",
+                                    style: TextStyle(
+                                      fontSize: 23,
+                                    ),
+                                  ),
+                                ),
+                                TextFormField(
+                                    controller: titleController,
+                                    keyboardType: TextInputType.multiline,
+                                    minLines: 1,
+                                    maxLines: null,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Title field is required';
+                                      }
+                                      else if (!RegExp(r'^[ľščťžýáíéďôäňŕĺóúĽŠČŤŽÝÁÍÉĎÔÄŇŔĹÓÚA-Za-z0-9 ]{2,80}$').hasMatch(value)){
+                                        return 'Title too short or too long';
+                                      }
+                                      return null;
+                                    },
+                                    decoration: const InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: COLOR_ORANGE, width: 2),
+                                      ),
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: COLOR_GREEN, width: 2),
+                                      ),
+                                    )
+                                ),
+                              ],
+                            )
+                        )
                     ),
                   ),
                   Container(
@@ -277,6 +282,32 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                               ],
                             )
                         )
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    width: constraints.maxWidth * 0.5,
+                    child: TextFormField(
+                      controller: kcalController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Kcal/100g field is required';
+                        }
+                        else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (RegExp(r'^[0]+[0-9]*$').hasMatch(value)) || (int.parse(value) < 1)){
+                          print("here");
+                          return 'Please enter a valid Kcal/100g';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: 'Kcal/100g',
+                        focusedBorder: formBorder,
+                        errorBorder: formBorder,
+                        focusedErrorBorder: formBorder,
+                        enabledBorder: formBorder,
+                      ),
                     ),
                   ),
                   addVerticalSpace(5),

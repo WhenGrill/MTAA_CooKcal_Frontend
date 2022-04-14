@@ -193,23 +193,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                             ),
                             Align(
                               alignment: Alignment.topLeft,
-                              child: Text('${recipe.ingredients}', style: TextStyle(fontSize: 20)),
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text("\nInstructions: ", style: TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text('${recipe.instructions}', style: TextStyle(fontSize: 20)),
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text("\nKcal/100g: ", style: TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text('${recipe.kcal_100g}', style: TextStyle(fontSize: 20)),
+                              child: Text('${recipe.ingredients}', style: TextStyle(fontSize:  15)),
                             ),
                           ],
                         )
@@ -232,12 +216,83 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                     padding: EdgeInsets.all(5),
                     child: Card(
                       child: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text("Instructions: ", style: TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
+                              ),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text('${recipe.instructions}', style: TextStyle(fontSize: 15)),
+                              ),
+                            ],
+                          )
+                      ),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 10.0,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: constraints.maxWidth,
+                  child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Card(
+                      child: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text("Kcal/100g: ", style: TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
+                              ),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text('${recipe.kcal_100g}', style: TextStyle(fontSize: 15)),
+                              ),
+                            ],
+                          )
+                      ),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 10.0,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: constraints.maxWidth,
+                  child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Card(
+                      child: Padding(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Text('${recipe.creator["first_name"]} ${recipe.creator["last_name"]}',
-                          style: TextStyle(fontSize: 20),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text("Author: ", style: TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text("${recipe.creator["first_name"]} ${recipe.creator["last_name"]}", style: TextStyle(fontSize:15)),
+                            )
+                          ],
+                        )
                       ),
                     ),
                   ),

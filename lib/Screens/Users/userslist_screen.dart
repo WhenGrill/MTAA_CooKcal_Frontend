@@ -39,14 +39,17 @@ class _UserListScreenState extends State<UserListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: COLOR_WHITE,
       resizeToAvoidBottomInset: false,
       body: LayoutBuilder(builder: (context, constraints){
         return Column(
           children: [
-            addVerticalSpace(constraints.maxHeight * 0.02),
-            RoundedSearchInput(
-              hintText: 'Search here',
-              textController: myController,
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: RoundedSearchInput(
+                hintText: 'Search here',
+                textController: myController,
+              ),
             ),
             addVerticalSpace(constraints.maxHeight * 0.02),
             ButtonTheme(
@@ -83,6 +86,7 @@ class _UserListScreenState extends State<UserListScreen> {
                   itemBuilder: (context, index){
                     final user = users[index];
                     return Card(
+                      color: COLOR_WHITE,
                         child: ListTile(
                           trailing: const Icon(Icons.arrow_forward_ios_rounded),
                           onTap: () {
