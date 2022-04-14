@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Recipes/recipeslist_screen.dart';
 import 'package:cookcal/Screens/Users/userslist_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Utils/custom_functions.dart';
 import '../model/users.dart';
@@ -77,7 +78,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                                 height: 50,
                                 child: FloatingActionButton(
                                   backgroundColor: COLOR_GREEN,
-                                  onPressed: () {
+                                  onPressed: () async{
+                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    prefs.clear();
                                     Navigator.pop(context);
                                     Navigator.pop(context);
 

@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:regexed_validator/regexed_validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 import '../../HTTP/login_register.dart';
 import '../../model/users.dart';
@@ -404,7 +406,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   if (value == null || value.isEmpty) {
                                                     return null;
                                                   }
-                                                  else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (int.parse(value) < 5) || (!RegExp(r'^[0]+[0-9]*$').hasMatch(value))){
+                                                  else if ((!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value)) || (double.parse(value) < 5)){
                                                     return 'Please enter a valid weight';
                                                   }
                                                   return null;
@@ -432,7 +434,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   if (value == null || value.isEmpty) {
                                                     return null;
                                                   }
-                                                  else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (int.parse(value) < 40) || (int.parse(value) > 300) || (!RegExp(r'^[0]+[0-9]*$').hasMatch(value))){
+                                                  else if ((!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value)) || (double.parse(value) < 40) || (double.parse(value) > 300)){
                                                     return 'Please enter a valid height';
                                                   }
                                                   return null;
@@ -526,25 +528,50 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   height: 50,
                                                   child: FloatingActionButton(
                                                     backgroundColor: COLOR_GREEN,
-                                                    onPressed: () {
+                                                    onPressed: () async {
+                                                      if (_formKey.currentState!.validate()){
+                                                        Map<String, dynamic> upUserData = {
+                                                          "goal_weight": ((goalweightController.text == '') ? null : double.parse(goalweightController.text)),
+                                                          "height": ((heightController.text == '') ? null : double.parse(heightController.text)),
+                                                          "state": ((stateChose == stateItems[user.state]) ? null : stateItems.indexOf(stateChose)),
+                                                          "is_nutr_adviser": ((adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) ? null : !user.is_nutr_adviser)
+                                                        };
+                                                        var ret = await obj.update_user_data(upUserData);
 
-                                                      setState(() {
-                                                        if (!_formKey.currentState!.validate()){
-                                                          return;  // TODO Returning future as this is async !!
-                                                        } else {
-                                                          Map<String, dynamic> upUserData = {
-                                                            "goal_weight": ((goalweightController.text == '') ? null : double.parse(goalweightController.text)),
-                                                            "height": ((heightController.text == '') ? null : double.parse(heightController.text)),
-                                                            "state": ((stateChose == stateItems[user.state]) ? null : stateItems.indexOf(stateChose)),
-                                                            "is_nutr_adviser": ((adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) ? null : !user.is_nutr_adviser)
-                                                          };
-                                                          print(upUserData);
+                                                        setState(() {
+                                                        });
 
-                                                          // await obj.update_user_data(upUserData);
-                                                          Navigator.pop(context);
+                                                        Navigator.pop(context);
+
+                                                        if(ret != null){
+                                                              Navigator.pop(context);
+
+                                                              final snackBar = SnackBar(backgroundColor: COLOR_ORANGE,
+                                                                  content: Row(
+                                                              children: const [
+                                                                Icon(Icons.check_circle),
+                                                                SizedBox(width: 20),
+                                                                Expanded(child: Text('Successfully updated',
+                                                                style: TextStyle(color: COLOR_BLACK)))
+                                                              ],
+                                                              ));
+
+                                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                                      } else {
+                                                          final snackBar = SnackBar(backgroundColor: COLOR_ORANGE,
+                                                              content: Row(
+                                                                children: const [
+                                                                  Icon(Icons.check_circle),
+                                                                  SizedBox(width: 20),
+                                                                  Expanded(child: Text('Nothing changed',
+                                                                      style: TextStyle(color: COLOR_BLACK)))
+                                                                ],
+                                                              ));
+
+                                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                         }
-                                                      });
-
+                                                      }
                                                     },
                                                     child: const Icon(Icons.check),
                                                   ),
@@ -624,6 +651,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                       await obj.delete_user_account();
                                                       setState(() {
                                                       });
+                                                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                      prefs.clear();
                                                       Navigator.pop(context);
                                                       Navigator.pop(context);
                                                       Navigator.pop(context);

@@ -122,7 +122,7 @@ class UsersOperations {
 
   }
 
-  update_user_data(Map<String, dynamic> upUserData) async{
+  Future<Map<String, dynamic>?>update_user_data(Map<String, dynamic> upUserData) async{
     try {
       Dio d = Dio();
       final prefs = await SharedPreferences.getInstance();
@@ -137,11 +137,18 @@ class UsersOperations {
         }
       }
       print(upUserData);
-      Response response = await d.put(apiURL + '/users/' + id.toString() + '/');
-      print(response.statusCode);
+      if (upUserData.isNotEmpty) {
+        Response response = await d.put(apiURL + '/users/' + id.toString(),
+        data: upUserData);
+        print(response.statusCode);
+        return upUserData;
+      }
+
+      return null;
     }
     catch (e){
       print(e);
+      return null;
     }
   }
 
@@ -151,7 +158,7 @@ class UsersOperations {
     var token = prefs.getString('token');
     var id = prefs.getInt('user_id');
     d.options.headers['authorization'] = 'Bearer ' + token!;
-    Response response = await d.delete(apiURL + '/users/' + id.toString() + '/');
+    Response response = await d.delete(apiURL + '/users/' + id.toString());
     print(response.statusCode);
   }
 
