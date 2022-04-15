@@ -85,6 +85,16 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
 
                                                       });
                                                       Navigator.pop(context);
+                                                      final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
+                                                          content: Row(
+                                                            children: const [
+                                                              Icon(Icons.check_circle, color: COLOR_WHITE),
+                                                              SizedBox(width: 20),
+                                                              Expanded(child: Text('Feed removed',
+                                                                  style: TextStyle(color: COLOR_WHITE)))
+                                                            ],
+                                                          ));
+                                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                     },
                                                     child: const Icon(Icons.check),
                                                   ),

@@ -51,6 +51,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     return LayoutBuilder(builder: (context, constraints)
     {
       return Scaffold(
+          resizeToAvoidBottomInset: false,
         body: Container(
           width: constraints.maxWidth,
           height: constraints.maxHeight,
@@ -325,8 +326,19 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         ingredientsController.text = "";
                         instructionsController.text = "";
                         kcalController.text = "";
+
+                        final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
+                            content: Row(
+                              children: const [
+                                Icon(Icons.check_circle, color: COLOR_WHITE),
+                                SizedBox(width: 20),
+                                Expanded(child: Text('Recipe successfully uploaded',
+                                    style: TextStyle(color: COLOR_WHITE)))
+                              ],
+                            ));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
-                      child: const Text('Post Recipe'),
+                      child: const Text('Upload Recipe'),
                     ),
                   ),
                 addVerticalSpace(constraints.maxHeight * 0.07)

@@ -181,6 +181,18 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                                                               await recipesOperations.delete_recipe(recipe.id);
                                                               Navigator.pop(context);
                                                               Navigator.pop(context);
+                                                              final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
+                                                                  content: Row(
+                                                                    children: const [
+                                                                      Icon(Icons.check_circle, color: COLOR_WHITE),
+                                                                      SizedBox(width: 20),
+                                                                      Expanded(child: Text('Recipe successfully deleted',
+                                                                          style: TextStyle(color: COLOR_WHITE)))
+                                                                    ],
+                                                                  ));
+                                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+
                                                             } catch (e) {
                                                               setState(() {
                                                               });

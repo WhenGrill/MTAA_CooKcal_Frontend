@@ -340,7 +340,16 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                               var response = recipesOperations.UpdateRecipe(data, widget.id);
                               Navigator.pop(context);
                               Navigator.pop(context, MaterialPageRoute(builder: (context) => MainNavigationScreen()));
-
+                              final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
+                                  content: Row(
+                                    children: const [
+                                      Icon(Icons.check_circle, color: COLOR_WHITE),
+                                      SizedBox(width: 20),
+                                      Expanded(child: Text('Your recipe has been updated successfully',
+                                          style: TextStyle(color: COLOR_WHITE)))
+                                    ],
+                                  ));
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
                             },
                             child: const Text('Update Recipe'),
                           ),
