@@ -26,12 +26,16 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: COLOR_WHITE,
       body: LayoutBuilder(builder: (context, constraints){
         return Column(
           children: [
-            RoundedSearchInput(
-              hintText: 'Search here',
-              textController: myController,
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: RoundedSearchInput(
+                hintText: 'Search here',
+                textController: myController,
+              ),
             ),
             addVerticalSpace(constraints.maxHeight * 0.02),
             ButtonTheme(
@@ -39,18 +43,18 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
               height: 200,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(150,50),
+                    fixedSize: const Size(300,40),
                     primary: COLOR_DARKPURPLE,
                     shadowColor: Colors.grey.shade50,
-                    textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)
                     )
                 ),
-                onPressed: () {
+                onPressed: () async {
                   print(myController.text);
                 },
-                child: Text('Search'),
+                child: const Text('Search Food'),
               ),
             ),
             addVerticalSpace(constraints.maxHeight * 0.02),
@@ -65,6 +69,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                     final recipe = recipes[index];
                     return Card(
                         child: ListTile(
+                          tileColor: COLOR_WHITE,
                           trailing: const Icon(Icons.arrow_forward_ios_rounded),
                           onTap: () {
                            // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe)));
@@ -80,9 +85,10 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                     );
                   },
                 )
-            )
-          ],);
-      }
+              )
+            ],
+          );
+        }
       ),
     );
   }

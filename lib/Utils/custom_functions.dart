@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cookcal/Utils/constants.dart';
+import 'package:flutter/services.dart';
 import 'dart:math';
+
 
 Widget addVerticalSpace(double height){
   return SizedBox(
@@ -12,27 +14,6 @@ Widget addHorizontalSpace(double width){
   return SizedBox(
       width:width
   );
-}
-
-class MyClipper extends CustomClipper<Path> {
-
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0, size.height -70);
-    var controlPoint = Offset(70, size.height);
-    var endPoint = Offset(size.width / 2, size.height);
-    path.quadraticBezierTo(controlPoint.dx, controlPoint.dy, endPoint.dx, endPoint.dy);
-    path.lineTo(size.width, size.height);
-    path.lineTo(size.width, 0);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper){
-    return true;
-  }
-
 }
 
 int random(min, max) {
@@ -63,5 +44,20 @@ double calculate_howmucheat(UserIdExample user){
 Widget assert_to_image(BuildContext context, String path) {
 
   return Image(image: AssetImage(path));
-
 }
+
+/*Future scanBarcode() async {
+  String barcode;
+
+  try {
+    barcode = await FlutterBarcodeScanner.scanBarcode(
+        "#ff666",
+        "Cancel",
+        true,
+        ScanMode.BARCODE);
+  } on PlatformException {
+    barcode = "failed to scan";
+  }
+
+  print(barcode);
+}*/

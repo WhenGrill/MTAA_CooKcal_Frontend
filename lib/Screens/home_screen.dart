@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/CircleProgress.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:cookcal/Screens/FoodList/foodlist_screen.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -18,9 +19,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   late AnimationController _animationController;
   late Animation<double> _animation;
   // TODO this
-  double current_progress = 69;
   int max_kcal = 1600;
-  int current_kcal = 1104;
+  int current_kcal = 1000;
 
   @override
   void initState(){
@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         )
     );
 
-    _animation = Tween<double>(begin: 0, end: current_progress).animate(_animationController)
+    _animation = Tween<double>(begin: 0, end: current_kcal / max_kcal * 100).animate(_animationController)
     ..addListener(() {
       setState(() {
 
@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                Align(
                  alignment: Alignment.bottomCenter,
                  child: ClipPath(
-                   clipper: MyClipper(),
+                   clipper: OvalBottomBorderClipper(),
                    child:  Container(
                        color: COLOR_DARKPURPLE,
                        height: constraints.maxHeight * 0.40,

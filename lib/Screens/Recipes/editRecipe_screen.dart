@@ -296,7 +296,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                               if (value == null || value.isEmpty) {
                                 return 'Kcal/100g field is required';
                               }
-                              else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (RegExp(r'^[0]+[0-9]*$').hasMatch(value)) || (int.parse(value) < 1)){
+                              else if ((!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value)) || (RegExp(r'^[0]+[0-9]*$').hasMatch(value)) || (double.parse(value) < 1) || (double.parse(value) > 900)){
                                 print("here");
                                 return 'Please enter a valid Kcal/100g';
                               }
@@ -354,7 +354,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                             child: const Text('Update Recipe'),
                           ),
                         ),
-
+                      addVerticalSpace(35)
                       ],
                     ),
                   )

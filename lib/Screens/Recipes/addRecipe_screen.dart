@@ -51,7 +51,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     return LayoutBuilder(builder: (context, constraints)
     {
       return Scaffold(
-          resizeToAvoidBottomInset: false,
         body: Container(
           width: constraints.maxWidth,
           height: constraints.maxHeight,
@@ -280,7 +279,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Kcal/100g field is required';
                         }
-                        else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (RegExp(r'^[0]+[0-9]*$').hasMatch(value)) || (int.parse(value) < 1)){
+                        else if ((!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value)) || (double.parse(value) < 1) || (double.parse(value) > 900)){
                           print("here");
                           return 'Please enter a valid Kcal/100g';
                         }

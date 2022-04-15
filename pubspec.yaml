@@ -46,6 +46,7 @@ dependencies:
   regexed_validator: ^2.0.0+1
   mime: ^1.0.1
   flutter_speed_dial: ^4.3.0
+  flutter_custom_clippers: ^2.0.0
 
 dev_dependencies:
   slide_to_act: ^2.0.1

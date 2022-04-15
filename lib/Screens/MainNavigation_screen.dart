@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Recipes/recipeslist_screen.dart';
 import 'package:cookcal/Screens/Users/userslist_screen.dart';
+//import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -159,7 +160,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     currentTab = 0;
                   });
                 }
-              )
+              ),
+              /*SpeedDialChild(
+                  child: Icon(Icons.phone_android),
+                  label: 'Barcode',
+                  onTap: scanBarcode,
+              )*/
             ],
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
