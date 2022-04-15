@@ -3,6 +3,10 @@ import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/searchBar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../HTTP/food_operations.dart';
+import '../../model/food.dart';
 
 
 class FoodEatListScreen extends StatefulWidget {
@@ -15,12 +19,28 @@ class FoodEatListScreen extends StatefulWidget {
 class _FoodEatListScreenState extends State<FoodEatListScreen> {
 
   final myController = TextEditingController();
+  List<FoodOut> foods = [];
+  late int curr_id = 0;
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     myController.dispose();
     super.dispose();
+  }
+
+
+  load_data() async {
+    var tmp = await FoodOperations().get_all_food(myController.text);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    curr_id = prefs.getInt("user_id")!;
+    print(tmp);
+    print(tmp.runtimeType);
+    foods.clear();
+    tmp?.forEach((element) {
+      foods.add(element);
+      print(element.id);
+    });
   }
 
   @override
@@ -53,6 +73,9 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                 ),
                 onPressed: () async {
                   print(myController.text);
+                  await load_data();
+                  setState(() {});
+                  print('set has been stated');
                 },
                 child: const Text('Search Food'),
               ),
@@ -64,9 +87,9 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
             ),
             Expanded(
                 child: ListView.builder(
-                  itemCount: recipes.length,
+                  itemCount: foods.length,
                   itemBuilder: (context, index){
-                    final recipe = recipes[index];
+                    final food = foods[index];
                     return Card(
                         child: ListTile(
                           tileColor: COLOR_WHITE,
@@ -78,8 +101,8 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                             backgroundColor: COLOR_WHITE,
                             backgroundImage: AssetImage(food_icons[random(0,4)]), // no matter how big it is, it won't overflow
                           ),
-                          title: Text(recipe.title),
-                          subtitle: Text(recipe.creator),
+                          title: Text(food.title),
+                          subtitle: Text("${food.kcal_100g} Kcal / 100g"),
 
                         )
                     );
