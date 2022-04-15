@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cookcal/HTTP/all_recipes.dart';
+import 'package:cookcal/Screens/MainNavigation_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/cupertino.dart';
@@ -338,7 +339,8 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                 };
                               var response = recipesOperations.UpdateRecipe(data, widget.id);
                               Navigator.pop(context);
-                              Navigator.pop(context);
+                              Navigator.pop(context, MaterialPageRoute(builder: (context) => MainNavigationScreen()));
+
                             },
                             child: const Text('Update Recipe'),
                           ),

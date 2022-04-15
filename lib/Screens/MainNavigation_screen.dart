@@ -138,6 +138,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             overlayColor: Colors.black,
             overlayOpacity: 0.4,
             openCloseDial: isDialOpen,
+            spaceBetweenChildren: 15,
             children: [
               SpeedDialChild(
                   child: Icon(Icons.add),
@@ -161,7 +162,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               )
             ],
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           resizeToAvoidBottomInset: false,
           bottomNavigationBar: BottomAppBar(
             color: Colors.white,
@@ -175,51 +176,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        MaterialButton(
-                          minWidth: 40,
-                            onPressed: (){
-                                setState(() {
-                                  currentScreen = RecipeListScreen();
-                                  currentTab = 1;
-                                });
-                        },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.list_alt,
-                                color: currentTab == 1 ? COLOR_DARKMINT : COLOR_DARKPURPLE,
-                              ),
-                              Text(
-                                "Recipes",
-                                style: TextStyle(color: currentTab == 1 ? COLOR_DARKMINT : COLOR_DARKPURPLE),
-                              )
-                            ],
-                          ),
-                        ),
-                        MaterialButton(
-                          minWidth: 40,
-                          onPressed: (){
-                            setState(() {
-                              currentScreen = AddRecipeScreen();
-                              currentTab = 2;
-                            });
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.edit,
-                                color: currentTab == 2 ? COLOR_DARKMINT : COLOR_DARKPURPLE,
-                              ),
-                              Text(
-                                "Add Recipe",
-                                style: TextStyle(color: currentTab == 2 ? COLOR_DARKMINT : COLOR_DARKPURPLE),
-                              )
-                            ],
-                          ),
-                        ),
-                        addHorizontalSpace(40),
                         MaterialButton(
                           minWidth: 40,
                           onPressed: (){
@@ -241,8 +197,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                               )
                             ],
                           ),
-                        ),
-                        addHorizontalSpace(10),
+                        ), // home
                         MaterialButton(
                           minWidth: 40,
                           onPressed: (){
@@ -264,7 +219,51 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                               )
                             ],
                           ),
-                        )
+                        ), //users
+                        MaterialButton(
+                          minWidth: 40,
+                            onPressed: (){
+                                setState(() {
+                                  currentScreen = RecipeListScreen();
+                                  currentTab = 1;
+                                });
+                        },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.list_alt,
+                                color: currentTab == 1 ? COLOR_DARKMINT : COLOR_DARKPURPLE,
+                              ),
+                              Text(
+                                "Recipes",
+                                style: TextStyle(color: currentTab == 1 ? COLOR_DARKMINT : COLOR_DARKPURPLE),
+                              )
+                            ],
+                          ),
+                        ), // recipes
+                        MaterialButton(
+                          minWidth: 40,
+                          onPressed: (){
+                            setState(() {
+                              currentScreen = AddRecipeScreen();
+                              currentTab = 2;
+                            });
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.edit,
+                                color: currentTab == 2 ? COLOR_DARKMINT : COLOR_DARKPURPLE,
+                              ),
+                              Text(
+                                "Add Recipe",
+                                style: TextStyle(color: currentTab == 2 ? COLOR_DARKMINT : COLOR_DARKPURPLE),
+                              )
+                            ],
+                          ),
+                        ), // add recipe
                       ],
                     )
                   ],

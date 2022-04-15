@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cookcal/HTTP/all_recipes.dart';
 import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
@@ -8,6 +9,7 @@ import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../HTTP/login_register.dart';
 import '../../model/recipes.dart';
@@ -27,6 +29,8 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
   late RecipeOut recipe = widget.recipe;
   late int curr_id = widget.curr_id;
   File? image;
+
+  RecipesOperations recipesOperations = RecipesOperations();
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +95,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                               ),
                               child: FloatingActionButton(
                                 heroTag: "edit",
-                                onPressed: () {
+                                onPressed: () async {
                                   RecipeUpdate data = RecipeUpdate(
                                       title: recipe.title,
                                       ingredients: recipe.ingredients,
@@ -99,39 +103,13 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                                       kcal_100g: recipe.kcal_100g,
                                   );
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=> EditRecipeScreen(data: data, id: recipe.id)));
-
                                 },
-                                backgroundColor: COLOR_DARKPURPLE,
+                                backgroundColor: COLOR_MINT,
                                 child: Icon(Icons.edit),
                               ),
                             ),
                           ),
                           addVerticalSpace(13),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.all(Radius.circular(180)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.5),
-                                    spreadRadius: 7,
-                                    blurRadius: 7,
-                                    offset: const Offset(3, 5),
-                                  ),
-                                ],
-                              ),
-                              child: FloatingActionButton(
-                                heroTag: "photo",
-                                onPressed: () {},
-                                backgroundColor: COLOR_MINT,
-                                child: Icon(Icons.photo),
-                              ),
-                            ),
-                          ),
                           addVerticalSpace(13),
                           Align(
                             alignment: Alignment.centerRight,
@@ -152,13 +130,93 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                               ),
                               child: FloatingActionButton(
                                 heroTag: "delete",
-                                onPressed: () {},
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context){
+                                        return AlertDialog(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                          backgroundColor: COLOR_WHITE,
+                                          content: Container(
+                                            width: 300,
+                                            height: 150,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Column(
+                                                children: [
+                                                  const Text(
+                                                    "You are about to delete this recipe.",
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: COLOR_BLACK,
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  const Text(
+                                                    "Do you wish to proceed?",
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: COLOR_BLACK,
+                                                        fontSize: 20
+                                                    ),
+                                                  ),
+                                                  addVerticalSpace(20),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child: FloatingActionButton(
+                                                          backgroundColor: COLOR_DARKPURPLE,
+                                                          onPressed: () async {
+                                                            try {
+                                                              await recipesOperations.delete_recipe(recipe.id);
+                                                              Navigator.pop(context);
+                                                              Navigator.pop(context);
+                                                            } catch (e) {
+                                                              setState(() {
+                                                              });
+                                                              print(e);
+                                                            }
+                                                          },
+                                                          child: const Icon(Icons.check),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child: FloatingActionButton(
+                                                          backgroundColor: COLOR_MINT,
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: const Icon(Icons.close),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                  );
+                                },
                                 backgroundColor: Colors.red,
                                 child: Icon(Icons.delete_forever_rounded),
                               ),
                             ),
                           ),
-                          addVerticalSpace(20),
+                          addVerticalSpace(45),
 
                         ],
                       )

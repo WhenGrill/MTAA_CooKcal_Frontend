@@ -72,4 +72,13 @@ class RecipesOperations {
     }
   }
 
+  delete_recipe(recipe_id) async {
+    Dio d = Dio();
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    d.options.headers['authorization'] = 'Bearer ' + token!;
+    Response response = await d.delete(apiURL + '/recipes/' + recipe_id.toString());
+    print(response.statusCode);
+  }
+
 }

@@ -97,8 +97,11 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                       color: curr_id == recipe.creator["id"] ? COLOR_MINT : COLOR_WHITE,
                         child: ListTile(
                           trailing: const Icon(Icons.arrow_forward_ios_rounded),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id)));
+                          onTap: () async {
+                            await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id)));
+                            await load_data();
+                            setState(() {});
+                            print('set has been stated');
                           },
                           leading: CircleAvatar(
                             backgroundColor: COLOR_WHITE,

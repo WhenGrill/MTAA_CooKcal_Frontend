@@ -321,7 +321,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           kcal_100g: double.parse(kcalController.text),
                         );
                         var response = recipesOperations.PostRecipe(data);
-                        Navigator.pop(context);
+                        titleController.text = "";
+                        ingredientsController.text = "";
+                        instructionsController.text = "";
+                        kcalController.text = "";
                       },
                       child: const Text('Post Recipe'),
                     ),
