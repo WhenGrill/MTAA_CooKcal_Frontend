@@ -1,4 +1,4 @@
-import 'package:cookcal/HTTP/all_recipes.dart';
+import 'package:cookcal/HTTP/recipes_operations.dart';
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/Screens/Recipes/recipeProfile_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
@@ -78,6 +78,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   await load_data();
                   setState(() {});
                   print('set has been stated');
+                  myController.text = "";
                 },
                 child: const Text('Search Recipes'),
               ),

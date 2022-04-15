@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cookcal/HTTP/all_recipes.dart';
+import 'package:cookcal/HTTP/recipes_operations.dart';
 import 'package:cookcal/Screens/MainNavigation_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
@@ -296,7 +296,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                               if (value == null || value.isEmpty) {
                                 return 'Kcal/100g field is required';
                               }
-                              else if ((!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value)) || (RegExp(r'^[0]+[0-9]*$').hasMatch(value)) || (double.parse(value) < 1) || (double.parse(value) > 900)){
+                              else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) < 1) || (double.parse(value) > 900)){
                                 print("here");
                                 return 'Please enter a valid Kcal/100g';
                               }

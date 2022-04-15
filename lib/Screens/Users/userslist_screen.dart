@@ -70,6 +70,7 @@ class _UserListScreenState extends State<UserListScreen> {
                   await load_data();
                   setState(() {});
                   print('set has been stated');
+                  myController.text = "";
                 },
                 child: Text('Search other Users'),
               ),

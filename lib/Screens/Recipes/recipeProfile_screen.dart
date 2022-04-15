@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cookcal/HTTP/all_recipes.dart';
+import 'package:cookcal/HTTP/recipes_operations.dart';
 import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';

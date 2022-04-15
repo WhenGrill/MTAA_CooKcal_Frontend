@@ -215,7 +215,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Age field is required';
                         }
-                        else if ((!RegExp(r'^[0-9]+$').hasMatch(value)) || (RegExp(r'^[0]+[0-9]*$').hasMatch(value)) || (int.parse(value) < 1)){
+                        else if ((!RegExp(r'^[1-9]+[0-9]*$').hasMatch(value)) || (int.parse(value) < 1)){
                           print("here");
                           return 'Please enter a valid age';
                         }
@@ -244,7 +244,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Current Weight field is required';
                         }
-                        else if (!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value) || (double.parse(value) < 5)){
+                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) < 5)){
                           return 'Please enter a valid weight';
                         }
                         return null;
@@ -272,7 +272,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Goal Weight field is required';
                         }
-                        else if (!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value) || (double.parse(value) < 5)){
+                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) < 5)){
                           return 'Please enter a valid weight';
                         }
                         return null;
@@ -300,7 +300,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Height field is required';
                         }
-                        else if (!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value) || double.parse(value) < 40 || double.parse(value) > 300){
+                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || double.parse(value) < 40 || double.parse(value) > 300){
                           return 'Please enter a valid height';
                         }
                         return null;
