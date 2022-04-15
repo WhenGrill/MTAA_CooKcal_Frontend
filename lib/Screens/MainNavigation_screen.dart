@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cookcal/HTTP/foodlist_operations.dart';
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/HTTP/login_register.dart';
 import 'package:cookcal/Screens/Food/foodEatlist_screen.dart';
@@ -8,6 +9,7 @@ import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/Users/userSettings_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/main.dart';
+import 'package:cookcal/model/foodlist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Screens/home_screen.dart';
@@ -31,6 +33,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int currentTab= 4;
   Widget currentScreen = HomeScreen();
   final isDialOpen = ValueNotifier(false);
+
+  FoodListOperations foodListOperations = FoodListOperations();
+  List<FoodListOut> foods = [];
+
+  load_data() async {
+    var tmp = await foodListOperations.get_user_foodlist();
+    print(tmp);
+    print(tmp.runtimeType);
+    foods.clear();
+    tmp?.forEach((element) {
+      foods.add(element);
+      print(element.id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,9 +170,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               SpeedDialChild(
                 child: Icon(Icons.restaurant),
                 label: 'Food I ate today',
-                onTap: () {
+                onTap: () async {
+                  await load_data();
                   setState(() {
-                    currentScreen = FoodListScreen();
+                    currentScreen = FoodListScreen(foods: foods);
                     currentTab = 0;
                   });
                 }

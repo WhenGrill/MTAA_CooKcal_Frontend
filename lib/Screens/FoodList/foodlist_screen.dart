@@ -1,11 +1,14 @@
+import 'package:cookcal/HTTP/foodlist_operations.dart';
 import 'package:cookcal/Utils/constants.dart';
+import 'package:cookcal/model/foodlist.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/CircleProgress.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 
 class FoodListScreen extends StatefulWidget {
-  const FoodListScreen({Key? key}) : super(key: key);
+  final List<FoodListOut> foods;
+  const FoodListScreen({Key? key, required this.foods}) : super(key: key);
 
   @override
   _FoodListScreenState createState() => _FoodListScreenState();
@@ -13,12 +16,16 @@ class FoodListScreen extends StatefulWidget {
 
 class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProviderStateMixin {
 
+  late List<FoodListOut> foods = widget.foods;
+  FoodListOperations foodListOperations = FoodListOperations();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: COLOR_WHITE,
       body: LayoutBuilder(builder: (context, constraints){
         return Container(
-            color: COLOR_GREY,
+            color: COLOR_WHITE,
           child: Column(
             children: [
               const Text(
@@ -28,7 +35,7 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                 ),
               ),
               Text(
-                "${calculate_eaten(food_list).toStringAsFixed(2)}/${calculate_howmucheat(userIdExample).toStringAsFixed(2)}",
+                "${calculate_eaten(foods).toStringAsFixed(2)}/${calculate_howmucheat(userIdExample).toStringAsFixed(2)}",
                 style: const TextStyle(
                   fontSize: 30,
                 ),
@@ -39,11 +46,12 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: food_list.length,
+                  itemCount: foods.length,
                   itemBuilder: (context, index){
-                    final food = food_list[index];
+                    final food = foods[index];
                     return Card(
                         child: ListTile(
+                          tileColor: COLOR_WHITE,
                           onLongPress: () {
                             showDialog(
                                 context: context,
@@ -54,7 +62,7 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                     backgroundColor: COLOR_WHITE,
                                     content: Container(
                                       width: constraints.maxWidth * 0.3,
-                                      height: constraints.maxHeight * 0.20,
+                                      height: constraints.maxHeight * 0.2,
                                       child: Align(
                                         alignment: Alignment.center,
                                         child: Column(
@@ -66,7 +74,7 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                               textAlign: TextAlign.center,
                                               style: const TextStyle(
                                                   color: COLOR_BLACK,
-                                                  fontSize: 20
+                                                  fontSize: 17
                                               ),
                                             ),
                                             addVerticalSpace(constraints.maxHeight * 0.02),
@@ -79,8 +87,10 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                                   height: 50,
                                                   child: FloatingActionButton(
                                                     backgroundColor: COLOR_DARKPURPLE,
-                                                    onPressed: () {
-                                                      food_list.removeWhere((element) => food_list.indexOf(element) == index);
+                                                    onPressed: () async {
+                                                      await foodListOperations.delete_food(food.id);
+
+                                                      foods.removeWhere((element) => foods.indexOf(element) == index);
                                                       setState(() {
 
                                                       });
@@ -90,7 +100,7 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                                             children: const [
                                                               Icon(Icons.check_circle, color: COLOR_WHITE),
                                                               SizedBox(width: 20),
-                                                              Expanded(child: Text('Feed removed',
+                                                              Expanded(child: Text('Food removed',
                                                                   style: TextStyle(color: COLOR_WHITE)))
                                                             ],
                                                           ));

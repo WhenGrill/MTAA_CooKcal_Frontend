@@ -3,6 +3,8 @@ import 'package:cookcal/Utils/constants.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 
+import '../model/foodlist.dart';
+
 
 Widget addVerticalSpace(double height){
   return SizedBox(
@@ -20,9 +22,9 @@ int random(min, max) {
   return min + Random().nextInt(max - min);
 }
 
-double calculate_eaten(List<FoodList> foodList){
+double calculate_eaten(List<FoodListOut> foodList){
   double sum = 0;
-  for (FoodList food in foodList){
+  for (FoodListOut food in foodList){
     sum = sum + food.amount * food.kcal_100g / 100;
   }
 

@@ -42,8 +42,6 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
 
   load_data() async {
     var tmp = await FoodOperations().get_all_food(gramsControler.text);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    curr_id = prefs.getInt("user_id")!;
     print(tmp);
     print(tmp.runtimeType);
     foods.clear();
@@ -195,10 +193,21 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                                                         id_food: food.id,
                                                         amount: double.parse(gramsControler.text),
                                                       );
-                                                      var response = foodListOperations.PostRecipe(data);
+                                                      var response = foodListOperations.AddFood(data);
                                                       gramsControler.text = "";
 
                                                       Navigator.pop(context);
+
+                                                      final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
+                                                          content: Row(
+                                                            children: const [
+                                                              Icon(Icons.check_circle, color: COLOR_WHITE),
+                                                              SizedBox(width: 20),
+                                                              Expanded(child: Text('Food added successfully',
+                                                                  style: TextStyle(color: COLOR_WHITE)))
+                                                            ],
+                                                          ));
+                                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                     },
                                                     child: const Icon(Icons.add),
                                                   ),

@@ -7,7 +7,7 @@ import '../Utils/api_const.dart';
 class FoodListOperations {
   final Dio _dio = Dio();
 
-  PostRecipe(FoodlistIn food) async {
+  AddFood(FoodlistIn food) async {
 
     Dio dio = Dio();
     dio.options.headers['content-type'] = 'application/json';
@@ -28,6 +28,40 @@ class FoodListOperations {
     catch (e) {
       print(e);
     }
+  }
+
+  Future<List<FoodListOut>?> get_user_foodlist() async {
+
+    DateTime dateToday =new DateTime.now();
+    String date = dateToday.toString().substring(0,10);
+    print(date);
+
+    try {
+      Dio dio = Dio();
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+      dio.options.headers['authorization'] = 'Bearer ' + token!;
+      Response response = await dio.get(apiURL + '/foodlist/?date=' + date);
+      print("${response.data}");
+
+      List<FoodListOut> foods = List<FoodListOut>.from(
+          response.data.map((x) => FoodListOut.fromJson(x)));
+      print("this -> ${foods}");
+      return foods;
+    }
+    catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  delete_food(food_id) async {
+    Dio d = Dio();
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    d.options.headers['authorization'] = 'Bearer ' + token!;
+    Response response = await d.delete(apiURL + '/foodlist/' + food_id.toString());
+    print(response.statusCode);
   }
 
 }
