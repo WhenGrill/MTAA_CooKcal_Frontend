@@ -243,11 +243,6 @@ class _CallSampleState extends State<CallSample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('CooKcal'),
-        centerTitle: true,
-        backgroundColor: COLOR_DARKPURPLE
-      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: _inCalling
           ? SizedBox(

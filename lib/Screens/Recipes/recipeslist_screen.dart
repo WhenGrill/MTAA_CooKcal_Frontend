@@ -23,6 +23,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   UsersOperations usersOperations = UsersOperations();
   List<RecipeOut> recipes = [];
   late int curr_id = 0;
+  String last_text = "";
 
   @override
   void dispose() {
@@ -31,8 +32,8 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
     super.dispose();
   }
 
-  load_data() async {
-    var tmp = await RecipesOperations().get_all_recipes(myController.text);
+  load_data(String text) async {
+    var tmp = await RecipesOperations().get_all_recipes(text);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     curr_id = prefs.getInt("user_id")!;
     print(tmp);
@@ -75,9 +76,10 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                 ),
                 onPressed: () async {
                   print(myController.text);
-                  await load_data();
+                  await load_data(myController.text);
                   setState(() {});
                   print('set has been stated');
+                  last_text = myController.text;
                   myController.text = "";
                 },
                 child: const Text('Search Recipes'),
@@ -100,7 +102,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                           trailing: const Icon(Icons.arrow_forward_ios_rounded),
                           onTap: () async {
                             await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id)));
-                            await load_data();
+                            await load_data(last_text);
                             setState(() {});
                             print('set has been stated');
                           },

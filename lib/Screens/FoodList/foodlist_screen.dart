@@ -1,4 +1,5 @@
 import 'package:cookcal/HTTP/foodlist_operations.dart';
+import 'package:cookcal/HTTP/login_register.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/model/foodlist.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -8,7 +9,9 @@ import 'package:cookcal/Utils/custom_functions.dart';
 
 class FoodListScreen extends StatefulWidget {
   final List<FoodListOut> foods;
-  const FoodListScreen({Key? key, required this.foods}) : super(key: key);
+  final int curr_weight;
+  final UserOneOut user;
+  const FoodListScreen({Key? key, required this.foods, required this.curr_weight, required this.user}) : super(key: key);
 
   @override
   _FoodListScreenState createState() => _FoodListScreenState();
@@ -17,6 +20,8 @@ class FoodListScreen extends StatefulWidget {
 class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProviderStateMixin {
 
   late List<FoodListOut> foods = widget.foods;
+  late int curr_weight = widget.curr_weight;
+  late UserOneOut user = widget.user;
   FoodListOperations foodListOperations = FoodListOperations();
 
   @override
@@ -28,21 +33,53 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
             color: COLOR_WHITE,
           child: Column(
             children: [
-              const Text(
-                "Today's summary:",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              Text(
-                "${calculate_eaten(foods).toStringAsFixed(2)}/${calculate_howmucheat(userIdExample).toStringAsFixed(2)}",
-                style: const TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              const Divider(
-                color: COLOR_DARKPURPLE,
-                thickness: 2,
+              Card(
+                  shadowColor: COLOR_PURPLE,
+                  color: COLOR_VERYDARKPURPLE,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  elevation: 20,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "You ate today",
+                        style: TextStyle(
+                            color: COLOR_MINT,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                        child: Container(
+                          width: constraints.maxWidth * 0.85,
+                          height: constraints.maxHeight * 0.1,
+                          child: Container(
+                              color: COLOR_DARKPURPLE,
+                              child: Center(
+                                child: Text(
+                                  "${calculate_eaten(foods).toInt()} / ${calculate_max(curr_weight, user)}",
+                                  style: TextStyle(color: COLOR_MINT,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              )
+                          ),
+
+                        ),
+                      ),
+                      const Text(
+                        "Kcal",
+                        style: TextStyle(
+                            color: COLOR_MINT,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15
+                        ),
+                      )
+                    ],
+                  )
               ),
               Expanded(
                 child: ListView.builder(

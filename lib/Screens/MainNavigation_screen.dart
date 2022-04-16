@@ -84,6 +84,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             isDialOpen.value = false;
             return false;
           }
+          if (currentTab == 4){
           showDialog(
               context: context,
               builder: (context){
@@ -158,7 +159,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   ),
                 );
               }
-          );
+          );} else {
+            await load_food_data();
+            await load_weight_data();
+            UserOneOut user = await UserOp.get_current_user_info();
+            spots = make_plot(weights);
+            double max_weight = get_max_weight(weights);
+            setState(()  {
+              currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
+              currentTab = 4;
+            });
+          }
           return false;
         },
         child: Scaffold(
@@ -178,17 +189,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   String? token = prefs.getString('token');
                   ImageProvider? uImage = await UserOp.get_user_image(uId);
                   WeightOut? currWeight = await  WeightOp.get_last_weightMeasure();
-                  await Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token, currUserWeight: currWeight)));
-
-                  await load_weight_data();
-                  spots = make_plot(weights);
-                  double max_weight = get_max_weight(weights);
                   setState(() {
-                    currentScreen = HomeScreen(foods: foods, weights: spots,curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
-                    currentTab = 4;
+                    currentScreen = UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token, currUserWeight: currWeight);
+                    currentTab = -1;
                   });
 
-              }, icon: const Icon(Icons.settings, color: COLOR_MINT))
+              }, icon: const Icon(Icons.person_sharp, color: COLOR_MINT))
             ],
           ),
           body: currentScreen,
@@ -200,16 +206,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             openCloseDial: isDialOpen,
             spaceBetweenChildren: 15,
             children: [
-              SpeedDialChild(
-                  child: Icon(Icons.local_phone_rounded),
-                  label: 'Call nutrition adviser',
-                  onTap: () async{
-                    UserOneOut user = await UserOp.get_current_user_info();
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CallSample(host: webrtc_ip, user: user)));
-                    setState(() {
-                    });
-                  }
-              ),
               SpeedDialChild(
                   child: Icon(Icons.add),
                   label: 'Add Food',
@@ -225,11 +221,24 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 label: 'Food I ate today',
                 onTap: () async {
                   await load_food_data();
+                  await load_weight_data();
+                  UserOneOut user = await UserOp.get_current_user_info();
                   setState(() {
-                    currentScreen = FoodListScreen(foods: foods);
+                    currentScreen = FoodListScreen(foods: foods, curr_weight: weights.last.weight.toInt(), user: user);
                     currentTab = 0;
                   });
                 }
+              ),
+              SpeedDialChild(
+                  child: Icon(Icons.local_phone_rounded),
+                  label: 'Call nutrition adviser',
+                  onTap: () async{
+                    UserOneOut user = await UserOp.get_current_user_info();
+                    setState(() {
+                      currentScreen = CallSample(host: webrtc_ip, user: user);
+                      currentTab = -1;
+                    });
+                  }
               ),
               /*SpeedDialChild(
                   child: Icon(Icons.phone_android),

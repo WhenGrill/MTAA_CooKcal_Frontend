@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: COLOR_DARKPURPLE,
 
                             ),
-                            Image.asset("assets/images/fast-food.png"),
+                            Image.asset("assets/images/logo.png"),
                             Padding(padding: const EdgeInsets.all(10)),
                           ],
                         ),

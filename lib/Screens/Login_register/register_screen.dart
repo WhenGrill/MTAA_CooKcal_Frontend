@@ -57,9 +57,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   addVerticalSpace(constraints.maxHeight * 0.1),
                   Image.asset(
-                      "assets/images/salad.png",
-                    height: 330,
-                    width: 330,
+                      "assets/images/logo.png",
+                    height: 300,
+                    width: 300,
                   ),
                   const Padding(padding: EdgeInsets.all(10)),
                   Container(

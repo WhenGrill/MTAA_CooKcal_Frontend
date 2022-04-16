@@ -90,10 +90,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-            title: Text('CooKcal'),
-            centerTitle: true,
-            backgroundColor: COLOR_DARKPURPLE),
         body: LayoutBuilder(builder: (context, constraints) {
           return SingleChildScrollView(
             child:
@@ -733,7 +729,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                         Navigator.pop(context);
 
                                                         if(ret != null){
-                                                              Navigator.pop(context);
 
                                                               final snackBar = SnackBar(backgroundColor: COLOR_MINT,
                                                                   content: Row(
