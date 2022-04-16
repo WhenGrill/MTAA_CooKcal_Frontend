@@ -74,7 +74,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   //child: Text("INFO O MNE", style: TextStyle(color: COLOR_WHITE, fontSize: 50),),
                 ),
-            SizedBox(
+           SizedBox(
               width: 80,
               height: 80,
               child: FloatingActionButton(
@@ -87,7 +87,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     child: Icon(Icons.phone, size: 50),
                   ),
                   onPressed: () {
-
                   })
             )
               ],

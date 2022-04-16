@@ -25,6 +25,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Utils/api_const.dart';
 import '../Utils/custom_functions.dart';
+import '../WebRTC/call_sample/call_sample.dart';
 import '../model/users.dart';
 
 
@@ -199,7 +200,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             openCloseDial: isDialOpen,
             spaceBetweenChildren: 15,
             children: [
-              /*SpeedDialChild(
+              SpeedDialChild(
                   child: Icon(Icons.local_phone_rounded),
                   label: 'Call nutrition adviser',
                   onTap: () async{
@@ -208,7 +209,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     setState(() {
                     });
                   }
-              ),*/
+              ),
               SpeedDialChild(
                   child: Icon(Icons.add),
                   label: 'Add Food',
