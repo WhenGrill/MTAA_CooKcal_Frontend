@@ -69,18 +69,23 @@ class UsersOperations {
     }
   }
 
-  get_user_image(int id) async {
+  get_user_image(int? id) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
 
-     ImageProvider img = NetworkImage(apiURL + '/users/' + id.toString() + '/image/',
-     headers: {'authorization': 'Bearer ' + token!});
+      if (id != null) {
+        ImageProvider? img = NetworkImage(
+            apiURL + '/users/' + id.toString() + '/image/',
+            headers: {'authorization': 'Bearer ' + token!});
 
-      return img;
+        return img;
+      } else {
+        return null;
+      }
     }
     catch (e) {
-      print(e);
+      return null;
     }
   }
 
@@ -103,7 +108,7 @@ class UsersOperations {
         contentType: MediaType('image', filePath.split('.').last))
     );
 
-      request.send().then((response) {
+      var response = await request.send(); //.then((response) {
         if (response.statusCode == 200)
         {
           print("Uploaded!");
@@ -113,7 +118,7 @@ class UsersOperations {
         {
           return null;
         }
-      });
+      //});
   }
 
   Future<Map<String, dynamic>?>update_user_data(Map<String, dynamic> upUserData) async{

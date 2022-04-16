@@ -142,10 +142,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             backgroundColor: COLOR_DARKPURPLE,
             actions: [
               IconButton(onPressed: () async{
+                SharedPreferences prefs = await SharedPreferences.getInstance();
                 UsersOperations obj = UsersOperations();
                 UserOneOut user = await obj.get_current_user_info();
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSettingsScreen(user: user)));
-              }, icon: Icon(Icons.settings))
+                  int? uId = prefs.getInt('user_id');
+                  String? token = prefs.getString('token');
+                  ImageProvider? uImage = await obj.get_user_image(uId);
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token)));
+
+              }, icon: const Icon(Icons.settings))
             ],
           ),
           body: currentScreen,

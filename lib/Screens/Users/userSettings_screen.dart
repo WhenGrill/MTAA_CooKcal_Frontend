@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 import '../../HTTP/login_register.dart';
@@ -21,13 +22,20 @@ import '../MainNavigation_screen.dart';
 
 class UserSettingsScreen extends StatefulWidget {
   final UserOneOut user;
-  const UserSettingsScreen({Key? key, required this.user}) : super(key: key);
+  final ImageProvider? uImage;
+  final int? uId;
+  final String? token;
+
+  const UserSettingsScreen({Key? key, required this.user, required this.uImage, required this.uId, required this.token}) : super(key: key);
   @override
   _UserSettingsScreenState createState() => _UserSettingsScreenState();
 }
 
 class _UserSettingsScreenState extends State<UserSettingsScreen> {
   late UserOneOut user = widget.user;
+  late ImageProvider? uImage = widget.uImage;
+  late int? uId = widget.uId;
+  late String? token = widget.token;
 
   TextEditingController ipController = TextEditingController();
   TextEditingController goalweightController = TextEditingController();
@@ -113,12 +121,15 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                 Container(
                                   width: 105.0,
                                   height: 105.0,
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/man.png'),
-                                        fit: BoxFit.cover),
-                                  ),
+                                  decoration: const BoxDecoration(),
+                                  // child: uImage != null ? CircleAvatar(backgroundImage: uImage!) : assert_to_image(context, user_icons[user.gender])
+                                  child: CachedNetworkImage(
+                                    imageUrl: apiURL + '/users/' + uId.toString() + '/image',
+                                    placeholder: (context, url) => const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => assert_to_image(context, user_icons[user.gender]),  //// YOU CAN CREATE YOUR OWN ERROR WIDGET HERE
+                                    httpHeaders: {'authorization': 'Bearer ' + token!},
+                                    imageBuilder: (context, imageProvider) =>  CircleAvatar(backgroundImage: imageProvider)
+                                  )
                                 ),
                                 ElevatedButton(onPressed: () async{
                                   showDialog(
@@ -141,7 +152,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                     width: 105.0,
                                                         height: 105.0,
                                                         decoration: const BoxDecoration(),
-                                                        child: image != null ? Image.file(image!, fit: BoxFit.cover) : assert_to_image(context, user_icons[user.gender]) //DecorationImage(image: AssetImage('assets/images/man.png'), fit: BoxFit.cover),
+                                                        child: uImage != null ? CircleAvatar(backgroundImage: uImage!) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
+                                                            assert_to_image(context, user_icons[user.gender]))) //DecorationImage(image: AssetImage('assets/images/man.png'), fit: BoxFit.cover),
 
                                           ),
                                                     ],
@@ -209,9 +221,11 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   height: 50,
                                                   child: FloatingActionButton(
                                                     backgroundColor: COLOR_DARKMINT,
-                                                    onPressed: () async {await pickImage(); setState(() {
-
-                                                    });},
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        pickImage();
+                                                      });
+                                                      },
                                                     child: const Icon(Icons.photo_size_select_actual),
                                                   ),
                                                 ),
