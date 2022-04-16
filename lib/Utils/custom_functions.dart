@@ -47,7 +47,6 @@ Widget assert_to_image(BuildContext context, String path) {
 
   return Image(image: AssetImage(path));
 }
-
 /*Future scanBarcode() async {
   String barcode;
 

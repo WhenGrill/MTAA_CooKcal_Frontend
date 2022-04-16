@@ -7,8 +7,11 @@ import 'package:cookcal/Widgets/CircleProgress.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:cookcal/Screens/FoodList/foodlist_screen.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+
+import '../model/foodlist.dart';
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final List<FoodListOut> foods;
+  const HomeScreen({Key? key, required this.foods}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -16,11 +19,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
 
+  late List<FoodListOut> foods = widget.foods;
+
   late AnimationController _animationController;
   late Animation<double> _animation;
   // TODO this
   int max_kcal = 1600;
-  int current_kcal = 1000;
+  double current_kcal = 0;
 
   @override
   void initState(){
@@ -31,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             milliseconds: 800
         )
     );
-
+    current_kcal = calculate_eaten(foods);
     _animation = Tween<double>(begin: 0, end: current_kcal / max_kcal * 100).animate(_animationController)
     ..addListener(() {
       setState(() {

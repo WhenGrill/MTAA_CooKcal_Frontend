@@ -3,13 +3,16 @@ import 'dart:math';
 import 'package:cookcal/HTTP/foodlist_operations.dart';
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/HTTP/login_register.dart';
+import 'package:cookcal/HTTP/weight_operations.dart';
 import 'package:cookcal/Screens/Food/foodEatlist_screen.dart';
 import 'package:cookcal/Screens/FoodList/foodlist_screen.dart';
 import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/Users/userSettings_screen.dart';
+import 'package:cookcal/Screens/Welcome_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/main.dart';
 import 'package:cookcal/model/foodlist.dart';
+import 'package:cookcal/model/weight.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Screens/home_screen.dart';
@@ -22,22 +25,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Utils/custom_functions.dart';
 import '../model/users.dart';
 
+
 class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({Key? key}) : super(key: key);
+  final List<FoodListOut> foods;
+  final List<WeightOut> weights;
+  MainNavigationScreen({Key? key, required this.foods, required this.weights}) : super(key: key);
 
   @override
   _MainNavigationScreenState createState() => _MainNavigationScreenState();
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int currentTab= 4;
-  Widget currentScreen = HomeScreen();
+  int currentTab= 0;
   final isDialOpen = ValueNotifier(false);
 
   FoodListOperations foodListOperations = FoodListOperations();
-  List<FoodListOut> foods = [];
+  WeightOperations weightOperations = WeightOperations();
 
-  load_data() async {
+  late List<FoodListOut> foods = widget.foods;
+  late List<WeightOut> weights = widget.weights;
+
+  Widget currentScreen = WelcomeScreen();
+
+  load_food_data() async {
     var tmp = await foodListOperations.get_user_foodlist();
     print(tmp);
     print(tmp.runtimeType);
@@ -45,6 +55,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     tmp?.forEach((element) {
       foods.add(element);
       print(element.id);
+    });
+  }
+
+  load_weight_data() async {
+    var tmp = await weightOperations.get_all_weight("");
+    print(tmp);
+    print(tmp.runtimeType);
+    weights.clear();
+    tmp?.forEach((element) {
+      weights.add(element);
+      print(element.weight);
     });
   }
 
@@ -148,7 +169,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   int? uId = prefs.getInt('user_id');
                   String? token = prefs.getString('token');
                   ImageProvider? uImage = await obj.get_user_image(uId);
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token)));
+                  await Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token)));
+                  load_weight_data();
 
               }, icon: const Icon(Icons.settings))
             ],
@@ -176,7 +198,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 child: Icon(Icons.restaurant),
                 label: 'Food I ate today',
                 onTap: () async {
-                  await load_data();
+                  await load_food_data();
                   setState(() {
                     currentScreen = FoodListScreen(foods: foods);
                     currentTab = 0;
@@ -206,9 +228,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                       children: [
                         MaterialButton(
                           minWidth: 40,
-                          onPressed: (){
-                            setState(() {
-                              currentScreen = HomeScreen();
+                          onPressed: () async {
+                            await load_food_data();
+                            setState(()  {
+                              currentScreen = HomeScreen(foods: foods);
                               currentTab = 4;
                             });
                           },
@@ -228,7 +251,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                         ), // home
                         MaterialButton(
                           minWidth: 40,
-                          onPressed: (){
+                          onPressed:  () {
                             setState(() {
                               currentScreen = UserListScreen();
                               currentTab = 3;

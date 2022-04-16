@@ -339,7 +339,6 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                 };
                               var response = recipesOperations.UpdateRecipe(data, widget.id);
                               Navigator.pop(context);
-                              Navigator.pop(context, MaterialPageRoute(builder: (context) => MainNavigationScreen()));
                               final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
                                   content: Row(
                                     children: const [

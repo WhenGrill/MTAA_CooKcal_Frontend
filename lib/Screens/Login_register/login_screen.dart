@@ -1,13 +1,17 @@
+import 'package:cookcal/HTTP/foodlist_operations.dart';
+import 'package:cookcal/HTTP/weight_operations.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+import 'package:cookcal/model/weight.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../HTTP/login_register.dart';
+import '../../model/foodlist.dart';
 import '../../model/users.dart';
 import '../MainNavigation_screen.dart';
 
@@ -24,6 +28,33 @@ class _LoginScreenState extends State<LoginScreen> {
   final passController = TextEditingController();
 
   var user_auth = Userauth();
+  FoodListOperations foodListOperations = FoodListOperations();
+  WeightOperations weightOperations = WeightOperations();
+
+  List<FoodListOut> foods = [];
+  List<WeightOut> weights = [];
+
+  load_food_data() async {
+    var tmp = await foodListOperations.get_user_foodlist();
+    print(tmp);
+    print(tmp.runtimeType);
+    foods.clear();
+    tmp?.forEach((element) {
+      foods.add(element);
+      print(element.id);
+    });
+  }
+
+  load_weight_data() async {
+    var tmp = await weightOperations.get_all_weight("");
+    print(tmp);
+    print(tmp.runtimeType);
+    weights.clear();
+    tmp?.forEach((element) {
+      weights.add(element);
+      print(element.weight);
+    });
+  }
 
   /*
   @override
@@ -128,9 +159,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   onPressed: () async {
                                     var response = await user_auth.login(UserLogin(username: emailController.text, password: passController.text));
                                     if (response != null){
+
+                                      load_food_data();
+                                      load_weight_data();
+
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
+                                        MaterialPageRoute(builder: (context) => MainNavigationScreen(foods: foods, weights: [])),
                                       );
                                     }
                                     else{
