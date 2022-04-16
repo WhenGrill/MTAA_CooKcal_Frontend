@@ -23,7 +23,9 @@ import 'package:cookcal/Screens/Users/userslist_screen.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Utils/api_const.dart';
 import '../Utils/custom_functions.dart';
+import '../WebRTC/call_sample/call_sample.dart';
 import '../model/users.dart';
 
 
@@ -40,8 +42,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int currentTab= 0;
   final isDialOpen = ValueNotifier(false);
 
-  FoodListOperations foodListOperations = FoodListOperations();
-  WeightOperations weightOperations = WeightOperations();
+  UsersOperations UserOp = UsersOperations();
+  FoodListOperations FoodListOp = FoodListOperations();
+  WeightOperations WeightOp = WeightOperations();
 
   late List<FoodListOut> foods = widget.foods;
   late List<WeightOut> weights = widget.weights;
@@ -51,7 +54,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget currentScreen = WelcomeScreen();
 
   load_food_data() async {
-    var tmp = await foodListOperations.get_user_foodlist();
+    var tmp = await FoodListOp.get_user_foodlist();
     print(tmp);
     print(tmp.runtimeType);
     foods.clear();
@@ -62,7 +65,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 
   load_weight_data() async {
-    var tmp = await weightOperations.get_all_weight("");
+    var tmp = await WeightOp.get_all_weight("");
     print(tmp);
     print(tmp.runtimeType);
     weights.clear();
@@ -167,8 +170,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             actions: [
               IconButton(onPressed: () async{
                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                UsersOperations UserOp = UsersOperations();
-                WeightOperations WeightOp = WeightOperations();
                 UserOneOut user = await UserOp.get_current_user_info();
                   int? uId = prefs.getInt('user_id');
                   String? token = prefs.getString('token');
@@ -196,6 +197,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             openCloseDial: isDialOpen,
             spaceBetweenChildren: 15,
             children: [
+              /*SpeedDialChild(
+                  child: Icon(Icons.local_phone_rounded),
+                  label: 'Call nutrition adviser',
+                  onTap: () async{
+                    UserOneOut user = await UserOp.get_current_user_info();
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CallSample(host: webrtc_ip, user: user)));
+                    setState(() {
+                    });
+                  }
+              ),*/
               SpeedDialChild(
                   child: Icon(Icons.add),
                   label: 'Add Food',
