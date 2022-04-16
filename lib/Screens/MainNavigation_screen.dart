@@ -13,6 +13,7 @@ import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/main.dart';
 import 'package:cookcal/model/foodlist.dart';
 import 'package:cookcal/model/weight.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Screens/home_screen.dart';
@@ -44,6 +45,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   late List<FoodListOut> foods = widget.foods;
   late List<WeightOut> weights = widget.weights;
+  List<FlSpot> spots = [];
+
 
   Widget currentScreen = WelcomeScreen();
 
@@ -170,7 +173,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   String? token = prefs.getString('token');
                   ImageProvider? uImage = await obj.get_user_image(uId);
                   await Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token)));
-                  load_weight_data();
+
+                  await load_weight_data();
+                  spots = make_plot(weights);
+                  double max_weight = get_max_weight(weights);
+                  setState(() {
+                    currentScreen = HomeScreen(foods: foods, weights: spots, max_weight: max_weight);
+                    currentTab = 4;
+                  });
 
               }, icon: const Icon(Icons.settings))
             ],
@@ -230,8 +240,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                           minWidth: 40,
                           onPressed: () async {
                             await load_food_data();
+                            await load_weight_data();
+                            spots = make_plot(weights);
+                            double max_weight = get_max_weight(weights);
                             setState(()  {
-                              currentScreen = HomeScreen(foods: foods);
+                              currentScreen = HomeScreen(foods: foods, weights: spots, max_weight: max_weight);
                               currentTab = 4;
                             });
                           },

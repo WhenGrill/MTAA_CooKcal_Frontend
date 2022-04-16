@@ -7,4 +7,5 @@
 
 Attribution:
 https://www.flaticon.com/free-icons/food => Food icons created by Freepik - Flaticon
-https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Becris - Flaticon
+https://www.flaticon.com/free-icons/user" => User icons created by Becris - Flaticon
+https://www.flaticon.com/free-icons/purple-onion => Purple onion icons created by Triangle Squad - Flaticon

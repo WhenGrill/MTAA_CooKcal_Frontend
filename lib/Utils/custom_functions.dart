@@ -1,9 +1,11 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 
 import '../model/foodlist.dart';
+import '../model/weight.dart';
 
 
 Widget addVerticalSpace(double height){
@@ -41,6 +43,31 @@ double calculate_howmucheat(UserIdExample user){
   }
 
   return toEat;
+}
+
+List<FlSpot> make_plot(List<WeightOut> weights){
+  List<FlSpot> spots = [FlSpot(0, 0)];
+  double y = 0;
+  double x = 1;
+  for (WeightOut weight in weights){
+    spots.add(FlSpot(
+      x,weight.weight
+    ));
+    y++;
+    x++;
+  }
+
+  return spots;
+}
+
+double get_max_weight(List<WeightOut> weights){
+  double max = 0;
+  for (WeightOut weight in weights){
+    if (max < weight.weight){
+      max = weight.weight;
+    }
+  }
+  return max;
 }
 
 Widget assert_to_image(BuildContext context, String path) {
