@@ -25,7 +25,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Utils/api_const.dart';
 import '../Utils/custom_functions.dart';
-import '../WebRTC/call_sample/call_sample.dart';
 import '../model/users.dart';
 
 
@@ -164,9 +163,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         child: Scaffold(
           backgroundColor: COLOR_WHITE,
           appBar: AppBar(
-            title: Text('CooKcal'),
+            iconTheme: IconThemeData(
+              color: COLOR_MINT, //change your color here
+            ),
+            title: Text('CooKcal', style: TextStyle(color: COLOR_MINT)),
             centerTitle: true,
-            backgroundColor: COLOR_DARKPURPLE,
+            backgroundColor: COLOR_VERYDARKPURPLE,
             actions: [
               IconButton(onPressed: () async{
                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -181,11 +183,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   spots = make_plot(weights);
                   double max_weight = get_max_weight(weights);
                   setState(() {
-                    currentScreen = HomeScreen(foods: foods, weights: spots, max_weight: max_weight);
+                    currentScreen = HomeScreen(foods: foods, weights: spots,curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
                     currentTab = 4;
                   });
 
-              }, icon: const Icon(Icons.settings))
+              }, icon: const Icon(Icons.settings, color: COLOR_MINT))
             ],
           ),
           body: currentScreen,
@@ -254,10 +256,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                           onPressed: () async {
                             await load_food_data();
                             await load_weight_data();
+                            UserOneOut user = await UserOp.get_current_user_info();
                             spots = make_plot(weights);
                             double max_weight = get_max_weight(weights);
                             setState(()  {
-                              currentScreen = HomeScreen(foods: foods, weights: spots, max_weight: max_weight);
+                              currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
                               currentTab = 4;
                             });
                           },

@@ -38,14 +38,12 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
     return Scaffold(
       backgroundColor: COLOR_WHITE,
       appBar: AppBar(
-        title: Text('CooKcal'),
+        iconTheme: IconThemeData(
+          color: COLOR_MINT, //change your color here
+        ),
+        title: Text('CooKcal', style: TextStyle(color: COLOR_MINT)),
         centerTitle: true,
-        backgroundColor: COLOR_DARKPURPLE,
-        actions: [
-          IconButton(onPressed: (){
-
-          }, icon: Icon(Icons.settings))
-        ],
+        backgroundColor: COLOR_VERYDARKPURPLE,
       ),
       body: LayoutBuilder(builder: (context, constraints) {
         return SingleChildScrollView(

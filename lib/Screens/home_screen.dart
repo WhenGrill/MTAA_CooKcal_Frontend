@@ -1,3 +1,4 @@
+import 'package:cookcal/HTTP/login_register.dart';
 import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/Food/foodEatlist_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
@@ -11,10 +12,12 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 import '../model/foodlist.dart';
 class HomeScreen extends StatefulWidget {
+  final UserOneOut user;
   final List<FoodListOut> foods;
   final List<FlSpot> weights;
   final double max_weight;
-  const HomeScreen({Key? key, required this.foods, required this.weights, required this.max_weight}) : super(key: key);
+  final int curr_weight;
+  const HomeScreen({Key? key, required this.foods, required this.weights, required this.curr_weight, required this.max_weight, required this.user}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -24,13 +27,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   late List<FoodListOut> foods = widget.foods;
   late List<FlSpot> weights = widget.weights;
+  late UserOneOut user = widget.user;
+  late int curr_weight = widget.curr_weight;
 
   late AnimationController _animationController;
   late Animation<double> _animation;
   // TODO this
 
   late double max_weight = widget.max_weight;
-  int max_kcal = 1600;
+  int max_kcal = 0;
   double current_kcal = 0;
 
   @override
@@ -43,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         )
     );
     current_kcal = calculate_eaten(foods);
+    max_kcal = calculate_max(curr_weight, user);
     _animation = Tween<double>(begin: 0, end: current_kcal / max_kcal * 100).animate(_animationController)
     ..addListener(() {
       setState(() {
@@ -79,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                '${_animation.value.toInt()}%',
                                style: const TextStyle(
                                  fontSize: 50,
-                                 color: COLOR_WHITE,
+                                 color: COLOR_MINT,
                                ),
                              ),
                            ),
@@ -88,57 +94,121 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                    ),
                  ),
                  ),
-                Container(
-                  height: constraints.maxHeight * 0.58,
-                  color:  COLOR_WHITE,
-                  width: constraints.maxWidth,
-                  child: Column(
-                    children: [
-                      Container(
-                        height: constraints.maxHeight * 0.45,
-                        color: COLOR_WHITE,
-                        width: constraints.maxWidth,
+                Column(
+                  children: [
+                    addVerticalSpace(constraints.maxHeight * 0.02),
+                    Card(
+                        shadowColor: COLOR_PURPLE,
+                        color: COLOR_VERYDARKPURPLE,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        elevation: 20,
                         child: Column(
                           children: [
-                            addVerticalSpace(constraints.maxHeight * 0.05),
-                            Container(
-                              width: 300,
-                              height: 200,
-                              child: LineChart(
-                                  LineChartData(
-                                      backgroundColor: COLOR_DARKPURPLE,
-                                      maxY: max_weight+20,
-                                      maxX: weights.length.toDouble()-1,
-                                      minY: null,
-                                      minX: 0,
-                                      titlesData: FlTitlesData(
-                                        bottomTitles: SideTitles(showTitles: false),
-                                        leftTitles: SideTitles(showTitles: true),
-                                        rightTitles: SideTitles(showTitles: true),
-                                        topTitles: SideTitles(showTitles: false),
+                            const Text(
+                              "You ate today",
+                              style: TextStyle(
+                                  color: COLOR_MINT,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                              child: Container(
+                                  width: constraints.maxWidth * 0.85,
+                                  height: constraints.maxHeight * 0.1,
+                                  child: Container(
+                                    color: COLOR_DARKPURPLE,
+                                    child: Center(
+                                      child: Text(
+                                          "${current_kcal.toInt()} / ${max_kcal}",
+                                              style: TextStyle(color: COLOR_MINT,
+                                              fontSize: 40,
+                                                fontWeight: FontWeight.bold
+                                              ),
                                       ),
-                                      lineBarsData: [
-                                        LineChartBarData(
-                                            spots: weights,
-                                            isCurved: true,
-                                            colors: [COLOR_MINT, COLOR_PURPLE, COLOR_MINT, COLOR_PURPLE,COLOR_MINT],
-                                            barWidth: 5,
-                                            belowBarData: BarAreaData(
-                                              show: true,
-                                              colors: gradientColors.map((e) => e.withOpacity(0.3)).toList(),
-                                            )
-                                        )
-                                      ]
-                                  )
-                              )
+                                    )
+                                  ),
+
+                              ),
+                            ),
+                            const Text(
+                              "Kcal",
+                              style: TextStyle(
+                                  color: COLOR_MINT,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15
+                              ),
                             )
                           ],
+                        )
+                    ),
+                    addVerticalSpace(constraints.maxHeight * 0.02),
+                    Card(
+                        shadowColor: COLOR_MINT,
+                        color: COLOR_VERYDARKPURPLE,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                      ),
-                      addVerticalSpace(constraints.maxHeight*0.02),
-                    ],
-                  )
-                )
+                        elevation: 20,
+                        child: Column(
+                          children: [
+                            Text(
+                              "Your weight journey",
+                              style: TextStyle(
+                                  color: COLOR_MINT,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                              child: Container(
+                                  width: constraints.maxWidth * 0.85,
+                                  height: constraints.maxHeight * 0.25,
+                                  child: LineChart(
+                                      LineChartData(
+                                          backgroundColor: COLOR_DARKPURPLE,
+                                          maxY: max_weight+20,
+                                          maxX: weights.length.toDouble()-1,
+                                          minY: null,
+                                          minX: 0,
+                                          titlesData: FlTitlesData(
+                                            show: false,
+                                          ),
+                                          lineBarsData: [
+                                            LineChartBarData(
+                                                spots: weights,
+                                                isCurved: true,
+                                                colors: [COLOR_MINT, COLOR_PURPLE, COLOR_MINT, COLOR_PURPLE,COLOR_MINT],
+                                                barWidth: 5,
+                                                belowBarData: BarAreaData(
+                                                  show: true,
+                                                  colors: gradientColors.map((e) => e.withOpacity(0.3)).toList(),
+                                                )
+                                            )
+                                          ]
+
+                                      )
+                                  )
+                              ),
+                            ),
+                            Text(
+                              "Kg",
+                              style: TextStyle(
+                                  color: COLOR_MINT,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15
+                              ),
+                            )
+                          ],
+                        )
+                    )
+                  ],
+                ),
+
               ]
             )
         );

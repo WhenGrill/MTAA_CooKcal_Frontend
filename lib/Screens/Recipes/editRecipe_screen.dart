@@ -55,14 +55,12 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
     {
       return Scaffold(
           appBar: AppBar(
-            title: Text('CooKcal'),
+            iconTheme: IconThemeData(
+              color: COLOR_MINT, //change your color here
+            ),
+            title: Text('CooKcal', style: TextStyle(color: COLOR_MINT)),
             centerTitle: true,
-            backgroundColor: COLOR_DARKPURPLE,
-            actions: [
-              IconButton(onPressed: (){
-
-              }, icon: Icon(Icons.settings))
-            ],
+            backgroundColor: COLOR_VERYDARKPURPLE,
           ),
           body: Container(
               width: constraints.maxWidth,

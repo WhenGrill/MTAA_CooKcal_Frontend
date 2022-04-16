@@ -5,12 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 // green -> 2C003E | white -> eeeeff | creame -> FE346E
 const COLOR_BLACK = Colors.black;
 const COLOR_MINT = Color(0xffB4ECE3);
-const COLOR_DARKMINT = Color(0xff35858B);
+const COLOR_DARKMINT = Color(0xff87b0a9);
+const COLOR_VERYDARKMINT = Color(0xff516965);
 const COLOR_WHITE = Color(0xffeeeeff);
 const COLOR_DARKPURPLE = Color(0xff2C003E);
 const COLOR_PURPLE = Color(0xff550078);
 const COLOR_GREY = Color(0xffeeeeee);
-const COLOR_VERYDARKPURPLE = Color(0xff170121);
+const COLOR_VERYDARKPURPLE = Color(0xff1e012b);
 
 OutlineInputBorder formBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(20.0),
