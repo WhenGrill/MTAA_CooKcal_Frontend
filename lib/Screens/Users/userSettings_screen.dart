@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cookcal/HTTP/users_operations.dart';
+import 'package:cookcal/HTTP/weight_operations.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
 import 'package:cookcal/Utils/api_const.dart';
@@ -14,19 +15,24 @@ import 'package:provider/provider.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 
 import '../../HTTP/login_register.dart';
 import '../../model/users.dart';
+import '../../model/weight.dart';
 import '../MainNavigation_screen.dart';
+
+
 
 class UserSettingsScreen extends StatefulWidget {
   final UserOneOut user;
   final ImageProvider? uImage;
   final int? uId;
   final String? token;
+  final WeightOut? currUserWeight;
 
-  const UserSettingsScreen({Key? key, required this.user, required this.uImage, required this.uId, required this.token}) : super(key: key);
+  const UserSettingsScreen({Key? key, required this.user, required this.uImage, required this.uId, required this.token, required this.currUserWeight}) : super(key: key);
   @override
   _UserSettingsScreenState createState() => _UserSettingsScreenState();
 }
@@ -36,10 +42,12 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   late ImageProvider? uImage = widget.uImage;
   late int? uId = widget.uId;
   late String? token = widget.token;
+  late WeightOut? currUserWeight = widget.currUserWeight;
 
   TextEditingController ipController = TextEditingController();
   TextEditingController goalweightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
+  TextEditingController currweightController = TextEditingController();
 
   late String stateChose = stateItems[user.state];
   late bool isChecked = user.is_nutr_adviser;
@@ -47,7 +55,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  UsersOperations obj = UsersOperations();
+  UsersOperations UserOp = UsersOperations();
+  WeightOperations WeightOp = WeightOperations();
 
   File? image;
 
@@ -123,13 +132,26 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                   height: 105.0,
                                   decoration: const BoxDecoration(),
                                   // child: uImage != null ? CircleAvatar(backgroundImage: uImage!) : assert_to_image(context, user_icons[user.gender])
-                                  child: CachedNetworkImage(
+                                  child: /*uImage != null ? CircleAvatar(backgroundImage: uImage!) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
+                                      assert_to_image(context, user_icons[user.gender])))*/
+                                  ClipOval(
+                                    child: Container(
+                                        width: 200,
+                                        height: 200,
+                                        alignment: Alignment.center,
+                                        color: COLOR_WHITE,
+                                        child: uImage != null ? Image.network(apiURL + '/users/' + uId.toString() + '/image', headers: {'authorization': 'Bearer ' + token!}) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
+                                            assert_to_image(context, user_icons[user.gender])))
+                                    ),
+                                  ),
+
+                                  /*CachedNetworkImage(
                                     imageUrl: apiURL + '/users/' + uId.toString() + '/image',
                                     placeholder: (context, url) => const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) => assert_to_image(context, user_icons[user.gender]),  //// YOU CAN CREATE YOUR OWN ERROR WIDGET HERE
                                     httpHeaders: {'authorization': 'Bearer ' + token!},
                                     imageBuilder: (context, imageProvider) =>  CircleAvatar(backgroundImage: imageProvider)
-                                  )
+                                  )*/
                                 ),
                                 ElevatedButton(onPressed: () async{
                                   showDialog(
@@ -147,15 +169,18 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                               child: Column(
                                                 children: [
                                                   Stack(
-                                                    children: [
-                                                    Container(
-                                                    width: 105.0,
-                                                        height: 105.0,
-                                                        decoration: const BoxDecoration(),
-                                                        child: uImage != null ? CircleAvatar(backgroundImage: uImage!) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
-                                                            assert_to_image(context, user_icons[user.gender]))) //DecorationImage(image: AssetImage('assets/images/man.png'), fit: BoxFit.cover),
-
-                                          ),
+                                                    children: [ /* uImage != null ? CircleAvatar(backgroundImage: uImage!) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
+                                                            assert_to_image(context, user_icons[user.gender]))) */
+                                                      ClipOval(
+                                                        child: Container(
+                                                          width: 100,
+                                                          height: 100,
+                                                          alignment: Alignment.center,
+                                                          color: COLOR_WHITE,
+                                                          child: uImage != null ? Image.network(apiURL + '/users/' + uId.toString() + '/image', headers: {'authorization': 'Bearer ' + token!}) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
+                                                              assert_to_image(context, user_icons[user.gender])))
+                                                        ),
+                                                      ),
                                                     ],
                                                   ),
                                                   addVerticalSpace(constraints.maxHeight * 0.02),
@@ -180,7 +205,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                         child: FloatingActionButton(
                                                           backgroundColor: COLOR_DARKPURPLE,
                                                           onPressed: () async{
-                                                            var resp = await obj.upload_user_image(image!);
+                                                            var resp = await UserOp.upload_user_image(image!);
                                                             setState(() {
 
                                                             });
@@ -234,7 +259,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                         height: 50,
                                                         child: FloatingActionButton(
                                                           backgroundColor: COLOR_MINT,
-                                                          onPressed: () {
+                                                          onPressed: () async{
+
                                                             Navigator.pop(context);
                                                           },
                                                           child: const Icon(Icons.arrow_back),
@@ -292,6 +318,112 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                             title: Text("${genderItems[user.gender]} "),
                             subtitle: Text("Gender"),
                           )
+                      ),
+                      Card(
+                        child: ListTile(
+                            onLongPress: () {
+                              setState(() {
+                                showDialog(
+
+                                    context: context,
+                                    builder: (context){
+                                      return AlertDialog(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                          backgroundColor: COLOR_WHITE,
+                                          content:
+                                          SingleChildScrollView(
+                                            physics: NeverScrollableScrollPhysics(),
+                                            child:
+                                            Container(
+                                              width: constraints.maxWidth * 0.4,
+                                              height: constraints.maxHeight * 0.28,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.all(5),
+                                                      child: Form(
+                                                          key: _formKey,
+                                                          child: TextFormField(
+                                                            controller: currweightController,
+                                                            validator: (value) {
+                                                              if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value!) || value == '') {
+                                                                return '        Please enter a valid weight';
+
+                                                              }
+                                                              else{
+                                                                return null;
+                                                              }
+                                                            },
+                                                            decoration: InputDecoration(
+                                                              filled: true,
+                                                              fillColor: Colors.grey.shade200,
+                                                              hintText: webrtc_ip,
+                                                              focusedBorder: formBorder,
+                                                              errorBorder: formBorder,
+                                                              focusedErrorBorder: formBorder,
+                                                              enabledBorder: formBorder,
+                                                            ),
+                                                          )
+                                                      ),
+                                                    ),
+                                                    addVerticalSpace(constraints.maxHeight * 0.04),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child: FloatingActionButton(
+                                                            backgroundColor: COLOR_DARKPURPLE,
+                                                            onPressed: () async{
+                                                              if (!_formKey.currentState!.validate()){
+                                                                return;
+                                                              }
+                                                              await WeightOp.add_weight(double.parse(currweightController.text));
+                                                              setState(() {
+                                                                  Navigator.pop(context);
+                                                                }
+                                                              );
+
+                                                            },
+                                                            child: const Icon(Icons.check),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child: FloatingActionButton(
+                                                            backgroundColor: COLOR_MINT,
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child: const Icon(Icons.arrow_back),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                      );
+                                    }
+                                );
+                              });
+                            },
+                            title: Text(currUserWeight!.weight.toString()),
+                            subtitle: Text("Current weight"),
+                            trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Icon(Icons.edit),
+                                ])
+                        ),
                       ),
                       Card(
                           child: ListTile(
@@ -593,7 +725,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                           "state": ((stateChose == stateItems[user.state]) ? null : stateItems.indexOf(stateChose)),
                                                           "is_nutr_adviser": ((adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) ? null : !user.is_nutr_adviser)
                                                         };
-                                                        var ret = await obj.update_user_data(upUserData);
+                                                        var ret = await UserOp.update_user_data(upUserData);
 
                                                         setState(() {
                                                         });
@@ -705,7 +837,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   backgroundColor: Colors.red.shade700,
                                                   onPressed: () async {
                                                     try {
-                                                      await obj.delete_user_account();
+                                                      await UserOp.delete_user_account();
                                                       setState(() {
                                                       });
                                                       SharedPreferences prefs = await SharedPreferences.getInstance();

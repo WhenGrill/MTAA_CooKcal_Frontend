@@ -167,12 +167,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             actions: [
               IconButton(onPressed: () async{
                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                UsersOperations obj = UsersOperations();
-                UserOneOut user = await obj.get_current_user_info();
+                UsersOperations UserOp = UsersOperations();
+                WeightOperations WeightOp = WeightOperations();
+                UserOneOut user = await UserOp.get_current_user_info();
                   int? uId = prefs.getInt('user_id');
                   String? token = prefs.getString('token');
-                  ImageProvider? uImage = await obj.get_user_image(uId);
-                  await Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token)));
+                  ImageProvider? uImage = await UserOp.get_user_image(uId);
+                  WeightOut? currWeight = await  WeightOp.get_last_weightMeasure();
+                  await Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token, currUserWeight: currWeight)));
 
                   await load_weight_data();
                   spots = make_plot(weights);
