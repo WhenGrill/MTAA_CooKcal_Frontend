@@ -10,6 +10,7 @@ import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:cookcal/Screens/FoodList/foodlist_screen.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
+import '../Widgets/neomoprishm_box.dart';
 import '../model/foodlist.dart';
 class HomeScreen extends StatefulWidget {
   final UserOneOut user;
@@ -97,19 +98,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 Column(
                   children: [
                     addVerticalSpace(constraints.maxHeight * 0.02),
-                    Card(
-                        shadowColor: COLOR_PURPLE,
-                        color: COLOR_VERYDARKPURPLE,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        elevation: 20,
+                    Container(
+                        decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 15),
                         child: Column(
                           children: [
                             const Text(
                               "You ate today",
                               style: TextStyle(
-                                  color: COLOR_MINT,
+                                  color: COLOR_PURPLE,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15
                               ),
@@ -120,7 +116,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   width: constraints.maxWidth * 0.85,
                                   height: constraints.maxHeight * 0.1,
                                   child: Container(
-                                    color: COLOR_DARKPURPLE,
+                                    decoration: BoxDecoration(
+                                        color: COLOR_DARKPURPLE,
+                                        borderRadius: BorderRadius.circular(10)
+                                    ),
+
                                     child: Center(
                                       child: Text(
                                           "${current_kcal.toInt()} / ${max_kcal}",
@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             const Text(
                               "Kcal",
                               style: TextStyle(
-                                  color: COLOR_MINT,
+                                  color: COLOR_PURPLE,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15
                               ),
@@ -146,19 +146,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         )
                     ),
                     addVerticalSpace(constraints.maxHeight * 0.02),
-                    Card(
-                        shadowColor: COLOR_MINT,
-                        color: COLOR_VERYDARKPURPLE,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        elevation: 20,
+                    Container(
+                        decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 15),
                         child: Column(
                           children: [
                             Text(
                               "Your weight journey",
                               style: TextStyle(
-                                  color: COLOR_MINT,
+                                  color: COLOR_PURPLE,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15
                               ),
@@ -168,6 +163,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               child: Container(
                                   width: constraints.maxWidth * 0.85,
                                   height: constraints.maxHeight * 0.25,
+
                                   child: LineChart(
                                       LineChartData(
                                           backgroundColor: COLOR_DARKPURPLE,
@@ -198,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             Text(
                               "Kg",
                               style: TextStyle(
-                                  color: COLOR_MINT,
+                                  color: COLOR_PURPLE,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15
                               ),
