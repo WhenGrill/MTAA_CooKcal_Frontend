@@ -91,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         else if (value.length < 6){
                           return 'Password is too short';
                         }
-                        else if (RegExp(r'^.*[ \n\t]*.*$').hasMatch(value)){
+                        else if (RegExp(r'^.*[ \n\t]+.*$').hasMatch(value)){
                           return 'Password can not have blank space characters';
                         }
                         return null;

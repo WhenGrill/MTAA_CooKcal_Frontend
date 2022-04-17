@@ -59,6 +59,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   WeightOperations WeightOp = WeightOperations();
 
   File? image;
+  ImageProvider? uImagelocal;
 
   Future pickImage() async {
     try {
@@ -130,16 +131,16 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                   // child: uImage != null ? CircleAvatar(backgroundImage: uImage!) : assert_to_image(context, user_icons[user.gender])
                                   child: /*uImage != null ? CircleAvatar(backgroundImage: uImage!) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
                                       assert_to_image(context, user_icons[user.gender])))*/
-                                  ClipOval(
-                                    child: Container(
-                                        width: 200,
-                                        height: 200,
-                                        alignment: Alignment.center,
+
+                                  Container(
+                                        width: 600,
+                                        height: 600,
                                         color: COLOR_WHITE,
-                                        child: uImage != null ? Image.network(apiURL + '/users/' + uId.toString() + '/image', headers: {'authorization': 'Bearer ' + token!}) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
-                                            assert_to_image(context, user_icons[user.gender])))
+                                        child:
+                                        CircleAvatar(backgroundImage:
+                                        image != null ? FileImage(image!) : (uImage != null ? uImage! : FileImage(File(user_icons[user.gender])) as ImageProvider))
                                     ),
-                                  ),
+
 
                                   /*CachedNetworkImage(
                                     imageUrl: apiURL + '/users/' + uId.toString() + '/image',
@@ -167,16 +168,20 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   Stack(
                                                     children: [ /* uImage != null ? CircleAvatar(backgroundImage: uImage!) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
                                                             assert_to_image(context, user_icons[user.gender]))) */
-                                                      ClipOval(
-                                                        child: Container(
-                                                          width: 100,
+
+                                                     /* ClipOval(
+                                                        clipper: MyClipper(),
+
+                                                          child: image != null ? Image.file(image!, fit: BoxFit.fill) : (uImage != null ? Image(image: uImage!) : assert_to_image(context, user_icons[user.gender]))
+
+                                                      ),*/
+                                                      Container(
                                                           height: 100,
-                                                          alignment: Alignment.center,
-                                                          color: COLOR_WHITE,
-                                                          child: uImage != null ? Image.network(apiURL + '/users/' + uId.toString() + '/image', headers: {'authorization': 'Bearer ' + token!}) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
-                                                              assert_to_image(context, user_icons[user.gender])))
-                                                        ),
-                                                      ),
+                                                          width: 100,
+                                                          child:
+                                                      CircleAvatar(
+                                                        backgroundImage: image != null ? FileImage(image!) : (uImage != null ? uImage! : FileImage(File(user_icons[user.gender])) as ImageProvider),
+                                                      ))
                                                     ],
                                                   ),
                                                   addVerticalSpace(constraints.maxHeight * 0.02),
@@ -196,56 +201,43 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                     crossAxisAlignment: CrossAxisAlignment.center,
                                                     children: [
                                                       SizedBox(
-                                                        width: 50,
-                                                        height: 50,
-                                                        child: FloatingActionButton(
-                                                          backgroundColor: COLOR_DARKPURPLE,
-                                                          onPressed: () async{
-                                                            var resp = await UserOp.upload_user_image(image!);
-                                                            setState(() {
-
-                                                            });
-                                                            Navigator.pop(context);
-                                                            if (resp != null){
-                                                              final snackBar = SnackBar(backgroundColor: COLOR_MINT,
-                                                                  content: Row(
-                                                                    children: const [
-                                                                      Icon(Icons.check_circle),
-                                                                      SizedBox(width: 20),
-                                                                      Expanded(child: Text('Profile picture successfully uploaded',
-                                                                          style: TextStyle(color: COLOR_BLACK)))
-                                                                    ],
-                                                                  ));
-
-                                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                                            } else {
-                                                              final snackBar = SnackBar(backgroundColor:  Colors.red.shade700,
-                                                                  content: Row(
-                                                                    children: const [
-                                                                      Icon(Icons.cloud_off_rounded),
-                                                                      SizedBox(width: 20),
-                                                                      Expanded(child: Text('Failed to upload image!',
-                                                                          style: TextStyle(color: COLOR_BLACK)))
-                                                                    ],
-                                                                  ));
-
-                                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                                            }
-
-
-                                                          },
-                                                          child: const Icon(Icons.cloud_upload),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
                                                   width: 50,
                                                   height: 50,
                                                   child: FloatingActionButton(
                                                     backgroundColor: COLOR_DARKMINT,
                                                     onPressed: () async {
-                                                      setState(() {
-                                                        pickImage();
-                                                      });
+
+                                                      await pickImage();
+
+                                                      var resp = await UserOp.upload_user_image(image!);
+                                                      setState((){});
+                                                      Navigator.pop(context);
+                                                        if (resp != null){
+                                                          final snackBar = SnackBar(backgroundColor: COLOR_MINT,
+                                                              content: Row(
+                                                                children: const [
+                                                                  Icon(Icons.check_circle),
+                                                                  SizedBox(width: 20),
+                                                                  Expanded(child: Text('Profile picture successfully uploaded',
+                                                                      style: TextStyle(color: COLOR_BLACK)))
+                                                                ],
+                                                              ));
+
+                                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                        } else {
+                                                          final snackBar = SnackBar(backgroundColor:  Colors.red.shade700,
+                                                              content: Row(
+                                                                children: const [
+                                                                  Icon(Icons.cloud_off_rounded),
+                                                                  SizedBox(width: 20),
+                                                                  Expanded(child: Text('Failed to upload image!',
+                                                                      style: TextStyle(color: COLOR_BLACK)))
+                                                                ],
+                                                              ));
+
+                                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                        }
+
                                                       },
                                                     child: const Icon(Icons.photo_size_select_actual),
                                                   ),
