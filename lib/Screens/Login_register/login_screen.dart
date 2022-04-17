@@ -72,17 +72,18 @@ class _LoginScreenState extends State<LoginScreen> {
       resizeToAvoidBottomInset: false,
       body: LayoutBuilder(builder: (context, constraints){
         return Container(
+          color: COLOR_WHITE,
                 width: constraints.maxWidth,
                 height: constraints.maxHeight,
                 child: Column(
                     children: [
+                      addVerticalSpace(constraints.maxHeight*0.1),
                       Expanded(
                         flex: 8,
                         child: Stack(
                           fit: StackFit.expand,
                           children: [
                             Container(
-                              color: COLOR_DARKPURPLE,
 
                             ),
                             Image.asset("assets/images/logo.png"),
@@ -94,21 +95,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: const EdgeInsets.fromLTRB(10,5,10,5),
                           width: constraints.maxWidth,
                           color: COLOR_WHITE,
-                          height: constraints.maxHeight * 0.65,
+                          height: constraints.maxHeight * 0.55,
 
                           child: Column(
                             children: [
                               Container(
                                 margin: EdgeInsets.all(10),
                                 padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  border: Border.all(
-                                      color: COLOR_DARKMINT,// set border color
-                                      width: 3.0),   // set border width
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10.0)), // set rounded corner radius
-                                ),
+                                decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                                 child: TextField(
                                   controller: emailController,
                                   decoration: const InputDecoration(
@@ -117,21 +111,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                       color: COLOR_DARKPURPLE,
                                     ),
                                     hintText: 'E-mail',
-                                    border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      border: InputBorder.none
                                   ),
                                 ),
                               ),
                               Container(
                                 margin: EdgeInsets.all(10),
                                 padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  border: Border.all(
-                                      color: COLOR_DARKPURPLE,// set border color
-                                      width: 3.0),   // set border width
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10.0)), // set rounded corner radius
-                                ),
+                                decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                                 child: TextField(
                                   controller: passController,
                                   obscureText: true,
@@ -141,7 +130,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       color: COLOR_DARKMINT,
                                     ),
                                     hintText: 'Password',
-                                    border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      border: InputBorder.none
                                   ),
                                 ),
                               ),
@@ -151,10 +142,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 200,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      fixedSize: const Size(200,80),
+                                      fixedSize: Size(constraints.maxWidth * 0.8,constraints.maxHeight *0.02),
                                       primary: COLOR_DARKPURPLE,
                                       shadowColor: Colors.grey.shade50,
-                                      textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                                      textStyle: const TextStyle(fontSize: 30),
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(50)
                                       )
@@ -230,7 +221,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     MaterialPageRoute(builder: (context) => const RegisterScreen()),
                                   );
                                 },
-                                child: Text('or register HERE!'),
+                                child: Text('or register HERE!',
+                                  style: TextStyle(fontSize: 16),
+                                ),
                               )
                             ],
                           )
