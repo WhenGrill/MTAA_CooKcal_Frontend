@@ -22,6 +22,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
 
   final myController = TextEditingController();
   UsersOperations usersOperations = UsersOperations();
+  RecipesOperations recipesOp = RecipesOperations();
   List<RecipeOut> recipes = [];
   late int curr_id = 0;
   String last_text = "";
@@ -134,7 +135,8 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                         child: ListTile(
                           trailing: const Icon(Icons.arrow_forward_ios_rounded),
                           onTap: () async {
-                            await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id)));
+                            ImageProvider? rImage = await recipesOp.get_recipe_image(recipe.id);
+                            await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id, rImage: rImage,)));
                             await load_data(last_text);
                             setState(() {});
                             print('set has been stated');

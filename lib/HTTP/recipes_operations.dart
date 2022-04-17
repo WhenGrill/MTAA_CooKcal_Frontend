@@ -1,5 +1,6 @@
 import 'package:cookcal/model/recipes.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Utils/api_const.dart';
@@ -79,6 +80,34 @@ class RecipesOperations {
     d.options.headers['authorization'] = 'Bearer ' + token!;
     Response response = await d.delete(apiURL + '/recipes/' + recipe_id.toString());
     print(response.statusCode);
+  }
+
+  get_recipe_image(int? id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      if (id != null) {
+        Dio d = Dio();
+        d.options.headers['authorization'] = 'Bearer ' + token!;
+
+        Response response = await d.get(apiURL + '/recipes/' + id.toString() + '/image/');
+        print(response.statusCode);
+        if (response.statusCode != 200){
+          return null;
+        } else {
+          ImageProvider? img = NetworkImage(
+              apiURL + '/users/' + id.toString() + '/image/',
+              headers: {'authorization': 'Bearer ' + token});
+          return img;
+        }
+      } else {
+        return null;
+      }
+    }
+    catch (e) {
+      return null;
+    }
   }
 
 }

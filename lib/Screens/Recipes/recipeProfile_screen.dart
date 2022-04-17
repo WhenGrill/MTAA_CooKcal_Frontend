@@ -22,7 +22,8 @@ import 'editRecipe_screen.dart';
 class RecipeProfileScreen extends StatefulWidget {
   final RecipeOut recipe;
   final int curr_id;
-  const RecipeProfileScreen({Key? key, required this.recipe, required this.curr_id}) : super(key: key);
+  final ImageProvider? rImage;
+  const RecipeProfileScreen({Key? key, required this.recipe, required this.curr_id, required this.rImage}) : super(key: key);
   @override
   _RecipeProfileScreenState createState() => _RecipeProfileScreenState();
 }
@@ -30,6 +31,7 @@ class RecipeProfileScreen extends StatefulWidget {
 class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
   late RecipeOut recipe = widget.recipe;
   late int curr_id = widget.curr_id;
+  late ImageProvider? rImage = widget.rImage;
   File? image;
 
   RecipesOperations recipesOperations = RecipesOperations();
@@ -68,11 +70,9 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                             width: 7.0,
                           ),
                         ),
-                        child: image != null
-                            ? Image.file(
-                            image!,
-                            fit: BoxFit.cover
-                        ): assert_to_image(context, food_icons[random(0, 4)]),
+                        child: image != null ? Image.file(image!, fit: BoxFit.cover):
+                        (rImage != null ? Image(image: rImage!) : assert_to_image(context, food_icons[random(0, 4)]))
+                        ,
                       ),
                   ],
                 ),
