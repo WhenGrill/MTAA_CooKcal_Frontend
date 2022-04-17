@@ -114,6 +114,29 @@ Color getColor(Set<MaterialState> states) {
   }
   return COLOR_DARKPURPLE;
 }
+
+class MyClipper extends CustomClipper<Rect>{
+  @override
+  Rect getClip(Size size) {
+    final epicenter = new Offset(size.width, size.height);
+
+    // Calculate distance from epicenter to the top left corner to make sure clip the image into circle.
+
+    final distanceToCorner = epicenter.dy;
+
+    final radius = distanceToCorner;
+    final diameter = radius;
+
+    return new Rect.fromLTWH(
+        epicenter.dx - radius, epicenter.dy - radius, diameter, diameter);
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Rect> oldClipper) {
+    return true;
+  }
+  
+}
 /*Future scanBarcode() async {
   String barcode;
 
