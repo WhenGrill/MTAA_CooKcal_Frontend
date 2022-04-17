@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'dart:convert';
 
 import '../../HTTP/login_register.dart';
+import '../../Widgets/neomoprishm_box.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -63,35 +64,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   const Padding(padding: EdgeInsets.all(10)),
                   Container(
+                    padding: EdgeInsets.all(10),
                     margin: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                     child: TextFormField(
                       controller: emailController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Email field is required';
+                          return 'E-mail field is required';
                         }
                         else if (!EmailValidator.validate(value)){
                           return 'E-mail format is not correct';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        icon: const Icon(
+                      decoration: const InputDecoration(
+                        icon: Icon(
                           Icons.local_post_office_outlined,
-                          color: COLOR_DARKPURPLE,
+                          color: COLOR_PURPLE,
                         ),
                         hintText: 'Enter your E-mail',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
                       ),
                     ),
                   ),
                   Container(
+                    padding: EdgeInsets.all(10),
                     margin: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                     child: TextFormField(
                       controller: passController,
                       validator: (value) {
@@ -101,76 +103,74 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         else if (value.length < 6){
                           return 'Password is too short';
                         }
+                        else if (RegExp(r'^.*[ \n\t]*.*$').hasMatch(value)){
+                          return 'Password can not have blank space characters';
+                        }
                         return null;
                       },
                       obscureText: true,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        icon: const Icon(
+                      decoration: const InputDecoration(
+                        icon: Icon(
                           Icons.key,
-                          color: COLOR_DARKPURPLE,
+                          color: COLOR_PURPLE,
                         ),
                         hintText: 'Password',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
                       ),
                     ),
                   ),Container(
+                    padding: EdgeInsets.all(10),
                     margin: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                     child: TextFormField(
                       controller: fnameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'First Name field is required';
                         }
-                        else if (!RegExp(r'^[A-Za-z]{2,}$').hasMatch(value)){
+                        else if (!RegExp(r'^[ľščťžýáíéďôäňŕĺóúĽŠČŤŽÝÁÍÉĎÔÄŇŔĹÓÚA-Za-z0-9]{2,50}$').hasMatch(value)){
                           return 'Please enter a valid name';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        icon: const Icon(
+                      decoration: const InputDecoration(
+                        icon: Icon(
                           Icons.account_circle_outlined,
-                          color: COLOR_DARKPURPLE,
+                          color: COLOR_PURPLE,
                         ),
                         hintText: 'First Name',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
                       ),
                     ),
                   ),
                   Container(
+                    padding: EdgeInsets.all(10),
                     margin: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                     child: TextFormField(
                       controller: lnameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Last Name field is required';
                         }
-                        else if (!RegExp(r'^[A-Za-z]{2,}$').hasMatch(value)){
+                        else if (!RegExp(r'^[ľščťžýáíéďôäňŕĺóúĽŠČŤŽÝÁÍÉĎÔÄŇŔĹÓÚA-Za-z0-9]{2,50}$').hasMatch(value)){
                           return 'Please enter a valid name';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        icon: const Icon(
+                      decoration: const InputDecoration(
+                        icon: Icon(
                           Icons.account_circle_rounded,
-                          color: COLOR_DARKPURPLE,
+                          color: COLOR_PURPLE,
                         ),
                         hintText: 'Last Name',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
                       ),
                     ),
                   ),
@@ -180,17 +180,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: <Widget>[
                       const Text(
                         "Choose a gender:",
-                        textScaleFactor: 1.2,
+                        style: TextStyle(
+                            color: COLOR_DARKPURPLE,
+                          fontSize: 17
+                        ),
                       ),
                       addHorizontalSpace(15),
                       DropdownButton<String>(
                         alignment: Alignment.center,
                         hint: const Text('Select your gender'),
-                        dropdownColor: Colors.grey.shade200,
+                        dropdownColor: COLOR_WHITE,
+                        focusColor: COLOR_WHITE,
                         value: valueChose,
                         style: const TextStyle(
                             fontSize: 20,
-                            color: Colors.black
+                            color: COLOR_PURPLE
                         ),
                         items: genderItems.map((valueItem) {
                           return DropdownMenuItem<String>(
@@ -207,7 +211,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ]
                 ),
                   Container(
-                    margin: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                     child: TextFormField(
                       controller: ageController,
                       validator: (value) {
@@ -215,108 +221,104 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Age field is required';
                         }
-                        else if ((!RegExp(r'^[1-9]+[0-9]*$').hasMatch(value)) || (int.parse(value) < 1)){
-                          print("here");
+                        else if ((!RegExp(r'^[1-9]+[0-9]*$').hasMatch(value)) || !(int.parse(value) < 120)){
                           return 'Please enter a valid age';
+                        }
+                        else if ((int.parse(value) < 10)){
+                          return 'Age requirements do not met (at least 10 years old)';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        icon: const Icon(
+                      decoration: const InputDecoration(
+                        icon: Icon(
                           Icons.access_time,
-                          color: COLOR_DARKPURPLE,
+                          color: COLOR_PURPLE,
                         ),
                         hintText: 'Age',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
                       ),
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                     child: TextFormField(
                       controller: currweightController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Current Weight field is required';
                         }
-                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) < 5)){
+                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) < 5) || (double.parse(value)>700)){
                           return 'Please enter a valid weight';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        icon: const Icon(
+                      decoration: const InputDecoration(
+                        icon: Icon(
                           Icons.restaurant,
-                          color: COLOR_DARKPURPLE,
+                          color: COLOR_PURPLE,
                         ),
-                        hintText: 'Current Weight',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
+                        hintText: 'Current Weight in Kg',
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
                       ),
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                     child: TextFormField(
                       controller: goalweightController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Goal Weight field is required';
                         }
-                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) < 5)){
+                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) < 5) || (double.parse(value)>700)){
                           return 'Please enter a valid weight';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        icon: const Icon(
+                      decoration: const InputDecoration(
+                        icon: Icon(
                           Icons.restaurant_menu,
-                          color: COLOR_DARKPURPLE,
+                          color: COLOR_PURPLE,
                         ),
-                        hintText: 'Goal Weight',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
+                        hintText: 'Goal Weight in Kg',
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
                       ),
                     ),
                   ),
                   Container(
+                    padding: EdgeInsets.all(10),
                     margin: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                     child: TextFormField(
                       controller: heightController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Height field is required';
                         }
-                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || double.parse(value) < 40 || double.parse(value) > 300){
+                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || double.parse(value) < 30 || double.parse(value) > 300){
                           return 'Please enter a valid height';
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        icon: const Icon(
+                      decoration: const InputDecoration(
+                        icon: Icon(
                           Icons.accessibility_new_outlined,
-                          color: COLOR_DARKPURPLE,
+                          color: COLOR_PURPLE,
                         ),
                         hintText: 'Height in CM',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
                       ),
                     ),
                   ),
@@ -327,6 +329,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const Text(
                         "Are you a nutritonal adviser?",
                       textScaleFactor: 1.2,
+                      style: TextStyle(
+                        color: COLOR_PURPLE
+                      ),
                     ),
                     Checkbox(
                       checkColor: Colors.white,
@@ -392,7 +397,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: const Text(
                           'Register now!',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                         ),
                       ),
                     ),

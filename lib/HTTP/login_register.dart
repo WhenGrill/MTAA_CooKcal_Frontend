@@ -32,8 +32,8 @@ class Userauth with ChangeNotifier{
       */
       return response;
     }
-    catch (e) {
-      print(e);
+    on DioError catch (e) {
+      return e.response;
     }
   }
 

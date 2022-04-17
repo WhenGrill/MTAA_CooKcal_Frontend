@@ -52,11 +52,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     return LayoutBuilder(builder: (context, constraints)
     {
       return Scaffold(
-        body: Container(
-          width: constraints.maxWidth,
-          height: constraints.maxHeight,
-          color: COLOR_WHITE,
-          child: SingleChildScrollView(
+        backgroundColor: COLOR_WHITE,
+        body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Form(
               key: _formKey,
@@ -109,122 +106,122 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   Container(
                     margin: EdgeInsets.fromLTRB(15, 15, 15, 7.5),
                     decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
-                        child: Container(
-                            margin: const EdgeInsets.fromLTRB(10,10,10,10),
-                            child: Column(
-                              children: [
-                                const Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    "Title",
-                                    style: TextStyle(
-                                      fontSize: 23,
-                                    ),
-                                  ),
+                    child: Container(
+                        margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                        child: Column(
+                          children: [
+                            const Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Title",
+                                style: TextStyle(
+                                  fontSize: 23,
                                 ),
-                                TextFormField(
-                                    controller: titleController,
-                                    keyboardType: TextInputType.multiline,
-                                    minLines: 1,
-                                    maxLines: null,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Title field is required';
-                                      }
-                                      else if (!RegExp(r'^[ľščťžýáíéďôäňŕĺóúĽŠČŤŽÝÁÍÉĎÔÄŇŔĹÓÚA-Za-z0-9 ]{2,80}$').hasMatch(value)){
-                                        return 'Title too short or too long';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: const InputDecoration(
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      border: InputBorder.none
-                                    )
-                                ),
-                              ],
-                            )
+                              ),
+                            ),
+                            TextFormField(
+                                controller: titleController,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: null,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Title field is required';
+                                  }
+                                  else if (!RegExp(r'^[ľščťžýáíéďôäňŕĺóúĽŠČŤŽÝÁÍÉĎÔÄŇŔĹÓÚA-Za-z0-9]{2,80}$').hasMatch(value)){
+                                    return 'Title too short or too long';
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    border: InputBorder.none
+                                )
+                            ),
+                          ],
+                        )
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(15, 15, 15, 7.5),
                     decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
-                        child: Container(
-                            margin: const EdgeInsets.fromLTRB(10,10,10,10),
-                            child: Column(
-                              children: [
-                                const Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    "Ingredients",
-                                    style: TextStyle(
-                                      fontSize: 23,
-                                    ),
-                                  ),
+                    child: Container(
+                        margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                        child: Column(
+                          children: [
+                            const Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Ingredients",
+                                style: TextStyle(
+                                  fontSize: 23,
                                 ),
-                                TextFormField(
-                                    controller: ingredientsController,
-                                    keyboardType: TextInputType.multiline,
-                                    minLines: 3,
-                                    maxLines: null,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Ingredients field is required';
-                                      }
-                                      else if (value.length < 10){
-                                        return 'Please enter at least 10 characters';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: const InputDecoration(
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        border: InputBorder.none
-                                    )
-                                ),
-                              ],
-                            )
+                              ),
+                            ),
+                            TextFormField(
+                                controller: ingredientsController,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 3,
+                                maxLines: null,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Ingredients field is required';
+                                  }
+                                  else if (value.length < 10){
+                                    return 'Please enter at least 10 characters';
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    border: InputBorder.none
+                                )
+                            ),
+                          ],
+                        )
                     ),
                   ),
                   Container(
                       margin: EdgeInsets.fromLTRB(15, 15, 15, 7.5),
-                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
+                      decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
                       child: Container(
-                            margin: const EdgeInsets.fromLTRB(10,10,10,10),
-                            child: Column(
-                              children: [
-                                const Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    "Instructions",
-                                    style: TextStyle(
-                                      fontSize: 23,
-                                    ),
+                          margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                          child: Column(
+                            children: [
+                              const Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  "Instructions",
+                                  style: TextStyle(
+                                    fontSize: 23,
                                   ),
                                 ),
-                                TextFormField(
-                                    controller: instructionsController,
-                                    keyboardType: TextInputType.multiline,
-                                    minLines: 7,
-                                    maxLines: null,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Ingredients field is required';
-                                      }
-                                      else if (value.length < 10){
-                                        return 'Please enter at least 10 characters';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: const InputDecoration(
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        border: InputBorder.none
-                                    )
-                                ),
-                              ],
-                            )
-                        )
+                              ),
+                              TextFormField(
+                                  controller: instructionsController,
+                                  keyboardType: TextInputType.multiline,
+                                  minLines: 7,
+                                  maxLines: null,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Ingredients field is required';
+                                    }
+                                    else if (value.length < 10){
+                                      return 'Please enter at least 10 characters';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: const InputDecoration(
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      border: InputBorder.none
+                                  )
+                              ),
+                            ],
+                          )
+                      )
                   ),
                   Container(
                     margin: EdgeInsets.all(10),
@@ -247,7 +244,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           border: InputBorder.none,
-                        hintText: "Kcal / 100g"
+                          hintText: "Kcal / 100g"
                       ),
                     ),
                   ),
@@ -295,11 +292,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       child: const Text('Upload Recipe'),
                     ),
                   ),
-                addVerticalSpace(constraints.maxHeight * 0.07)
+                  addVerticalSpace(constraints.maxHeight * 0.07)
                 ],
               ),
             )
-          )
         )
         );
     }

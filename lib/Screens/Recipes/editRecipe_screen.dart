@@ -57,7 +57,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
       return Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(
-              color: COLOR_MINT, //change your color here
+              color: Colors.white, //change your color here
             ),
             title: Text('CooKcal', style: TextStyle(color: COLOR_MINT)),
             centerTitle: true,

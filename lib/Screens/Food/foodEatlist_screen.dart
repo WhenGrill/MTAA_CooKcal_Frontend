@@ -152,32 +152,29 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                                               Form(
                                                 key: _formKey,
                                                 child: Container(
+                                                  decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2, 10),
                                                   margin: const EdgeInsets.all(10),
-                                                  child: TextFormField(
-                                                    controller: gramsControler,
-                                                    validator: (value) {
-                                                      if (value == null || value.isEmpty) {
-                                                        return 'Enter food measurement';
-                                                      }
-                                                      else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value)){
-                                                        return 'Please enter a valid number';
-                                                      }
-                                                      return null;
-                                                    },
-                                                    decoration: InputDecoration(
-                                                      filled: true,
-                                                      fillColor: Colors.grey.shade200,
-                                                      icon: const Icon(
-                                                        Icons.set_meal_sharp,
-                                                        color: COLOR_DARKPURPLE,
+                                                  child: Center(
+                                                    child: TextFormField(
+                                                      textAlign: TextAlign.center,
+                                                      controller: gramsControler,
+                                                      validator: (value) {
+                                                        if (value == null || value.isEmpty) {
+                                                          return 'Enter food measurement';
+                                                        }
+                                                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value)){
+                                                          return 'Please enter a valid number';
+                                                        }
+                                                        return null;
+                                                      },
+                                                      decoration: InputDecoration(
+                                                          hintText: 'Amount in grams',
+                                                          enabledBorder: InputBorder.none,
+                                                          focusedBorder: InputBorder.none,
+                                                          border: InputBorder.none
                                                       ),
-                                                      hintText: 'Amount in grams',
-                                                      focusedBorder: formBorder,
-                                                      errorBorder: formBorder,
-                                                      focusedErrorBorder: formBorder,
-                                                      enabledBorder: formBorder,
                                                     ),
-                                                  ),
+                                                  )
                                                 ),
                                               ),
                                               addVerticalSpace(constraints.maxHeight * 0.02),
@@ -223,6 +220,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                                                     child: FloatingActionButton(
                                                       backgroundColor: COLOR_MINT,
                                                       onPressed: () {
+                                                        gramsControler.text = "";
                                                         Navigator.pop(context);
                                                       },
                                                       child: const Icon(Icons.arrow_back),

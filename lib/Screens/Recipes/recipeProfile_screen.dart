@@ -84,7 +84,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                         child: Text('${recipe.title}',
-                          style: TextStyle(fontSize: 25),
+                          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: COLOR_PURPLE),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 5,
                         ),

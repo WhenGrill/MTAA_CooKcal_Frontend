@@ -4,8 +4,10 @@ import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+import 'package:cookcal/Widgets/mySnackBar.dart';
 import 'package:cookcal/model/weight.dart';
 import 'package:dio/dio.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
 
-  bool _isElevated = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   var user_auth = Userauth();
   FoodListOperations foodListOperations = FoodListOperations();
@@ -72,142 +74,127 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: COLOR_WHITE,
       body: LayoutBuilder(builder: (context, constraints){
         return SingleChildScrollView(
-          child: Column(
-                  children: [
-                    addVerticalSpace(constraints.maxHeight*0.1),
-                    Container(
-                      width: 250,
-                      height: 250,
-                      child: Image.asset("assets/images/logo.png"),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
-                      child: TextField(
-                        controller: emailController,
-                        decoration: const InputDecoration(
-                            icon: Icon(
-                              Icons.local_post_office_outlined,
-                              color: COLOR_DARKPURPLE,
-                            ),
-                            hintText: 'E-mail',
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            border: InputBorder.none
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
-                      child: TextField(
-                        controller: passController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                            icon: Icon(
-                              Icons.key_outlined,
-                              color: COLOR_DARKMINT,
-                            ),
-                            hintText: 'Password',
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            border: InputBorder.none
-                        ),
-                      ),
-                    ),
-                    addVerticalSpace(constraints.maxHeight * 0.1),
-                    ButtonTheme(
-                      minWidth: 500,
-                      height: 200,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            fixedSize: Size(constraints.maxWidth * 0.8,constraints.maxHeight *0.02),
-                            primary: COLOR_DARKPURPLE,
-                            shadowColor: Colors.grey.shade50,
-                            textStyle: const TextStyle(fontSize: 30),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50)
-                            )
-                        ),
-                        onPressed: () async {
-                          var response = await user_auth.login(UserLogin(username: emailController.text, password: passController.text));
-                          if (response != null){
-
-                            load_food_data();
-                            load_weight_data();
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => MainNavigationScreen(foods: foods, weights: [])),
-                            );
-                          }
-                          else{
-                            showDialog(
-                                context: context,
-                                builder: (context){
-                                  return AlertDialog(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                    backgroundColor: COLOR_WHITE,
-                                    content: Container(
-                                      width: constraints.maxWidth * 0.8,
-                                      height: constraints.maxHeight * 0.12,
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Column(
-                                          children: [
-                                            const Text(
-                                              "Invalid E-mail or Password",
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: COLOR_BLACK,
-                                                  fontSize: 20
-                                              ),
-                                            ),
-                                            addVerticalSpace(constraints.maxHeight * 0.01),
-                                            SizedBox(
-                                              width: 50,
-                                              height: 50,
-                                              child: FloatingActionButton(
-                                                backgroundColor: COLOR_MINT,
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Icon(Icons.arrow_back),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                            );
-                          }
-                        },
-                        child: Text('Login'),
-                      ),
-                    ),
-                    TextButton(
-                      style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(COLOR_DARKMINT),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const RegisterScreen()),
-                        );
+          child: Form(
+            key: _formKey,
+              child: Column(
+                children: [
+                  addVerticalSpace(constraints.maxHeight*0.1),
+                  Container(
+                    width: 250,
+                    height: 250,
+                    child: Image.asset("assets/images/logo.png"),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
+                    child: TextFormField(
+                      controller: emailController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'E-mail field is required to login';
+                        }
+                        else if (!EmailValidator.validate(value)){
+                          return 'E-mail format is not correct';
+                        }
+                        return null;
                       },
-                      child: Text('or register HERE!',
-                        style: TextStyle(fontSize: 16),
+                      decoration: const InputDecoration(
+                          icon: Icon(
+                            Icons.local_post_office_outlined,
+                            color: COLOR_PURPLE,
+                          ),
+                          hintText: 'E-mail',
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
                       ),
-                    )
-                  ],
-                )
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
+                    child: TextFormField(
+                      controller: passController,
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty){
+                          return "Password field is required for login";
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                          icon: Icon(
+                            Icons.key_outlined,
+                            color: COLOR_DARKMINT,
+                          ),
+                          hintText: 'Password',
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
+                      ),
+                    ),
+                  ),
+                  addVerticalSpace(constraints.maxHeight * 0.1),
+                  ButtonTheme(
+                    minWidth: 500,
+                    height: 200,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: Size(constraints.maxWidth * 0.8,constraints.maxHeight *0.02),
+                          primary: COLOR_DARKPURPLE,
+                          shadowColor: Colors.grey.shade50,
+                          textStyle: const TextStyle(fontSize: 30),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)
+                          )
+                      ),
+                      onPressed: () async {
+                        if (!_formKey.currentState!.validate()){
+                          return;
+                        }
+                        var response = await user_auth.login(UserLogin(username: emailController.text, password: passController.text));
+                        if (response == null){
+
+                          mySnackBar(context, Colors.red, COLOR_WHITE, "Something went wrong, check your network status", Icons.close);
+                        }
+                        else if (response.statusCode == 200){
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MainNavigationScreen()),
+                          );
+                        }
+                        else if (response.statusCode == 403){
+                          mySnackBar(context, Colors.red, COLOR_WHITE, "Invalid E-mail or password", Icons.close);
+                        }
+                        else if (response.statusCode == 422){
+                          mySnackBar(context, Colors.red, COLOR_WHITE, "Something went wrong", Icons.close);
+                        } else {
+                          mySnackBar(context, Colors.red, COLOR_WHITE, "Something went wrong, check your network status", Icons.close);
+                        }
+                      },
+                      child: Text('Login'),
+                    ),
+                  ),
+                  TextButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all<Color>(COLOR_DARKMINT),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                      );
+                    },
+                    child: Text('or register HERE!',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  )
+                ],
+              )
+          )
         );
       }),
     );

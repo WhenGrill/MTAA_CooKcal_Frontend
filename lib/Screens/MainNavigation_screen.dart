@@ -30,9 +30,7 @@ import '../model/users.dart';
 
 
 class MainNavigationScreen extends StatefulWidget {
-  final List<FoodListOut> foods;
-  final List<WeightOut> weights;
-  MainNavigationScreen({Key? key, required this.foods, required this.weights}) : super(key: key);
+  MainNavigationScreen({Key? key}) : super(key: key);
 
   @override
   _MainNavigationScreenState createState() => _MainNavigationScreenState();
@@ -46,8 +44,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   FoodListOperations FoodListOp = FoodListOperations();
   WeightOperations WeightOp = WeightOperations();
 
-  late List<FoodListOut> foods = widget.foods;
-  late List<WeightOut> weights = widget.weights;
+  List<FoodListOut> foods = [];
+  List<WeightOut> weights = [];
   List<FlSpot> spots = [];
 
 
