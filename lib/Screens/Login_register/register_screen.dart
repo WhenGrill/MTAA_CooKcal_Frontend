@@ -1,6 +1,7 @@
 import 'package:cookcal/Screens/MainNavigation_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+import 'package:cookcal/Widgets/mySnackBar.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -381,6 +382,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           context,
                           MaterialPageRoute(builder: (context) => const LoginScreen()),
                         );
+                        mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Successfully registered! You can now login", Icons.check);
                       },
                       child: const Text(
                           'Register now!',
