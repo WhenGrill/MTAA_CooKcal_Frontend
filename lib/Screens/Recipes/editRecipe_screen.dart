@@ -122,7 +122,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                           ],
                         ),
                         Padding(
-                            padding: EdgeInsets.all(15),
+                            padding: EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
                           child:  Container(
                             decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
                             child: Container(
@@ -164,7 +164,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
                           child:  Container(
                             decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
                             child: Container(
@@ -206,7 +206,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.fromLTRB(15, 7.5, 15, 7.5),
                           child:  Container(
                             decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
                             child: Container(
@@ -249,7 +249,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                         ),
                         Container(
                           decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2, 10),
-                          margin: EdgeInsets.all(10),
+                          margin: EdgeInsets.fromLTRB(15, 15, 15, 7.5),
                           width: constraints.maxWidth * 0.5,
                           child: TextFormField(
                             textAlign: TextAlign.center,
@@ -272,7 +272,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                             ),
                           ),
                         ),
-                        addVerticalSpace(5),
+                        addVerticalSpace(12.5),
                         ButtonTheme(
                           minWidth: 500,
                           height: 200,

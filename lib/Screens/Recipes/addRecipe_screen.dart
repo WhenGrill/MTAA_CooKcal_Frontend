@@ -107,7 +107,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     ],
                   ),
                   Container(
-                    margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                    margin: EdgeInsets.fromLTRB(15, 15, 15, 7.5),
                     decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
                         child: Container(
                             margin: const EdgeInsets.fromLTRB(10,10,10,10),
@@ -147,7 +147,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                    margin: EdgeInsets.fromLTRB(15, 15, 15, 7.5),
                     decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
                         child: Container(
                             margin: const EdgeInsets.fromLTRB(10,10,10,10),
@@ -187,7 +187,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     ),
                   ),
                   Container(
-                      margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                      margin: EdgeInsets.fromLTRB(15, 15, 15, 7.5),
                     decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
                       child: Container(
                             margin: const EdgeInsets.fromLTRB(10,10,10,10),
