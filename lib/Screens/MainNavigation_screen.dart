@@ -24,10 +24,11 @@ import 'package:cookcal/Screens/Users/userslist_screen.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Status_code_handling/food_weigh_currUser_handling.dart';
+import '../Status_code_handling/status_code_handling.dart';
 import '../Utils/api_const.dart';
 import '../Utils/custom_functions.dart';
 import '../WebRTC/call_sample/call_sample.dart';
+import '../Widgets/mySnackBar.dart';
 import '../model/users.dart';
 
 
@@ -182,13 +183,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             var response_food = await load_food_data();
             var response_weight = await load_weight_data();
             var response_user = await UserOp.get_current_user_info();
-            UserOneOut user  = UserOneOut.fromJson(response_user.data);
-            spots = make_plot(weights);
-            double max_weight = get_max_weight(weights);
-            setState(()  {
-              currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
-              currentTab = 4;
-            });
+
+            if (food_weight_curruser_handle(context, response_food.statusCode, response_weight.statusCode, response_user.statusCode)){
+              UserOneOut user  = UserOneOut.fromJson(response_user.data);
+              spots = make_plot(weights);
+              double max_weight = get_max_weight(weights);
+              setState(()  {
+                currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
+                currentTab = 4;
+              });
+            }
           }
           return false;
         },
@@ -200,22 +204,24 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             backgroundColor: COLOR_VERYDARKPURPLE,
             actions: [
               IconButton(onPressed: () async{
-                SharedPreferences prefs = await SharedPreferences.getInstance();
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
 
-                var response_user = await UserOp.get_current_user_info();
-                UserOneOut user  = UserOneOut.fromJson(response_user.data);
+                  var response_user = await UserOp.get_current_user_info();
+                  var response_weight = await  WeightOp.get_all_weight('');
 
-                  int? uId = prefs.getInt('user_id');
-                  String? token = prefs.getString('token');
-                  ImageProvider? uImage = await UserOp.get_user_image(uId);
-                  Response response_weight = await  WeightOp.get_all_weight('');
-                  WeightOut currWeight = WeightOp.get_last_weightMeasure(response_weight);
+                  if (weight_curruser_handle(context, response_weight.statusCode, response_user.statusCode)){
+                    int? uId = prefs.getInt('user_id');
+                    String? token = prefs.getString('token');
+                    ImageProvider? uImage = await UserOp.get_user_image(uId);
+                    UserOneOut user  = UserOneOut.fromJson(response_user.data);
+                    WeightOut currWeight = WeightOp.get_last_weightMeasure(response_weight);
 
 
-                  setState(() {
-                    currentScreen = UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token, currUserWeight: currWeight);
-                    currentTab = -1;
-                  });
+                    setState(() {
+                      currentScreen = UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token, currUserWeight: currWeight);
+                      currentTab = -1;
+                    });
+                  }
 
               }, icon: const Icon(Icons.person_sharp, color: Colors.white))
             ],
@@ -246,23 +252,29 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   var response_food = await load_food_data();
                   var response_weight = await load_weight_data();
                   var response_user = await UserOp.get_current_user_info();
-                  UserOneOut user  = UserOneOut.fromJson(response_user.data);
-                  setState(() {
-                    currentScreen = FoodListScreen(foods: foods, curr_weight: weights.last.weight.toInt(), user: user);
-                    currentTab = 0;
-                  });
+                  if (food_weight_curruser_handle(context, response_food.statusCode, response_weight.statusCode, response_user.statusCode)){
+                    UserOneOut user  = UserOneOut.fromJson(response_user.data);
+                    setState(() {
+                      currentScreen = FoodListScreen(foods: foods, curr_weight: weights.last.weight.toInt(), user: user);
+                      currentTab = 0;
+                    });
+                  }
                 }
               ),
               SpeedDialChild(
                   child: Icon(Icons.local_phone_rounded),
                   label: 'Call nutrition adviser',
                   onTap: () async{
+
                     var response_user = await UserOp.get_current_user_info();
-                    UserOneOut user  = UserOneOut.fromJson(response_user.data);
-                    setState(() {
-                      currentScreen = CallSample(host: webrtc_ip, user: user);
-                      currentTab = -1;
-                    });
+
+                    if(user_handle(context, response_user.statusCode)){
+                      UserOneOut user  = UserOneOut.fromJson(response_user.data);
+                      setState(() {
+                        currentScreen = CallSample(host: webrtc_ip, user: user);
+                        currentTab = -1;
+                      });
+                    }
                   }
               ),
             ],
@@ -288,15 +300,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                             var response_weight = await load_weight_data();
                             var response_user = await UserOp.get_current_user_info();
 
-                            food_weight_curruser_handle(context, response_food, response_weight, response_user);
+                            if(food_weight_curruser_handle(context, response_food.statusCode, response_weight.statusCode, response_user.statusCode)){
+                              UserOneOut user  = UserOneOut.fromJson(response_user.data);
+                              spots = make_plot(weights);
+                              double max_weight = get_max_weight(weights);
+                              setState(()  {
+                                currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
+                                currentTab = 4;
+                              });
+                            }
 
-                            UserOneOut user  = UserOneOut.fromJson(response_user.data);
-                            spots = make_plot(weights);
-                            double max_weight = get_max_weight(weights);
-                            setState(()  {
-                              currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
-                              currentTab = 4;
-                            });
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
