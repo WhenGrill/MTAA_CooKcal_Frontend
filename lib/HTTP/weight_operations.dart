@@ -6,40 +6,31 @@ import '../model/weight.dart';
 
 class WeightOperations {
 
-  Future<List<WeightOut>?> get_all_weight(String date) async {
+  get_all_weight(String date) async {
     try {
       Dio dio = Dio();
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
       dio.options.headers['authorization'] = 'Bearer ' + token!;
       Response response = await dio.get(apiURL + '/weight_measurement/?date=' + date);
-      print("${response.data}");
+      return response;
 
-      List<WeightOut> weight = List<WeightOut>.from(
-          response.data.map((x) => WeightOut.fromJson(x)));
-      print("this -> ${weight}");
-      return weight;
+      /*List<WeightOut> weight = List<WeightOut>.from(
+          response.data.map((x) => WeightOut.fromJson(x)));*/
     }
-    catch (e) {
-      print(e);
-      return null;
+    on DioError catch (e) {
+      return e.response;
     }
   }
 
-  Future<WeightOut?> get_last_weightMeasure() async {
-    try {
-      List<WeightOut>? weights = await get_all_weight('');
+   get_last_weightMeasure(response) {
 
-      if (weights == null){
-        return null;
-      }
-      return weights.last;
+    List<WeightOut> weight = List<WeightOut>.from(
+          response.data.map((x) => WeightOut.fromJson(x)));
 
-    }
-    catch (e) {
-      print(e);
-      return null;
-    }
+    return weight.last;
+
+
   }
 
   add_weight(double weight) async {

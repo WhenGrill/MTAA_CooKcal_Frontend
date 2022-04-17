@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 15),
                         child: Column(
                           children: [
-                            Text(
+                            const Text(
                               "Your weight journey",
                               style: TextStyle(
                                   color: COLOR_PURPLE,
@@ -191,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   )
                               ),
                             ),
-                            Text(
+                            const Text(
                               "Kg",
                               style: TextStyle(
                                   color: COLOR_PURPLE,

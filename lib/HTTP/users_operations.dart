@@ -44,8 +44,8 @@ class UsersOperations {
   get_current_user_info() async {
     final prefs = await SharedPreferences.getInstance();
     int id = prefs.getInt('user_id')!;
-    UserOneOut u_obj = await get_one_user(id);
-    return u_obj;
+    var response = await get_one_user(id);
+    return response;
   }
 
   get_one_user(int id) async {
@@ -58,14 +58,12 @@ class UsersOperations {
 
       Response response = await d.get(apiURL + '/users/' + id.toString());
 
-      UserOneOut user  = UserOneOut.fromJson(response.data);
       print(response.data);
-      print(user);
 
-      return user;
+      return response;
     }
-    catch (e) {
-      print(e);
+    on DioError catch (e) {
+      return e.response;
     }
   }
 

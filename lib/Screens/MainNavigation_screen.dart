@@ -13,6 +13,7 @@ import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/main.dart';
 import 'package:cookcal/model/foodlist.dart';
 import 'package:cookcal/model/weight.dart';
+import 'package:dio/dio.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ import 'package:cookcal/Screens/Users/userslist_screen.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Status_code_handling/food_weigh_currUser_handling.dart';
 import '../Utils/api_const.dart';
 import '../Utils/custom_functions.dart';
 import '../WebRTC/call_sample/call_sample.dart';
@@ -37,7 +39,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int currentTab= 0;
+  int currentTab= -5;
   final isDialOpen = ValueNotifier(false);
 
   UsersOperations UserOp = UsersOperations();
@@ -52,25 +54,44 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget currentScreen = WelcomeScreen();
 
   load_food_data() async {
-    var tmp = await FoodListOp.get_user_foodlist();
-    print(tmp);
-    print(tmp.runtimeType);
+    var response = await FoodListOp.get_user_foodlist();
+
+    if (response.statusCode != 200){
+      return response;
+    }
+
+    List<FoodListOut> food_data = List<FoodListOut>.from(
+        response.data.map((x) => FoodListOut.fromJson(x)));
+
+    print("this -> ${foods}");
     foods.clear();
-    tmp?.forEach((element) {
+    food_data.forEach((element) {
       foods.add(element);
       print(element.id);
     });
+
+    return response;
   }
 
   load_weight_data() async {
-    var tmp = await WeightOp.get_all_weight("");
-    print(tmp);
-    print(tmp.runtimeType);
+    var response = await WeightOp.get_all_weight("");
+
+    if (response.statusCode != 200){
+      return response;
+    }
+
+    List<WeightOut> weight_data = List<WeightOut>.from(
+        response.data.map((x) => WeightOut.fromJson(x)));
+
+    print(weight_data);
+    print(weight_data.runtimeType);
     weights.clear();
-    tmp?.forEach((element) {
+    weight_data.forEach((element) {
       weights.add(element);
       print(element.weight);
     });
+
+    return response;
   }
 
   @override
@@ -82,7 +103,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             isDialOpen.value = false;
             return false;
           }
-          if (currentTab == 4){
+          if (currentTab == 4 || currentTab == -5){
           showDialog(
               context: context,
               builder: (context){
@@ -92,7 +113,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   backgroundColor: COLOR_WHITE,
                   content: Container(
                     width: 300,
-                    height: 120,
+                    height: 125,
                     child: Align(
                       alignment: Alignment.center,
                       child: Column(
@@ -158,9 +179,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 );
               }
           );} else {
-            await load_food_data();
-            await load_weight_data();
-            UserOneOut user = await UserOp.get_current_user_info();
+            var response_food = await load_food_data();
+            var response_weight = await load_weight_data();
+            var response_user = await UserOp.get_current_user_info();
+            UserOneOut user  = UserOneOut.fromJson(response_user.data);
             spots = make_plot(weights);
             double max_weight = get_max_weight(weights);
             setState(()  {
@@ -179,11 +201,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             actions: [
               IconButton(onPressed: () async{
                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                UserOneOut user = await UserOp.get_current_user_info();
+
+                var response_user = await UserOp.get_current_user_info();
+                UserOneOut user  = UserOneOut.fromJson(response_user.data);
+
                   int? uId = prefs.getInt('user_id');
                   String? token = prefs.getString('token');
                   ImageProvider? uImage = await UserOp.get_user_image(uId);
-                  WeightOut? currWeight = await  WeightOp.get_last_weightMeasure();
+                  Response response_weight = await  WeightOp.get_all_weight('');
+                  WeightOut currWeight = WeightOp.get_last_weightMeasure(response_weight);
+
+
                   setState(() {
                     currentScreen = UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token, currUserWeight: currWeight);
                     currentTab = -1;
@@ -215,9 +243,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 child: Icon(Icons.restaurant),
                 label: 'Food I ate today',
                 onTap: () async {
-                  await load_food_data();
-                  await load_weight_data();
-                  UserOneOut user = await UserOp.get_current_user_info();
+                  var response_food = await load_food_data();
+                  var response_weight = await load_weight_data();
+                  var response_user = await UserOp.get_current_user_info();
+                  UserOneOut user  = UserOneOut.fromJson(response_user.data);
                   setState(() {
                     currentScreen = FoodListScreen(foods: foods, curr_weight: weights.last.weight.toInt(), user: user);
                     currentTab = 0;
@@ -228,18 +257,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   child: Icon(Icons.local_phone_rounded),
                   label: 'Call nutrition adviser',
                   onTap: () async{
-                    UserOneOut user = await UserOp.get_current_user_info();
+                    var response_user = await UserOp.get_current_user_info();
+                    UserOneOut user  = UserOneOut.fromJson(response_user.data);
                     setState(() {
                       currentScreen = CallSample(host: webrtc_ip, user: user);
                       currentTab = -1;
                     });
                   }
               ),
-              /*SpeedDialChild(
-                  child: Icon(Icons.phone_android),
-                  label: 'Barcode',
-                  onTap: scanBarcode,
-              )*/
             ],
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -259,9 +284,13 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                         MaterialButton(
                           minWidth: 40,
                           onPressed: () async {
-                            await load_food_data();
-                            await load_weight_data();
-                            UserOneOut user = await UserOp.get_current_user_info();
+                            var response_food = await load_food_data();
+                            var response_weight = await load_weight_data();
+                            var response_user = await UserOp.get_current_user_info();
+
+                            food_weight_curruser_handle(context, response_food, response_weight, response_user);
+
+                            UserOneOut user  = UserOneOut.fromJson(response_user.data);
                             spots = make_plot(weights);
                             double max_weight = get_max_weight(weights);
                             setState(()  {

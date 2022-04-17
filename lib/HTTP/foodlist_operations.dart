@@ -30,7 +30,7 @@ class FoodListOperations {
     }
   }
 
-  Future<List<FoodListOut>?> get_user_foodlist() async {
+   get_user_foodlist() async {
 
     DateTime dateToday =new DateTime.now();
     String date = dateToday.toString().substring(0,10);
@@ -42,16 +42,10 @@ class FoodListOperations {
       var token = prefs.getString('token');
       dio.options.headers['authorization'] = 'Bearer ' + token!;
       Response response = await dio.get(apiURL + '/foodlist/?date=' + date);
-      print("${response.data}");
-
-      List<FoodListOut> foods = List<FoodListOut>.from(
-          response.data.map((x) => FoodListOut.fromJson(x)));
-      print("this -> ${foods}");
-      return foods;
+      return response;
     }
-    catch (e) {
-      print(e);
-      return null;
+    on DioError catch (e) {
+      return e.response;
     }
   }
 
