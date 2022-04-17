@@ -175,10 +175,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         child: Scaffold(
           backgroundColor: COLOR_WHITE,
           appBar: AppBar(
-            iconTheme: IconThemeData(
-              color: COLOR_MINT, //change your color here
-            ),
-            title: Text('CooKcal', style: TextStyle(color: COLOR_MINT)),
+            title: Text('CooKcal', style: TextStyle(color: Colors.white)),
             centerTitle: true,
             backgroundColor: COLOR_VERYDARKPURPLE,
             actions: [
@@ -194,7 +191,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     currentTab = -1;
                   });
 
-              }, icon: const Icon(Icons.person_sharp, color: COLOR_MINT))
+              }, icon: const Icon(Icons.person_sharp, color: Colors.white))
             ],
           ),
           body: currentScreen,

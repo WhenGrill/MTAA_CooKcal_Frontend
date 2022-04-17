@@ -45,7 +45,7 @@ const List genderItems = [
 ];
 
 const List stateItems = [
-  "Normal", "Weight loss", "Gain"
+  "Maintain", "Weight loss", "Gain"
 ];
 
 const List adviserItems = ['YES', 'NO'];
