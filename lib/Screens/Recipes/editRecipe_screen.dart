@@ -15,7 +15,8 @@ import '../../model/recipes.dart';
 class EditRecipeScreen extends StatefulWidget {
   final RecipeUpdate data;
   final int id;
-  const EditRecipeScreen({Key? key, required this.data, required this.id}) : super(key: key);
+  final ImageProvider? rImage;
+  const EditRecipeScreen({Key? key, required this.data, required this.id, required this.rImage}) : super(key: key);
   @override
   _EditRecipeScreenState createState() => _EditRecipeScreenState();
 }
@@ -26,6 +27,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late RecipeUpdate data = widget.data;
+  late ImageProvider? rImage = widget.rImage;
 
   late var titleController = TextEditingController(text: data.title);
   late var kcalController = TextEditingController(text: "${data.kcal_100g}");
@@ -89,11 +91,13 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                   width: 5.0,
                                 ),
                               ),
-                              child: image != null
+                              child:
+                              image != null ? Image(image: FileImage(image!)) : (rImage != null ? Image(image: rImage!) : assert_to_image(context, food_icons[random(0, 4)]))
+                              /*image != null
                                   ? Image.file(
                                   image!,
                                   fit: BoxFit.cover
-                              ): assert_to_image(context, food_icons[random(0, 4)]),
+                              ): assert_to_image(context, food_icons[random(0, 4)]),*/
                             ),
                             Align(
                               alignment: Alignment.centerRight,
@@ -296,7 +300,14 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                 "instructions": instructionsController.text,
                                 "kcal_100g": double.parse(kcalController.text)
                                 };
-                              var response = recipesOperations.UpdateRecipe(data, widget.id);
+                              var response = await recipesOperations.UpdateRecipe(data, widget.id);
+
+                              if (response!.statusCode == 200 && image != null) {
+                                int recipe_id = response.data['id'];
+                                var img_response = await recipesOperations
+                                    .upload_recipe_image(image!, recipe_id);
+                              }
+
                               Navigator.pop(context);
                               Navigator.pop(context);
                               final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,

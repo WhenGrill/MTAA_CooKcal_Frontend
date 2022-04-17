@@ -5,6 +5,7 @@ import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -272,11 +273,18 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           instructions: instructionsController.text,
                           kcal_100g: double.parse(kcalController.text),
                         );
-                        var response = recipesOperations.PostRecipe(data);
+                        Response? response = await recipesOperations.PostRecipe(data);
                         titleController.text = "";
                         ingredientsController.text = "";
                         instructionsController.text = "";
                         kcalController.text = "";
+
+                        if (response!.statusCode == 201 && image != null) {
+                          int recipe_id = response.data['id'];
+                            var img_response = await recipesOperations
+                                .upload_recipe_image(image!, recipe_id);
+                        }
+                        Navigator.pop(context);
 
                         final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
                             content: Row(
