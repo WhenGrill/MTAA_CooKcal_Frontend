@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../HTTP/login_register.dart';
+import '../../Widgets/neomoprishm_box.dart';
 import '../../model/recipes.dart';
 import '../../model/users.dart';
 import '../MainNavigation_screen.dart';
@@ -106,16 +107,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     ],
                   ),
                   Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.4),
-                          blurRadius: 10.0,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                    ),
-                    child: Card(
+                    margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
                         child: Container(
                             margin: const EdgeInsets.fromLTRB(10,10,10,10),
                             child: Column(
@@ -144,33 +137,18 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                       return null;
                                     },
                                     decoration: const InputDecoration(
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
-                                      ),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_MINT, width: 2),
-                                      ),
-                                      border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
-                                      ),
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      border: InputBorder.none
                                     )
                                 ),
                               ],
                             )
-                        )
                     ),
                   ),
                   Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.4),
-                          blurRadius: 10.0,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                    ),
-                    child: Card(
+                    margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
                         child: Container(
                             margin: const EdgeInsets.fromLTRB(10,10,10,10),
                             child: Column(
@@ -199,34 +177,19 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                       return null;
                                     },
                                     decoration: const InputDecoration(
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
-                                      ),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_MINT, width: 2),
-                                      ),
-                                      border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
-                                      ),
+                                        enabledBorder: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        border: InputBorder.none
                                     )
                                 ),
                               ],
                             )
-                        )
                     ),
                   ),
                   Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.4),
-                          blurRadius: 10.0,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                    ),
-                    child: Card(
-                        child: Container(
+                      margin: const EdgeInsets.fromLTRB(10,10,10,10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20),
+                      child: Container(
                             margin: const EdgeInsets.fromLTRB(10,10,10,10),
                             child: Column(
                               children: [
@@ -254,27 +217,22 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                       return null;
                                     },
                                     decoration: const InputDecoration(
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
-                                      ),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_MINT, width: 2),
-                                      ),
-                                      border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: COLOR_DARKPURPLE, width: 2),
-                                      ),
+                                        enabledBorder: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        border: InputBorder.none
                                     )
                                 ),
                               ],
                             )
                         )
-                    ),
                   ),
                   Container(
                     margin: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2, 10),
                     width: constraints.maxWidth * 0.5,
                     child: TextFormField(
                       controller: kcalController,
+                      textAlign: TextAlign.center,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Kcal/100g field is required';
@@ -285,14 +243,11 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: 'Kcal/100g',
-                        focusedBorder: formBorder,
-                        errorBorder: formBorder,
-                        focusedErrorBorder: formBorder,
-                        enabledBorder: formBorder,
+                      decoration: const InputDecoration(
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none,
+                        hintText: "Kcal / 100g"
                       ),
                     ),
                   ),

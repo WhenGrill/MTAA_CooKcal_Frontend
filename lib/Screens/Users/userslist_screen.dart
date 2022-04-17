@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../Utils/custom_functions.dart';
+import '../../Widgets/neomoprishm_box.dart';
 import '../../Widgets/searchBar.dart';
 
 class UserListScreen extends StatefulWidget {
@@ -86,20 +87,22 @@ class _UserListScreenState extends State<UserListScreen> {
                   itemCount: users.length,
                   itemBuilder: (context, index){
                     final user = users[index];
-                    return Card(
-                      color: COLOR_WHITE,
-                        child: ListTile(
-                          trailing: const Icon(Icons.arrow_forward_ios_rounded),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserProfileScreen(user: user)));
-                          },
-                          leading: CircleAvatar(
-                            backgroundColor: COLOR_WHITE,
-                            backgroundImage: AssetImage(user_icons[user.gender]), // no matter how big it is, it won't overflow
-                          ),
-                          title: Text('${user.first_name} ${user.last_name}'),
+                    return Padding(padding: EdgeInsets.all(5),
+                      child: Container(
+                          decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 10),
+                          child: ListTile(
+                            trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserProfileScreen(user: user)));
+                            },
+                            leading: CircleAvatar(
+                              backgroundColor: COLOR_WHITE,
+                              backgroundImage: AssetImage(user_icons[user.gender]), // no matter how big it is, it won't overflow
+                            ),
+                            title: Text('${user.first_name} ${user.last_name}'),
 
-                        )
+                          )
+                      ),
                     );
                   },
                 )

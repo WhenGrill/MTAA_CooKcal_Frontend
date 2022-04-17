@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/searchBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Widgets/neomoprishm_box.dart';
 import '../../model/recipes.dart';
 
 
@@ -96,8 +97,9 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   itemCount: recipes.length,
                   itemBuilder: (context, index){
                     final recipe = recipes[index];
-                    return Card(
-                      color: curr_id == recipe.creator["id"] ? COLOR_MINT : COLOR_WHITE,
+                    return Padding(padding: EdgeInsets.all(5),
+                    child: Container(
+                        decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 15),
                         child: ListTile(
                           trailing: const Icon(Icons.arrow_forward_ios_rounded),
                           onTap: () async {
@@ -114,6 +116,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                           subtitle: Text("${recipe.creator["first_name"]} ${recipe.creator["last_name"]}"),
 
                         )
+                    ),
                     );
                   },
                 )

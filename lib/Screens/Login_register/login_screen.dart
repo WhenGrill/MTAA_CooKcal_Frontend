@@ -14,6 +14,7 @@ import '../../HTTP/login_register.dart';
 import '../../model/foodlist.dart';
 import '../../model/users.dart';
 import '../MainNavigation_screen.dart';
+import 'package:cookcal/Widgets/neomoprishm_box.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -26,6 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final emailController = TextEditingController();
   final passController = TextEditingController();
+
+  bool _isElevated = false;
 
   var user_auth = Userauth();
   FoodListOperations foodListOperations = FoodListOperations();

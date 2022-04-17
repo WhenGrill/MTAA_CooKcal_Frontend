@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../HTTP/login_register.dart';
+import '../../Widgets/neomoprishm_box.dart';
 import '../../model/recipes.dart';
 import '../../model/users.dart';
 import '../MainNavigation_screen.dart';
@@ -75,11 +76,11 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                       ),
                   ],
                 ),
+                addVerticalSpace(15),
                 Container(
-                  width: constraints.maxWidth,
+                  width: constraints.maxWidth* 0.95,
                   child: Padding(
                     padding: EdgeInsets.all(5),
-                    child: Card(
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                         child: Text('${recipe.title}',
@@ -88,23 +89,14 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                           maxLines: 5,
                         ),
                       ),
-                    ),
                   ),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 10.0,
-                        spreadRadius: 1,
-                      ),
-                    ],
-                  ),
+                  decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 30)
                 ),
+                addVerticalSpace(15),
                 Container(
-                  width: constraints.maxWidth,
+                    width: constraints.maxWidth* 0.95,
                   child: Padding(
                     padding: EdgeInsets.all(5),
-                    child: Card(
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                         child: Column(
@@ -120,23 +112,14 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                           ],
                         )
                       ),
-                    ),
                   ),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 10.0,
-                        spreadRadius: 1,
-                      ),
-                    ],
-                  ),
+                  decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 30)
                 ),
+                addVerticalSpace(15),
                 Container(
-                  width: constraints.maxWidth,
+                    width: constraints.maxWidth* 0.95,
                   child: Padding(
                     padding: EdgeInsets.all(5),
-                    child: Card(
                       child: Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: Column(
@@ -152,23 +135,14 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                             ],
                           )
                       ),
-                    ),
                   ),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 10.0,
-                        spreadRadius: 1,
-                      ),
-                    ],
-                  ),
+                  decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 30)
                 ),
+                addVerticalSpace(15),
                 Container(
-                  width: constraints.maxWidth,
+                    width: constraints.maxWidth* 0.95,
                   child: Padding(
                     padding: EdgeInsets.all(5),
-                    child: Card(
                       child: Padding(
                           padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: Column(
@@ -184,23 +158,14 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                             ],
                           )
                       ),
-                    ),
                   ),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 10.0,
-                        spreadRadius: 1,
-                      ),
-                    ],
-                  ),
+                  decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 30)
                 ),
+                addVerticalSpace(15),
                 Container(
-                  width: constraints.maxWidth,
+                    width: constraints.maxWidth* 0.95,
                   child: Padding(
                     padding: EdgeInsets.all(5),
-                    child: Card(
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                         child: Column(
@@ -216,17 +181,8 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                           ],
                         )
                       ),
-                    ),
                   ),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 10.0,
-                        spreadRadius: 1,
-                      ),
-                    ],
-                  ),
+                  decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 20)
                 ),
                 addVerticalSpace(15),
                 if (curr_id == recipe.creator["id"])
