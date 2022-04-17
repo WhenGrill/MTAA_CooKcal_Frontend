@@ -55,6 +55,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: COLOR_WHITE,
       body: LayoutBuilder(builder: (context, constraints){
         return Column(
