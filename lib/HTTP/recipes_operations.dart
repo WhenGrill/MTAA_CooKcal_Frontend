@@ -2,6 +2,10 @@ import 'package:cookcal/model/recipes.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+
+import 'dart:io';
 
 import '../Utils/api_const.dart';
 
@@ -44,7 +48,7 @@ class RecipesOperations {
 
       print(response.data);
 
-      return response.data;
+      return response;
     }
     catch (e) {
       print(e);
@@ -67,6 +71,7 @@ class RecipesOperations {
       print(upRecipeData);
       Response response = await d.put(apiURL + '/recipes/' + recipe_id.toString(), data: upRecipeData);
       print(response.statusCode);
+      return response;
     }
     catch (e){
       print(e);
@@ -97,7 +102,7 @@ class RecipesOperations {
           return null;
         } else {
           ImageProvider? img = NetworkImage(
-              apiURL + '/users/' + id.toString() + '/image/',
+              apiURL + '/recipes/' + id.toString() + '/image/',
               headers: {'authorization': 'Bearer ' + token});
           return img;
         }
@@ -108,6 +113,36 @@ class RecipesOperations {
     catch (e) {
       return null;
     }
+  }
+
+  upload_recipe_image(File pickedImage, int recipe_id) async {
+    String filePath = pickedImage.path;
+
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+
+    var uri = Uri.parse(apiURL + '/recipes/' + recipe_id.toString() + '/image');
+    var request = http.MultipartRequest("PUT", uri);
+    request.headers['authorization'] = 'Bearer ' + token!;
+
+    request.files.add(http.MultipartFile.fromBytes(
+        'recipe_picture',
+        await pickedImage.readAsBytes(),
+        filename: filePath.split('/').last,
+        contentType: MediaType('image', filePath.split('.').last))
+    );
+
+    var response = await request.send(); //.then((response) {
+    if (response.statusCode == 200)
+    {
+      print("Uploaded!");
+      return 200;
+    }
+    else
+    {
+      return null;
+    }
+    //});
   }
 
 }
