@@ -282,42 +282,38 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                       addVerticalSpace(constraints.maxHeight * 0.005),
                       Card(
                           child: ListTile(
-                            onLongPress: () {},
                             title: Text("${user.first_name} ${user.last_name}"),
                             subtitle: Text("Name & Surname"),
                           )
                       ),
                       Card(
                           child: ListTile(
-                            onLongPress: () {},
                             title: Text("${user.email} "),
                             subtitle: Text("E-mail"),
                           )
                       ),
                       Card(
                           child: ListTile(
-                            onLongPress: () {},
                             title: Text("${user.age} "),
                             subtitle: Text("Age"),
                           )
                       ),
                       Card(
                           child: ListTile(
-                            onLongPress: () {},
                             title: Text("${user.height} cm"),
                             subtitle: Text("Height"),
                           )
                       ),
                       Card(
                           child: ListTile(
-                            onLongPress: () {},
                             title: Text("${genderItems[user.gender]} "),
                             subtitle: Text("Gender"),
                           )
                       ),
+                      //Current weight pridat sackbar
                       Card(
                         child: ListTile(
-                            onLongPress: () {
+                            onTap: () {
                               setState(() {
                                 showDialog(
 
@@ -356,7 +352,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                             decoration: InputDecoration(
                                                               filled: true,
                                                               fillColor: Colors.grey.shade200,
-                                                              hintText: webrtc_ip,
+                                                              hintText: 'Current weight in kg',
                                                               focusedBorder: formBorder,
                                                               errorBorder: formBorder,
                                                               focusedErrorBorder: formBorder,
@@ -379,11 +375,25 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                               if (!_formKey.currentState!.validate()){
                                                                 return;
                                                               }
-                                                              await WeightOp.add_weight(double.parse(currweightController.text));
-                                                              setState(() {
-                                                                  Navigator.pop(context);
-                                                                }
-                                                              );
+                                                              var ret = await WeightOp.add_weight(double.parse(currweightController.text));
+                                                              if(ret != null){
+
+
+                                                                final snackBar = SnackBar(backgroundColor: COLOR_MINT,
+                                                                    content: Row(
+                                                                      children: const [
+                                                                        Icon(Icons.check_circle),
+                                                                        SizedBox(width: 20),
+                                                                        Expanded(child: Text('Current weight successfully updated',
+                                                                            style: TextStyle(color: COLOR_BLACK)))
+                                                                      ],
+                                                                    ));
+
+                                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                                              }
+                                                              Navigator.pop(context);
+                                                              setState(() {});
 
                                                             },
                                                             child: const Icon(Icons.check),
@@ -421,32 +431,399 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                 ])
                         ),
                       ),
+                      //Goal weight - done
                       Card(
                           child: ListTile(
-                            onLongPress: () {},
+                            onTap: () {
+                              setState(() {
+                                showDialog(
+
+                                    context: context,
+                                    builder: (context){
+                                      return AlertDialog(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                          backgroundColor: COLOR_WHITE,
+                                          content:
+                                          SingleChildScrollView(
+                                            physics: NeverScrollableScrollPhysics(),
+                                            child:
+                                            Container(
+                                              width: constraints.maxWidth * 0.4,
+                                              height: constraints.maxHeight * 0.28,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.all(5),
+                                                      child: Form(
+                                                          key: _formKey,
+                                                          child: TextFormField(
+                                                            controller: goalweightController,
+                                                            validator: (value) {
+                                                              if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value!) || value == '') {
+                                                                return '        Please enter a valid weight';
+
+                                                              }
+                                                              else{
+                                                                return null;
+                                                              }
+                                                            },
+                                                            decoration: InputDecoration(
+                                                              filled: true,
+                                                              fillColor: Colors.grey.shade200,
+                                                              hintText: 'Goal weight in kg',
+                                                              focusedBorder: formBorder,
+                                                              errorBorder: formBorder,
+                                                              focusedErrorBorder: formBorder,
+                                                              enabledBorder: formBorder,
+                                                            ),
+                                                          )
+                                                      ),
+                                                    ),
+                                                    addVerticalSpace(constraints.maxHeight * 0.04),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child: FloatingActionButton(
+                                                            backgroundColor: COLOR_DARKPURPLE,
+                                                            onPressed: () async{
+                                                                if (!_formKey.currentState!.validate()){
+                                                                  return;
+                                                                } else {
+                                                                  Map<String, dynamic> upUserData = {
+                                                                    "goal_weight": double.parse(goalweightController.text)
+                                                                  };
+                                                                  var ret = await UserOp.update_user_data(upUserData);
+
+                                                                  setState(() {
+                                                                  });
+
+                                                                  Navigator.pop(context);
+
+                                                                  if(ret != null){
+
+                                                                    final snackBar = SnackBar(backgroundColor: COLOR_MINT,
+                                                                        content: Row(
+                                                                          children: const [
+                                                                            Icon(Icons.check_circle),
+                                                                            SizedBox(width: 20),
+                                                                            Expanded(child: Text('Goal weight successfully updated',
+                                                                                style: TextStyle(color: COLOR_BLACK)))
+                                                                          ],
+                                                                        ));
+
+                                                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                                                  }
+                                                                }
+
+                                                            },
+                                                            child: const Icon(Icons.check),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child: FloatingActionButton(
+                                                            backgroundColor: COLOR_MINT,
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child: const Icon(Icons.arrow_back),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                      );
+                                    }
+                                );
+                              });
+                            },
                             title: Text("${user.goal_weight} kg"),
                             subtitle: Text("Goal weight"),
+                              trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Icon(Icons.edit),
+                                  ])
                           )
 
                       ),
+                      // State
                       Card(
                           child: ListTile(
-                            onLongPress: () {},
+                            onTap: () {
+                              setState(() {
+                                showDialog(
+
+                                    context: context,
+                                    builder: (context){
+                                      return StatefulBuilder(builder: (context, setState) {
+                                      return AlertDialog(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                          backgroundColor: COLOR_WHITE,
+                                          content:
+                                          SingleChildScrollView(
+                                            physics: NeverScrollableScrollPhysics(),
+                                            child:
+                                            Container(
+                                              width: constraints.maxWidth * 0.4,
+                                              height: constraints.maxHeight * 0.28,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.all(5),
+                                                      child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            const Text(
+                                                              "State:",
+                                                              textScaleFactor: 1.2,
+                                                            ),
+                                                            addHorizontalSpace(15),
+                                                            DropdownButton<String>(
+                                                              alignment: Alignment.center,
+                                                              dropdownColor: Colors.grey.shade200,
+                                                              value: stateChose,
+                                                              style: const TextStyle(
+                                                                  fontSize: 20,
+                                                                  color: Colors.black
+                                                              ),
+                                                              items: stateItems.map((valueItem) {
+                                                                return DropdownMenuItem<String>(
+                                                                  value: valueItem,
+                                                                  child: Text(valueItem),
+                                                                );
+                                                              }).toList(),
+                                                              onChanged: (newValue) {
+                                                                stateChose = newValue!;
+                                                                setState(() {
+                                                                  });
+                                                              },
+                                                            ),
+                                                          ]
+                                                      )
+                                                    ),
+                                                    addVerticalSpace(constraints.maxHeight * 0.04),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child: FloatingActionButton(
+                                                            backgroundColor: COLOR_DARKPURPLE,
+                                                            onPressed: () async {
+                                                                Map<String, dynamic> upUserData = {
+                                                                  "state": ((stateChose == stateItems[user.state]) ? null : stateItems.indexOf(stateChose))
+                                                                };
+                                                                var ret = await UserOp.update_user_data(upUserData);
+
+                                                                setState(() {
+                                                                });
+
+                                                                Navigator.pop(context);
+
+                                                                if(ret != null){
+                                                                  final snackBar = SnackBar(backgroundColor: COLOR_MINT,
+                                                                      content: Row(
+                                                                        children: const [
+                                                                          Icon(Icons.check_circle),
+                                                                          SizedBox(width: 20),
+                                                                          Expanded(child: Text('State successfully updated',
+                                                                              style: TextStyle(color: COLOR_BLACK)))
+                                                                        ],
+                                                                      ));
+                                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                                }
+                                                            },
+                                                            child: const Icon(Icons.check),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child: FloatingActionButton(
+                                                            backgroundColor: COLOR_MINT,
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child: const Icon(Icons.arrow_back),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                      );
+                                    });}
+                                );
+                              });
+                            },
                             title: Text("${stateItems[user.state]} "),
                             subtitle: Text("State"),
+                              trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Icon(Icons.edit),
+                                  ])
                           )
 
                       ),
+                      // Nutr adviser
                       Card(
                           child: ListTile(
-                            onLongPress: () {},
+                            onTap: () {
+                              setState(() {
+                                showDialog(
+
+                                    context: context,
+                                    builder: (context){
+                                      return StatefulBuilder(builder: (context, setState) {
+                                      return AlertDialog(
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                          backgroundColor: COLOR_WHITE,
+                                          content:
+                                          SingleChildScrollView(
+                                            physics: NeverScrollableScrollPhysics(),
+                                            child:
+                                            Container(
+                                              width: constraints.maxWidth * 0.4,
+                                              height: constraints.maxHeight * 0.28,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.all(5),
+                                                      child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          children: <Widget>[
+                                                            const Text(
+                                                              "Nutr. adviser:",
+                                                              textScaleFactor: 1.2,
+                                                            ),
+                                                            addHorizontalSpace(15),
+                                                            DropdownButton<String>(
+                                                              alignment: Alignment.center,
+                                                              dropdownColor: Colors.grey.shade200,
+                                                              value: adviserChose,
+                                                              style: const TextStyle(
+                                                                  fontSize: 20,
+                                                                  color: Colors.black
+                                                              ),
+                                                              items: adviserItems.map((valueItem) {
+                                                                return DropdownMenuItem<String>(
+                                                                  value: valueItem,
+                                                                  child: Text(valueItem),
+                                                                );
+                                                              }).toList(),
+                                                              onChanged: (newValue) {
+                                                                setState(() {
+                                                                  adviserChose = newValue!;
+                                                                });
+                                                              },
+                                                            ),
+                                                          ]
+                                                      )
+                                                    ),
+                                                    addVerticalSpace(constraints.maxHeight * 0.04),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child: FloatingActionButton(
+                                                            backgroundColor: COLOR_DARKPURPLE,
+                                                            onPressed: () async {
+                                                                  Map<String, dynamic> upUserData = {
+                                                                    "is_nutr_adviser": ((adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) ? null : !user.is_nutr_adviser)
+                                                                  };
+                                                                  var ret = await UserOp.update_user_data(upUserData);
+
+                                                                  setState(() {
+                                                                  });
+
+                                                                  Navigator.pop(context);
+
+                                                                  if(ret != null){
+
+                                                                    final snackBar = SnackBar(backgroundColor: COLOR_MINT,
+                                                                        content: Row(
+                                                                          children: const [
+                                                                            Icon(Icons.check_circle),
+                                                                            SizedBox(width: 20),
+                                                                            Expanded(child: Text('Nutrition adviser status updated',
+                                                                                style: TextStyle(color: COLOR_BLACK)))
+                                                                          ],
+                                                                        ));
+
+                                                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                                  }
+
+                                                            },
+                                                            child: const Icon(Icons.check),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child: FloatingActionButton(
+                                                            backgroundColor: COLOR_MINT,
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child: const Icon(Icons.arrow_back),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                      ); });
+                                    }
+                                );
+                              });
+                            },
                             title: Text(user.is_nutr_adviser ? 'YES' : 'NO'),
                             subtitle: Text("Nutrition adviser"),
+                              trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Icon(Icons.edit),
+                                  ])
                           ),
                       ),
+                      // WebRTC address
                       Card(
                         child: ListTile(
-                          onLongPress: () {
+                          onTap: () {
                               setState(() {
                                 showDialog(
 
@@ -511,6 +888,17 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                             } else {
                                                               if (ipController.text != '') {
                                                                 webrtc_ip = ipController.text;
+                                                                  final snackBar = SnackBar(backgroundColor: COLOR_MINT,
+                                                                      content: Row(
+                                                                        children: const [
+                                                                          Icon(Icons.check_circle),
+                                                                          SizedBox(width: 20),
+                                                                          Expanded(child: Text('WebRTC Server adress updated',
+                                                                              style: TextStyle(color: COLOR_BLACK)))
+                                                                        ],
+                                                                      ));
+
+                                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                               }
                                                               Navigator.pop(context);
                                                             }
@@ -552,7 +940,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                 ])
                         ),
                       ),
-                      addVerticalSpace(constraints.maxHeight * 0.05),
+                      /*addVerticalSpace(constraints.maxHeight * 0.05),
                       SizedBox(
                           height: 40, // <-- match-parent
                           width: 300,
@@ -696,7 +1084,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   onChanged: (newValue) {
                                                     adviserChose = newValue!;
                                                     setState(() {
-
                                                     });
 
                                                   },
@@ -787,7 +1174,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                   primary: COLOR_DARKPURPLE,
                                   shape: StadiumBorder())
                           )
-                      ),
+                      ),*/
                       addVerticalSpace(constraints.maxHeight * 0.015),
                       TextButton(
                         style: ButtonStyle(
@@ -837,7 +1224,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                       });
                                                       SharedPreferences prefs = await SharedPreferences.getInstance();
                                                       prefs.clear();
-                                                      Navigator.pop(context);
                                                       Navigator.pop(context);
                                                       Navigator.pop(context);
                                                     } catch (e) {

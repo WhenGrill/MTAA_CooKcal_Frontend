@@ -25,6 +25,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   List<RecipeOut> recipes = [];
   late int curr_id = 0;
   String last_text = "";
+  bool isChecked = false;
 
   @override
   void dispose() {
@@ -40,10 +41,19 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
     print(tmp);
     print(tmp.runtimeType);
     recipes.clear();
-    tmp?.forEach((element) {
-      recipes.add(element);
-      print(element.id);
-    });
+
+    if (isChecked){
+      tmp?.forEach((element) {
+        if (element.creator['id'] == curr_id) {
+          recipes.add(element);
+        }
+      });
+    } else {
+      tmp?.forEach((element) {
+        recipes.add(element);
+        print(element.id);
+      });
+    }
   }
 
   @override
@@ -86,7 +96,28 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                 child: const Text('Search Recipes'),
               ),
             ),
-            addVerticalSpace(constraints.maxHeight * 0.017),
+            addVerticalSpace(constraints.maxHeight * 0.01),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  "Show only my recipes",
+                  textScaleFactor: 1.2,
+                ),
+                Checkbox(
+                  checkColor: Colors.white,
+                  fillColor: MaterialStateProperty.resolveWith(getColor),
+                  value: isChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      isChecked = value!;
+                    });
+                  },
+                )
+              ],
+            ),
+            //addVerticalSpace(constraints.maxHeight * 0.034),
             const Divider(
               color: COLOR_DARKPURPLE,
               thickness: 2,

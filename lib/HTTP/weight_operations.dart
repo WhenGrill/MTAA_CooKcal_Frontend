@@ -50,6 +50,7 @@ class WeightOperations {
       dio.options.headers['authorization'] = 'Bearer ' + token!;
       Response response = await dio.post(apiURL + '/weight_measurement/', data: {'weight': weight});
       print(response.statusCode);
+      return response;
     }
     catch (e) {
       print(e);

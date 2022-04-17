@@ -36,18 +36,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
 
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.hovered,
-        MaterialState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return COLOR_MINT;
-      }
-      return COLOR_DARKPURPLE;
-    }
-
     return Scaffold(
       backgroundColor: COLOR_WHITE,
       body: LayoutBuilder(builder: (context, constraints){

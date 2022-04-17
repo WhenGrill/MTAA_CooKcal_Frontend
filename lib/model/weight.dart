@@ -1,6 +1,6 @@
 
 class WeightOut {
-  final double weight;
+  late final double weight;
   final String measure_time;
 
   WeightOut({
