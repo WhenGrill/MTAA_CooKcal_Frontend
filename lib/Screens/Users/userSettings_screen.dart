@@ -138,8 +138,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                         color: COLOR_WHITE,
                                         child:
                                         CircleAvatar(backgroundImage:
-                                        image != null ? FileImage(image!) : (uImage != null ? uImage! : FileImage(File(user_icons[user.gender])) as ImageProvider))
-                                    ),
+                                        image != null ? FileImage(image!) : (uImage != null ? uImage! : AssetImage(user_icons[user.gender]))//FileImage(File(user_icons[user.gender])) as ImageProvider))
+                                        , backgroundColor: Colors.transparent,)),
 
 
                                   /*CachedNetworkImage(
@@ -179,9 +179,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                           height: 100,
                                                           width: 100,
                                                           child:
-                                                      CircleAvatar(
-                                                        backgroundImage: image != null ? FileImage(image!) : (uImage != null ? uImage! : FileImage(File(user_icons[user.gender])) as ImageProvider),
-                                                      ))
+                                                          CircleAvatar(backgroundImage:
+                                                          image != null ? FileImage(image!) : (uImage != null ? uImage! : AssetImage(user_icons[user.gender]))//FileImage(File(user_icons[user.gender])) as ImageProvider))
+                                                            , backgroundColor: Colors.transparent,))
                                                     ],
                                                   ),
                                                   addVerticalSpace(constraints.maxHeight * 0.02),

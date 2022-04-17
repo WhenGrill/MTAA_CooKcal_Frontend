@@ -73,11 +73,19 @@ class UsersOperations {
       var token = prefs.getString('token');
 
       if (id != null) {
-        ImageProvider? img = NetworkImage(
-            apiURL + '/users/' + id.toString() + '/image/',
-            headers: {'authorization': 'Bearer ' + token!});
+        Dio d = Dio();
+        d.options.headers['authorization'] = 'Bearer ' + token!;
 
-        return img;
+        Response response = await d.get(apiURL + '/users/' + id.toString() + '/image/');
+        print(response.statusCode);
+        if (response.statusCode != 200){
+          return null;
+        } else {
+          ImageProvider? img = NetworkImage(
+              apiURL + '/users/' + id.toString() + '/image/',
+              headers: {'authorization': 'Bearer ' + token});
+          return img;
+        }
       } else {
         return null;
       }
