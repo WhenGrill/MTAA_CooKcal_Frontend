@@ -199,7 +199,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                           instructions: recipe.instructions,
                           kcal_100g: recipe.kcal_100g,
                         );
-                        ImageProvider rImage = await recipesOperations.get_recipe_image(recipe.id);
+                        var rImage = await recipesOperations.get_recipe_image(recipe.id);
                         Navigator.of(context).push(MaterialPageRoute(builder: (context)=> EditRecipeScreen(data: data, id: recipe.id, rImage: rImage,)));
                       },
                       backgroundColor: COLOR_DARKMINT,

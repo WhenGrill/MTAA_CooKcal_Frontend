@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   late double max_weight = widget.max_weight;
   int max_kcal = 0;
+  int progress_max = 0;
   double current_kcal = 0;
 
   @override
@@ -50,7 +51,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
     current_kcal = calculate_eaten(foods);
     max_kcal = calculate_max(curr_weight, user);
-    _animation = Tween<double>(begin: 0, end: current_kcal / max_kcal * 100).animate(_animationController)
+
+    if (current_kcal / max_kcal * 100 > 1000){
+      double help = 0;
+      help = current_kcal / 100;
+      progress_max = help.toInt();
+    }
+    else {
+      progress_max = max_kcal;
+    }
+    print(current_kcal);
+    print(max_kcal);
+    print(progress_max);
+    _animation = Tween<double>(begin: 0, end: current_kcal / progress_max * 100).animate(_animationController)
     ..addListener(() {
       setState(() {
 
@@ -124,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     child: Center(
                                       child: Text(
                                           "${current_kcal.toInt()} / ${max_kcal}",
+                                              maxLines: 1,
                                               style: TextStyle(color: COLOR_MINT,
                                               fontSize: 40,
                                                 fontWeight: FontWeight.bold
