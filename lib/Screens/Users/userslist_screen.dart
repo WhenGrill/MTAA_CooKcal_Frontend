@@ -4,6 +4,7 @@ import 'package:cookcal/Screens/Users/userProfile_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Utils/custom_functions.dart';
 import '../../Widgets/neomoprishm_box.dart';
@@ -17,6 +18,7 @@ class UserListScreen extends StatefulWidget {
 }
 
 class _UserListScreenState extends State<UserListScreen> {
+  UsersOperations userOp = UsersOperations();
   final myController = TextEditingController();
   List<UserOut> users = [];
   @override
@@ -27,7 +29,7 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 
   load_data() async {
-    var tmp = await UsersOperations().get_all_users(myController.text);
+    var tmp = await userOp.get_all_users(myController.text);
     print(tmp);
     print(tmp.runtimeType);
     users.clear();
@@ -92,8 +94,10 @@ class _UserListScreenState extends State<UserListScreen> {
                           decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 10),
                           child: ListTile(
                             trailing: const Icon(Icons.arrow_forward_ios_rounded),
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserProfileScreen(user: user)));
+                            onTap: () async{
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              ImageProvider? uImage = await userOp.get_user_image(user.id);
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserProfileScreen(user: user, uImage: uImage)));
                             },
                             leading: CircleAvatar(
                               backgroundColor: COLOR_WHITE,

@@ -14,13 +14,15 @@ import '../MainNavigation_screen.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final UserOut user;
-  const UserProfileScreen({Key? key, required this.user}) : super(key: key);
+  final ImageProvider? uImage;
+  const UserProfileScreen({Key? key, required this.user, required this.uImage}) : super(key: key);
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   late UserOut user = widget.user;
+  late ImageProvider? uImage = widget.uImage;
   @override
   Widget build(BuildContext context) {
 
@@ -44,15 +46,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     width: constraints.maxWidth,
                     height: constraints.maxHeight * 0.4,
                     child: Container(
-                      width: 220.0,
-                      height: 220.0,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(user_icons[user.gender]),
-                        ),
-                        borderRadius: BorderRadius.all( Radius.circular(300.0)),
-                      ),
-                    ),
+                      width: 1.0,
+                      height: 1.0,
+                            child:
+                            CircleAvatar(backgroundImage:
+                            uImage != null ? uImage! : AssetImage(user_icons[user.gender])//FileImage(File(user_icons[user.gender])) as ImageProvider))
+                              , backgroundColor: Colors.transparent,))
                   ),
                 ),
                 Container(

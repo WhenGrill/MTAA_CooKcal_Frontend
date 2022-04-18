@@ -111,7 +111,7 @@ weight_curruser_handle(context, code_weight, code_user){
 image_handle(context, StreamedResponse? resp, var state) async{
 
   if (resp == null) {
-    mySnackBar(context, Colors.red, COLOR_WHITE,'Failed to upload. Undefined error.', Icons.cloud_off_rounded);
+    mySnackBar(context, Colors.red, COLOR_WHITE,'Failed to upload. Check your network connection.', Icons.cloud_off_rounded);
     //image = null;
     state.image = null;
   }
@@ -123,7 +123,8 @@ image_handle(context, StreamedResponse? resp, var state) async{
       //image = null;
       state.image = null;
     }
-    else{
+    else
+    {
       mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE,'Profile picture successfully uploaded', Icons.check_circle);
     }
   }
