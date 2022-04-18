@@ -1,6 +1,8 @@
 import 'package:cookcal/HTTP/foodlist_operations.dart';
 import 'package:cookcal/HTTP/login_register.dart';
+import 'package:cookcal/Status_code_handling/status_code_handling.dart';
 import 'package:cookcal/Utils/constants.dart';
+import 'package:cookcal/Widgets/mySnackBar.dart';
 import 'package:cookcal/model/foodlist.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -130,23 +132,15 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                                     child: FloatingActionButton(
                                                       backgroundColor: COLOR_DARKPURPLE,
                                                       onPressed: () async {
-                                                        await foodListOperations.delete_food(food.id);
+                                                        var response = await foodListOperations.delete_food(food.id);
+                                                        if (foodlist_del_handle(context, response)){
+                                                          foods.removeWhere((element) => foods.indexOf(element) == index);
+                                                          setState(() {
 
-                                                        foods.removeWhere((element) => foods.indexOf(element) == index);
-                                                        setState(() {
-
-                                                        });
+                                                          });
+                                                          mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, 'Food removed', Icons.check_circle);
+                                                        }
                                                         Navigator.pop(context);
-                                                        final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
-                                                            content: Row(
-                                                              children: const [
-                                                                Icon(Icons.check_circle, color: COLOR_WHITE),
-                                                                SizedBox(width: 20),
-                                                                Expanded(child: Text('Food removed',
-                                                                    style: TextStyle(color: COLOR_WHITE)))
-                                                              ],
-                                                            ));
-                                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                       },
                                                       child: const Icon(Icons.check),
                                                     ),

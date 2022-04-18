@@ -1,6 +1,8 @@
 import 'package:cookcal/Screens/Recipes/recipeProfile_screen.dart';
+import 'package:cookcal/Status_code_handling/status_code_handling.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+import 'package:cookcal/Widgets/mySnackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/searchBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,14 +44,21 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
 
 
   load_data() async {
-    var tmp = await FoodOperations().get_all_food(searchControler.text);
-    print(tmp);
-    print(tmp.runtimeType);
+    var response = await FoodOperations().get_all_food(searchControler.text);
+    if (response == null || response.statusCode != 200){
+      return response;
+    }
+
+    List<FoodOut> foods_response = List<FoodOut>.from(
+        response.data.map((x) => FoodOut.fromJson(x)));
+
+    print(response.data);
     foods.clear();
-    tmp?.forEach((element) {
+    foods_response.forEach((element) {
       foods.add(element);
       print(element.id);
     });
+    return response;
   }
 
   @override
@@ -82,8 +91,11 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                     )
                 ),
                 onPressed: () async {
-                  await load_data();
-                  setState(() {});
+                  var response = await load_data();
+                  if(foodlist_show_handle(context, response)){
+                    setState(() {});
+                  }
+
                   searchControler.text = "";
                 },
                 child: const Text('Search Food'),
@@ -168,7 +180,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                                                         }
                                                         return null;
                                                       },
-                                                      decoration: InputDecoration(
+                                                      decoration: const InputDecoration(
                                                         counterText: "",
                                                           hintText: 'Amount in grams',
                                                           enabledBorder: InputBorder.none,
@@ -197,21 +209,14 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                                                           id_food: food.id,
                                                           amount: double.parse(gramsControler.text),
                                                         );
-                                                        var response = foodListOperations.AddFood(data);
+                                                        var response = await foodListOperations.AddFood(data);
+
+                                                        if (add_food_handle(context, response)){
+
+                                                          mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, 'Food added successfully', Icons.check_circle);
+                                                        }
                                                         gramsControler.text = "";
-
                                                         Navigator.pop(context);
-
-                                                        final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
-                                                            content: Row(
-                                                              children: const [
-                                                                Icon(Icons.check_circle, color: COLOR_WHITE),
-                                                                SizedBox(width: 20),
-                                                                Expanded(child: Text('Food added successfully',
-                                                                    style: TextStyle(color: COLOR_WHITE)))
-                                                              ],
-                                                            ));
-                                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                       },
                                                       child: const Icon(Icons.add),
                                                     ),

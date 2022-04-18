@@ -21,12 +21,10 @@ class FoodListOperations {
       Response response = await dio.post(apiURL + '/foodlist/',
           data: food.toJson());
 
-      print(response.data);
-
-      return response.data;
+      return response;
     }
-    catch (e) {
-      print(e);
+    on DioError catch (e) {
+      return e.response;
     }
   }
 
@@ -51,11 +49,16 @@ class FoodListOperations {
 
   delete_food(food_id) async {
     Dio d = Dio();
-    final prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
-    d.options.headers['authorization'] = 'Bearer ' + token!;
-    Response response = await d.delete(apiURL + '/foodlist/' + food_id.toString());
-    print(response.statusCode);
+    try{
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+      d.options.headers['authorization'] = 'Bearer ' + token!;
+      Response response = await d.delete(apiURL + '/foodlist/' + food_id.toString());
+      return response;
+    } on DioError catch(e){
+      return e.response;
+    }
+
   }
 
 }

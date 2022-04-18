@@ -57,7 +57,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   load_food_data() async {
     var response = await FoodListOp.get_user_foodlist();
 
-    if (response.statusCode != 200){
+    if (response == null || response.statusCode != 200){
       return response;
     }
 
@@ -77,7 +77,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   load_weight_data() async {
     var response = await WeightOp.get_all_weight("");
 
-    if (response.statusCode != 200){
+    if (response == null || response.statusCode != 200){
       return response;
     }
 
@@ -184,7 +184,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             var response_weight = await load_weight_data();
             var response_user = await UserOp.get_current_user_info();
 
-            if (food_weight_curruser_handle(context, response_food.statusCode, response_weight.statusCode, response_user.statusCode)){
+            if (food_weight_curruser_handle(context, response_food, response_weight, response_user)){
               UserOneOut user  = UserOneOut.fromJson(response_user.data);
               spots = make_plot(weights);
               double max_weight = get_max_weight(weights);
@@ -209,7 +209,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   var response_user = await UserOp.get_current_user_info();
                   var response_weight = await  WeightOp.get_all_weight('');
 
-                  if (weight_curruser_handle(context, response_weight.statusCode, response_user.statusCode)){
+                  if (weight_curruser_handle(context, response_weight, response_user)){
                     int? uId = prefs.getInt('user_id');
                     String? token = prefs.getString('token');
                     ImageProvider? uImage = await UserOp.get_user_image(uId);
@@ -252,7 +252,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   var response_food = await load_food_data();
                   var response_weight = await load_weight_data();
                   var response_user = await UserOp.get_current_user_info();
-                  if (food_weight_curruser_handle(context, response_food.statusCode, response_weight.statusCode, response_user.statusCode)){
+                  if (food_weight_curruser_handle(context, response_food, response_weight, response_user)){
                     UserOneOut user  = UserOneOut.fromJson(response_user.data);
                     setState(() {
                       currentScreen = FoodListScreen(foods: foods, curr_weight: weights.last.weight.toInt(), user: user);
@@ -268,7 +268,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
                     var response_user = await UserOp.get_current_user_info();
 
-                    if(user_handle(context, response_user.statusCode)){
+                    if(user_handle(context, response_user)){
                       UserOneOut user  = UserOneOut.fromJson(response_user.data);
                       setState(() {
                         currentScreen = CallSample(host: webrtc_ip, user: user);
@@ -300,7 +300,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                             var response_weight = await load_weight_data();
                             var response_user = await UserOp.get_current_user_info();
 
-                            if(food_weight_curruser_handle(context, response_food.statusCode, response_weight.statusCode, response_user.statusCode)){
+                            if(food_weight_curruser_handle(context, response_food, response_weight, response_user)){
                               UserOneOut user  = UserOneOut.fromJson(response_user.data);
                               spots = make_plot(weights);
                               double max_weight = get_max_weight(weights);

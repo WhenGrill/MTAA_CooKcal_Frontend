@@ -12,6 +12,16 @@ String unknowError = "Something went wrong, check you network status";
 
 food_weight_curruser_handle(context, code_food, code_weight, code_user){
 
+  if (code_food == null || code_weight == null || code_user == null) {
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+
+    return false;
+  }
+
+  code_weight = code_weight.statusCode;
+  code_food = code_food.statusCode;
+  code_user = code_user.statusCode;
+
   if (code_food == 200){
 
     if(code_weight == 200){
@@ -57,6 +67,15 @@ food_weight_curruser_handle(context, code_food, code_weight, code_user){
 }
 
 user_handle(context, code_user){
+
+  if (code_user == null) {
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+
+    return false;
+  }
+
+  code_user = code_user.statusCode;
+
   if (code_user == 200){
     return true;
   }
@@ -74,6 +93,15 @@ user_handle(context, code_user){
 }
 
 weight_curruser_handle(context, code_weight, code_user){
+
+  if (code_weight == null || code_user == null) {
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+
+    return false;
+  }
+
+  code_weight = code_weight.statusCode;
+  code_user = code_user.statusCode;
 
   if (code_user == 200){
 
@@ -129,4 +157,72 @@ image_handle(context, StreamedResponse? resp, var state) async{
     }
   }
 
+}
+
+foodlist_del_handle(context, response){
+  if (response == null){
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+
+  response = response.statusCode;
+
+  if (response == 204){
+    return true;
+
+  } else if (response == 401){
+    Navigator.pop(context);
+    mySnackBar(context, Colors.red, COLOR_WHITE, loginEx, Icons.close);
+    return false;
+
+  } else {
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+
+}
+
+foodlist_show_handle(context, response){
+  if (response == null){
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+
+  response = response.statusCode;
+
+  if (response == 200){
+    return true;
+
+  } else if (response == 401){
+    Navigator.pop(context);
+    mySnackBar(context, Colors.red, COLOR_WHITE, loginEx, Icons.close);
+    return false;
+
+  } else {
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+}
+
+
+add_food_handle(context, response){
+  if (response == null){
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+
+  response = response.statusCode;
+
+  if (response == 200){
+    return true;
+
+  } else if (response == 401){
+    Navigator.pop(context);
+    mySnackBar(context, Colors.red, COLOR_WHITE, loginEx, Icons.close);
+    return false;
+
+  } else {
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
 }
