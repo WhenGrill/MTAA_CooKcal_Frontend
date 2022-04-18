@@ -8,7 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
+import '../../Status_code_handling/status_code_handling.dart';
+import '../../Widgets/mySnackBar.dart';
 import '../../Widgets/neomoprishm_box.dart';
 import '../../model/recipes.dart';
 
@@ -302,24 +305,28 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                 };
                               var response = await recipesOperations.UpdateRecipe(data, widget.id);
 
-                              if (response!.statusCode == 200 && image != null) {
-                                int recipe_id = response.data['id'];
-                                var img_response = await recipesOperations
-                                    .upload_recipe_image(image!, recipe_id);
-                              }
+                              if(response != null) {
+                                if (response.statusCode == 200 && image != null) {
+                                  int recipe_id = response.data['id'];
+                                  http.StreamedResponse? img_response = await recipesOperations.upload_recipe_image(image!, recipe_id);
+                                  await image_handle(context, img_response, this);
 
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                              final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
-                                  content: Row(
-                                    children: const [
-                                      Icon(Icons.check_circle, color: COLOR_WHITE),
-                                      SizedBox(width: 20),
-                                      Expanded(child: Text('Your recipe has been updated successfully',
-                                          style: TextStyle(color: COLOR_WHITE)))
-                                    ],
-                                  ));
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                  if (image == null) {
+                                    mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE,
+                                        'Recipe successfully updated but without image :(',
+                                        Icons.check_circle);
+                                  } else {
+                                    mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Recipe successfully updated.', Icons.check_circle);
+                                  }
+                                } else if (response.statusCode == 200){
+                                  mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Recipe successfully updated.', Icons.check_circle);
+                                }
+                              } else{
+                                mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Failed to update recipe! Check your internet connection.', Icons.cloud_off_rounded);
+                              }
+                              setState(() {
+
+                              });
                             },
                             child: const Text('Update Recipe'),
                           ),
