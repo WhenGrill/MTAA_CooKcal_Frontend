@@ -42,9 +42,9 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
       backgroundColor: COLOR_WHITE,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: COLOR_MINT, //change your color here
+          color: COLOR_WHITE, //change your color here
         ),
-        title: Text('CooKcal', style: TextStyle(color: COLOR_MINT)),
+        title: Text('CooKcal', style: TextStyle(color: COLOR_WHITE)),
         centerTitle: true,
         backgroundColor: COLOR_VERYDARKPURPLE,
       ),

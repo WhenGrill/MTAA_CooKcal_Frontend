@@ -1,6 +1,7 @@
 import 'package:cookcal/HTTP/recipes_operations.dart';
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/Screens/Recipes/recipeProfile_screen.dart';
+import 'package:cookcal/Status_code_handling/status_code_handling.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/material.dart';
@@ -36,26 +37,36 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   }
 
   load_data(String text) async {
-    var tmp = await RecipesOperations().get_all_recipes(text);
+    var response = await RecipesOperations().get_all_recipes(text);
+
+    if (response == null || response.statusCode != 200){
+      return response;
+    }
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     curr_id = prefs.getInt("user_id")!;
-    print(tmp);
-    print(tmp.runtimeType);
+
+    List<RecipeOut> recipes_data = List<RecipeOut>.from(
+        response.data.map((x) => RecipeOut.fromJson(x)));
+
     recipes.clear();
 
     if (isChecked){
-      tmp?.forEach((element) {
+      recipes_data.forEach((element) {
         if (element.creator['id'] == curr_id) {
           recipes.add(element);
         }
       });
     } else {
-      tmp?.forEach((element) {
+      recipes_data.forEach((element) {
         recipes.add(element);
         print(element.id);
       });
     }
+
+    return response;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +98,11 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                     )
                 ),
                 onPressed: () async {
-                  print(myController.text);
-                  await load_data(myController.text);
-                  setState(() {});
-                  print('set has been stated');
+
+                  var response = await load_data(myController.text);
+                  if (get_all_recipes_handle(context, response)){
+                    setState(() {});
+                  }
                   last_text = myController.text;
                   myController.text = "";
                 },
@@ -140,9 +152,10 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                           onTap: () async {
                             ImageProvider? rImage = await recipesOp.get_recipe_image(recipe.id);
                             await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id, rImage: rImage,)));
-                            await load_data(last_text);
-                            setState(() {});
-                            print('set has been stated');
+                            var response = await load_data(last_text);
+                            if (get_all_recipes_handle(context, response)){
+                                setState(() {});
+                            }
                           },
                           leading: CircleAvatar(
                             backgroundColor: COLOR_WHITE,

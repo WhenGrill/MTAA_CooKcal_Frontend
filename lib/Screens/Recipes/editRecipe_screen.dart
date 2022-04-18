@@ -60,9 +60,9 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
       return Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(
-              color: Colors.white, //change your color here
+              color: COLOR_WHITE, //change your color here
             ),
-            title: Text('CooKcal', style: TextStyle(color: COLOR_MINT)),
+            title: Text('CooKcal', style: TextStyle(color: COLOR_WHITE)),
             centerTitle: true,
             backgroundColor: COLOR_VERYDARKPURPLE,
           ),
@@ -264,7 +264,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                               if (value == null || value.isEmpty) {
                                 return 'Kcal/100g field is required';
                               }
-                              else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) <= 0) || (double.parse(value) > 900)){
+                              else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) <= 1) || (double.parse(value) > 900)){
                                 print("here");
                                 return 'Please enter a valid Kcal/100g';
                               }

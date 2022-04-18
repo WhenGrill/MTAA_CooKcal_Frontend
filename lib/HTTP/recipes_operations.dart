@@ -10,25 +10,18 @@ import 'dart:io';
 import '../Utils/api_const.dart';
 
 class RecipesOperations {
-  final Dio _dio = Dio();
 
-  Future<List<RecipeOut>?> get_all_recipes(String title) async {
+  get_all_recipes(String title) async {
     try {
       Dio dio = Dio();
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
       dio.options.headers['authorization'] = 'Bearer ' + token!;
       Response response = await dio.get(apiURL + '/recipes/?title=' + title);
-      print("${response.data}");
-
-      List<RecipeOut> recipes = List<RecipeOut>.from(
-          response.data.map((x) => RecipeOut.fromJson(x)));
-      print("this -> ${recipes}");
-      return recipes;
+      return response;
     }
-    catch (e) {
-      print(e);
-      return null;
+    on DioError catch (e) {
+      return e.response;
     }
   }
 

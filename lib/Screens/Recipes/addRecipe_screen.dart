@@ -239,7 +239,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Kcal/100g field is required';
                         }
-                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) <= 0) || (double.parse(value) > 900)){
+                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) <= 1) || (double.parse(value) > 900)){
                           print("here");
                           return 'Please enter a valid Kcal/100g';
                         }

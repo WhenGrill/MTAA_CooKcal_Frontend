@@ -299,3 +299,25 @@ add_weightmeasurement_handle(context, response){
     return false;
   }
 }
+
+get_all_recipes_handle(context, response){
+  if (response == null){
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+
+  response = response.statusCode;
+
+  if (response == 200){
+    return true;
+
+  } else if (response == 401){
+    Navigator.pop(context);
+    mySnackBar(context, Colors.red, COLOR_WHITE, loginEx, Icons.close);
+    return false;
+
+  } else {
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+}
