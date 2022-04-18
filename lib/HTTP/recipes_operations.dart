@@ -136,7 +136,11 @@ class RecipesOperations {
     if (response.statusCode == 200)
     {
       print("Uploaded!");
-      return 200;
+      return response;
+    }
+    else if (response.statusCode == 415 || response.statusCode == 413){
+
+      return response;
     }
     else
     {

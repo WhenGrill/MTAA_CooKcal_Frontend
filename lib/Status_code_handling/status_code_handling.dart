@@ -153,7 +153,7 @@ image_handle(context, StreamedResponse? resp, var state) async{
     }
     else
     {
-      mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE,'Profile picture successfully uploaded', Icons.check_circle);
+      mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE,'Picture successfully uploaded', Icons.check_circle);
     }
   }
 
