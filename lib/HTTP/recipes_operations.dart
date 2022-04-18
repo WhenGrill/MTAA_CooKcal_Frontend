@@ -73,11 +73,16 @@ class RecipesOperations {
 
   delete_recipe(recipe_id) async {
     Dio d = Dio();
-    final prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
-    d.options.headers['authorization'] = 'Bearer ' + token!;
-    Response response = await d.delete(apiURL + '/recipes/' + recipe_id.toString());
-    print(response.statusCode);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+      d.options.headers['authorization'] = 'Bearer ' + token!;
+      Response response = await d.delete(apiURL + '/recipes/' + recipe_id.toString());
+      return response;
+    }
+    on DioError catch(e){
+      return e.response;
+    }
   }
 
   get_recipe_image(int? id) async {

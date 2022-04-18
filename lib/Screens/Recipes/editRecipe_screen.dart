@@ -314,15 +314,27 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                   if (image == null) {
                                     mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE,
                                         'Recipe successfully updated but without image :(', Icons.check_circle);
-                                  } else {
+                                  }
+                                  else {
                                     mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Recipe successfully updated.', Icons.check_circle);
                                   }
-                                } else if (response.statusCode == 200){
+                                }
+                                else if (response.statusCode == 200){
                                   mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Recipe successfully updated.', Icons.check_circle);
                                 }
-                              } else{
-                                mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Failed to update recipe! Check your internet connection.', Icons.cloud_off_rounded);
-                                return;
+                                else if (response.statusCode == 304){
+                                  mySnackBar(context, Colors.red, COLOR_WHITE, 'Nothing to update', Icons.close);
+
+                                }
+                                else if (response.statusCode == 404){
+                                  mySnackBar(context, Colors.red, COLOR_WHITE, 'Recipe not found', Icons.close);
+                                }
+                                else{
+                                  mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+                                }
+                              }
+                              else{
+                                mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
                               }
                               setState(() {
 

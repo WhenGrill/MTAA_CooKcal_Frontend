@@ -4,8 +4,10 @@ import 'package:cookcal/HTTP/recipes_operations.dart';
 import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
+import 'package:cookcal/Status_code_handling/status_code_handling.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -13,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../HTTP/login_register.dart';
+import '../../Widgets/mySnackBar.dart';
 import '../../Widgets/neomoprishm_box.dart';
 import '../../model/recipes.dart';
 import '../../model/users.dart';
@@ -254,26 +257,30 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                                               child: FloatingActionButton(
                                                 backgroundColor: COLOR_DARKPURPLE,
                                                 onPressed: () async {
-                                                  try {
-                                                    await recipesOperations.delete_recipe(recipe.id);
+
+                                                  var response = await recipesOperations.delete_recipe(recipe.id);
+                                                  if (response == null){
+                                                    Navigator.pop(context);
+                                                    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+                                                  }
+                                                  else if (response.statusCode == 204){
                                                     Navigator.pop(context);
                                                     Navigator.pop(context);
-                                                    final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
-                                                        content: Row(
-                                                          children: const [
-                                                            Icon(Icons.check_circle, color: COLOR_WHITE),
-                                                            SizedBox(width: 20),
-                                                            Expanded(child: Text('Recipe successfully deleted',
-                                                                style: TextStyle(color: COLOR_WHITE)))
-                                                          ],
-                                                        ));
-                                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-
-                                                  } catch (e) {
-                                                    setState(() {
-                                                    });
-                                                    print(e);
+                                                    mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, 'Recipe successfully deleted', Icons.check_circle);
+                                                  }
+                                                  else if (response.statusCode == 401){
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                    mySnackBar(context, Colors.red, COLOR_WHITE, loginEx, Icons.close);
+                                                  }
+                                                  else if (response.statusCode == 404) {
+                                                    Navigator.pop(context);
+                                                    mySnackBar(context, Colors.red, COLOR_WHITE, "User not found", Icons.close);
+                                                  }
+                                                  else{
+                                                    Navigator.pop(context);
+                                                    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
                                                   }
                                                 },
                                                 child: const Icon(Icons.check),
