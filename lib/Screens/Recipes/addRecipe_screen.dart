@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:cookcal/HTTP/recipes_operations.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
+import 'package:cookcal/Status_code_handling/status_code_handling.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+import 'package:cookcal/Widgets/mySnackBar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -274,28 +277,36 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           kcal_100g: double.parse(kcalController.text),
                         );
                         Response? response = await recipesOperations.PostRecipe(data);
+
+                        if(response != null) {
+                          if (response.statusCode == 201 && image != null) {
+                            int recipe_id = response.data['id'];
+                            http.StreamedResponse? img_response = await recipesOperations.upload_recipe_image(image!, recipe_id);
+                            await image_handle(context, img_response, this);
+
+                            if (image == null) {
+                              mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE,
+                                  'Recipe successfully uploaded but without image :( (If you wish to upload image please do in recipe edit screen)',
+                                  Icons.check_circle);
+                            } else {
+                              mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Recipe successfully uploaded.', Icons.check_circle);
+                            }
+                          } else if (response.statusCode == 201){
+                            mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Recipe successfully uploaded.', Icons.check_circle);
+                          }
+                        } else{
+                          mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Failed to upload recipe! Check your internet connection.', Icons.cloud_off_rounded);
+                        }
+
                         titleController.text = "";
                         ingredientsController.text = "";
                         instructionsController.text = "";
                         kcalController.text = "";
+                        image = null;
+                        setState(() {
+                        });
 
-                        if (response!.statusCode == 201 && image != null) {
-                          int recipe_id = response.data['id'];
-                            var img_response = await recipesOperations
-                                .upload_recipe_image(image!, recipe_id);
-                        }
-                        Navigator.pop(context);
 
-                        final snackBar = SnackBar(backgroundColor: COLOR_DARKMINT,
-                            content: Row(
-                              children: const [
-                                Icon(Icons.check_circle, color: COLOR_WHITE),
-                                SizedBox(width: 20),
-                                Expanded(child: Text('Recipe successfully uploaded',
-                                    style: TextStyle(color: COLOR_WHITE)))
-                              ],
-                            ));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                       child: const Text('Upload Recipe'),
                     ),
