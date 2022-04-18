@@ -42,7 +42,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
 
 
   load_data() async {
-    var tmp = await FoodOperations().get_all_food(gramsControler.text);
+    var tmp = await FoodOperations().get_all_food(searchControler.text);
     print(tmp);
     print(tmp.runtimeType);
     foods.clear();
@@ -169,6 +169,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                                                         return null;
                                                       },
                                                       decoration: InputDecoration(
+                                                        counterText: "",
                                                           hintText: 'Amount in grams',
                                                           enabledBorder: InputBorder.none,
                                                           focusedBorder: InputBorder.none,

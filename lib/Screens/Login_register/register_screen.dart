@@ -1,4 +1,5 @@
 import 'package:cookcal/Screens/MainNavigation_screen.dart';
+import 'package:cookcal/Status_code_handling/status_code_handling.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:cookcal/Widgets/mySnackBar.dart';
@@ -22,6 +23,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   bool isChecked = false;
   String valueChose = "Male";
+  Userauth userauth = Userauth();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -345,7 +347,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               borderRadius: BorderRadius.circular(50)
                           )
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (!_formKey.currentState!.validate()){
                           return;
                         }
@@ -377,12 +379,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             state: 0,
                             is_nutr_adviser: nutradviser
                           );
-                        Provider.of<Userauth>(context, listen: false).register(data, double.parse(currweightController.text));
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const LoginScreen()),
-                        );
-                        mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Successfully registered! You can now login", Icons.check);
+                        var response = await userauth.register(data, double.parse(currweightController.text));
+
+                        if (response == null) {
+                          mySnackBar(
+                              context, Colors.red, COLOR_WHITE, unknowError,
+                              Icons.close);
+                        }else if (response.statusCode == 201){
+                          mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Successfully registered! You can now login", Icons.check);
+                          Navigator.pop(context);
+                        } else if (response.statusCode == 400){
+                          mySnackBar(context, Colors.red, COLOR_WHITE, "E-mail already taken", Icons.close);
+                        } else {
+                          mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+                        }
+
+
                       },
                       child: const Text(
                           'Register now!',

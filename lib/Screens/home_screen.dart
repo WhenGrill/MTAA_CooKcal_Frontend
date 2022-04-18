@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       child: Text(
                                           "${current_kcal.toInt()} / ${max_kcal}",
                                               maxLines: 1,
-                                              style: TextStyle(color: COLOR_MINT,
+                                              style: const TextStyle(color: COLOR_MINT,
                                               fontSize: 40,
                                                 fontWeight: FontWeight.bold
                                               ),
@@ -181,9 +181,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   child: LineChart(
                                       LineChartData(
                                           backgroundColor: COLOR_DARKPURPLE,
-                                          maxY: max_weight+20,
+                                          maxY: max_weight+30,
                                           maxX: weights.length.toDouble()-1,
-                                          minY: null,
+                                          minY: 0,
                                           minX: 0,
                                           titlesData: FlTitlesData(
                                             show: false,

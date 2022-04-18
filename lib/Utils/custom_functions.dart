@@ -47,9 +47,19 @@ double calculate_howmucheat(UserIdExample user){
 }
 
 List<FlSpot> make_plot(List<WeightOut> weights){
-  List<FlSpot> spots = [FlSpot(0, 0)];
+  List<FlSpot> spots = [];
+  double x = 0;
   double y = 0;
-  double x = 1;
+
+  if (weights.length == 1){
+    for (WeightOut weight in weights){
+      spots.add(FlSpot(
+          x,weight.weight
+      ));
+      x++;
+    }
+  }
+
   for (WeightOut weight in weights){
     spots.add(FlSpot(
       x,weight.weight

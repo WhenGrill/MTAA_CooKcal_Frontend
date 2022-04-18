@@ -54,11 +54,12 @@ class Userauth with ChangeNotifier{
       data: {
         'weight': curr_weight
       });
-      
+
+      return resp_weight;
       
     }
-    catch (e){
-      print(e);
+     on DioError catch (e){
+      return e.response;
     }
 
   }
