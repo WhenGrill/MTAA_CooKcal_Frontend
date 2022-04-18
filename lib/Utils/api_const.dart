@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const String apiURL = 'http://cookcal.herokuapp.com';
 const String webrtc_port = '8086';
 
-String webrtc_ip = '10.10.10.10';
+String webrtc_ip = '192.168.0.102';
 
 
 

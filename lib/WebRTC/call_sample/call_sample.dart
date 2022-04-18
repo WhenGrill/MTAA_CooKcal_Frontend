@@ -1,5 +1,6 @@
 import 'package:cookcal/HTTP/login_register.dart';
 import 'package:cookcal/HTTP/users_operations.dart';
+import 'package:cookcal/Widgets/mySnackBar.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
 import '../../Utils/constants.dart';
@@ -24,6 +25,8 @@ class _CallSampleState extends State<CallSample> {
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   bool _inCalling = false;
   Session? _session;
+  bool isMute = false;
+
 
   bool _waitAccept = false;
 
@@ -212,6 +215,7 @@ class _CallSampleState extends State<CallSample> {
 
   _buildRow(context, peer) {
     var self = (peer['id'] == _selfId);
+    var user = (peer['user_agent'] != 'Nutrition Adviser');
     return ListBody(children: <Widget>[
       ListTile(
         title: Text(self ? peer['name'] + ' [Your self]' : peer['name']), // Text(self ? peer['name'] + ', ID: ${peer['id']} ' + ' [Your self]' : peer['name'] + ', ID: ${peer['id']} '),
@@ -222,17 +226,34 @@ class _CallSampleState extends State<CallSample> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(self ? Icons.close : Icons.videocam,
-                        color: self ? Colors.grey : Colors.black),
-                    onPressed: () => _invitePeer(context, peer['id'], false),
+                    icon: Icon((self || user) ? Icons.close : Icons.videocam,
+                        color: (self || user) ? Colors.grey : Colors.black),
+                    onPressed: (){
+
+                      if (self){
+                        mySnackBar(context, Colors.red, COLOR_WHITE, 'Not allowed', Icons.close);
+                      }
+                      else if (user){
+                        mySnackBar(context, Colors.red, COLOR_WHITE, 'Forbidden: You can only call nutrition advisers', Icons.close);
+                      }
+                      else {
+                        _invitePeer(context, peer['id'], false);
+                      }
+                    },
                     tooltip: 'Video calling',
                   ),
-                  IconButton(
-                    icon: Icon(self ? Icons.close : Icons.screen_share,
-                        color: self ? Colors.grey : Colors.black),
-                    onPressed: () => _invitePeer(context, peer['id'], true),
+                 /* IconButton(
+                    icon: Icon((self || not_nutr_adviser) ? Icons.close : Icons.screen_share,
+                        color: (self || not_nutr_adviser)? Colors.grey : Colors.black),
+                    onPressed: () {
+                      if (!self && !not_nutr_adviser){
+                      _invitePeer(context, peer['id'], true);
+                      } else{
+                        mySnackBar(context, Colors.red, COLOR_WHITE, 'Call between Users is forbidden. (Only calls between Users and Nutrition advisers are prohibited)', Icons.close);
+                      }
+                      },
                     tooltip: 'Screen sharing',
-                  )
+                  )*/
                 ])),
         subtitle: Text('[' + peer['user_agent'] + ']'),
       ),
@@ -261,8 +282,12 @@ class _CallSampleState extends State<CallSample> {
                       backgroundColor: Colors.pink,
                     ),
                     FloatingActionButton(
-                      child: const Icon(Icons.mic_off),
-                      onPressed: _muteMic,
+                      child: isMute ? Icon(Icons.mic_off) : Icon(Icons.mic),
+                      onPressed: () {
+                        setState(() {
+                          isMute = _muteMic();
+                        });
+                        },
                     )
                   ]))
           : null,

@@ -103,11 +103,13 @@ class Signaling {
     }
   }
 
-  void muteMic() {
+  bool muteMic() {
     if (_localStream != null) {
       bool enabled = _localStream!.getAudioTracks()[0].enabled;
       _localStream!.getAudioTracks()[0].enabled = !enabled;
+      return !enabled;
     }
+    return false;
   }
 
   void invite(String peerId, String media, bool useScreen) async {
@@ -289,7 +291,7 @@ class Signaling {
       _send('new', {
         'name': _user.first_name + ' ' + _user.last_name, //DeviceInfo.label,
         'id': _selfId,
-        'user_agent': DeviceInfo.userAgent
+        'user_agent': _user.is_nutr_adviser ? 'Nutrition Adviser' : 'User'// DeviceInfo.userAgent
       });
     };
 
