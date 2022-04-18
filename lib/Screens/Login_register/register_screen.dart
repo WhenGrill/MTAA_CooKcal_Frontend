@@ -392,6 +392,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           mySnackBar(context, Colors.red, COLOR_WHITE, "E-mail already taken", Icons.close);
                         } else {
                           mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+                          //print(response!.statusCode);
                         }
 
 
