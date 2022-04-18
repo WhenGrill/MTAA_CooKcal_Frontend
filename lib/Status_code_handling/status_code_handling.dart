@@ -226,3 +226,76 @@ add_food_handle(context, response){
     return false;
   }
 }
+
+user_search_handle(context, response){
+  if (response == null){
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+
+  response = response.statusCode;
+
+  if (response == 200){
+    return true;
+
+  } else if (response == 401){
+    Navigator.pop(context);
+    mySnackBar(context, Colors.red, COLOR_WHITE, loginEx, Icons.close);
+    return false;
+
+  } else {
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+
+}
+
+
+update_user_handle(context, response){
+  if (response == null){
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+
+  response = response.statusCode;
+
+  if (response == 200){
+    return true;
+
+  } else if (response == 304){
+    mySnackBar(context, Colors.red, COLOR_WHITE, "No data to modify", Icons.close);
+    return false;
+
+  }else if (response == 401){
+    Navigator.pop(context);
+    mySnackBar(context, Colors.red, COLOR_WHITE, loginEx, Icons.close);
+    return false;
+
+  } else {
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+
+}
+
+add_weightmeasurement_handle(context, response){
+  if (response == null){
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+
+  response = response.statusCode;
+
+  if (response == 200){
+    return true;
+
+  } else if (response == 401){
+    Navigator.pop(context);
+    mySnackBar(context, Colors.red, COLOR_WHITE, loginEx, Icons.close);
+    return false;
+
+  } else {
+    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    return false;
+  }
+}

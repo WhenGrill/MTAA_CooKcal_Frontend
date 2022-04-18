@@ -1,6 +1,7 @@
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/HTTP/login_register.dart';
 import 'package:cookcal/Screens/Users/userProfile_screen.dart';
+import 'package:cookcal/Status_code_handling/status_code_handling.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,14 +30,27 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 
   load_data() async {
-    var tmp = await userOp.get_all_users(myController.text);
-    print(tmp);
-    print(tmp.runtimeType);
+    var response = await userOp.get_all_users(myController.text);
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.getInt('user_id');
+
+    if (response == null || response.statusCode != 200){
+      return response;
+    }
+
+    List<UserOut> users_data = List<UserOut>.from(response.data.map((x)=> UserOut.fromJson(x)));
+    users.removeWhere((element) => element.id == id);
+
+    print(users_data);
+    print(users_data.runtimeType);
     users.clear();
-    tmp?.forEach((element) {
+    users_data.forEach((element) {
       users.add(element);
       print(element.id);
     });
+
+    return response;
+
   }
 
   @override
@@ -69,10 +83,10 @@ class _UserListScreenState extends State<UserListScreen> {
                     )
                 ),
                 onPressed: () async {
-                  print(myController.text);
-                  await load_data();
-                  setState(() {});
-                  print('set has been stated');
+                  var response = await load_data();
+                  if (user_search_handle(context, response)){
+                    setState(() {});
+                  }
                   myController.text = "";
                 },
                 child: Text('Search other Users'),
@@ -95,7 +109,6 @@ class _UserListScreenState extends State<UserListScreen> {
                           child: ListTile(
                             trailing: const Icon(Icons.arrow_forward_ios_rounded),
                             onTap: () async{
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
                               ImageProvider? uImage = await userOp.get_user_image(user.id);
                               Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserProfileScreen(user: user, uImage: uImage)));
                             },

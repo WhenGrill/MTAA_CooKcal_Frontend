@@ -20,7 +20,7 @@ import '../model/users.dart';
 
 class UsersOperations {
 
-  Future<List<UserOut>?>get_all_users(String name) async {
+  get_all_users(String name) async {
     try {
       Dio d = Dio();
       final prefs = await SharedPreferences.getInstance();
@@ -28,17 +28,12 @@ class UsersOperations {
       var id = prefs.getInt('user_id');
       d.options.headers['authorization'] = 'Bearer ' + token!;
       Response response = await d.get(apiURL + '/users/?name=' + name);
-      print(response.data);
 
-      List<UserOut> users = List<UserOut>.from(response.data.map((x)=> UserOut.fromJson(x)));
-      users.removeWhere((element) => element.id == id);
-      // List<UserOut> users = (response.data).map((e) => UserOut.fromJson(e)).toList();
-      print(users);
-      return users;
+      return response;
+
     }
-    catch (e){
-      print(e);
-      return null;
+    on DioError catch (e){
+      return e.response;
     }
   }
 
@@ -60,8 +55,6 @@ class UsersOperations {
       d.options.headers['authorization'] = 'Bearer ' + token!;
 
       Response response = await d.get(apiURL + '/users/' + id.toString());
-
-      print(response.data);
 
       return response;
     }
@@ -134,7 +127,7 @@ class UsersOperations {
       //});
   }
 
-  Future<Map<String, dynamic>?>update_user_data(Map<String, dynamic> upUserData) async{
+  update_user_data(Map<String, dynamic> upUserData) async{
     try {
       Dio d = Dio();
       final prefs = await SharedPreferences.getInstance();
@@ -152,15 +145,14 @@ class UsersOperations {
       if (upUserData.isNotEmpty) {
         Response response = await d.put(apiURL + '/users/' + id.toString(),
         data: upUserData);
-        print(response.statusCode);
-        return upUserData;
+
+        return response;
       }
 
-      return null;
     }
-    catch (e){
-      print(e);
-      return null;
+    on DioError catch (e){
+
+      return e.response;
     }
   }
 

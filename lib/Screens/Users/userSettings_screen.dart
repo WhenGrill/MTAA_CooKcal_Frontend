@@ -23,6 +23,7 @@ import 'package:http/http.dart';
 import '../../HTTP/login_register.dart';
 import '../../Status_code_handling/status_code_handling.dart';
 import '../../Widgets/mySnackBar.dart';
+import '../../Widgets/neomoprishm_box.dart';
 import '../../model/users.dart';
 import '../../model/weight.dart';
 import '../MainNavigation_screen.dart';
@@ -103,22 +104,19 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                 child: Column(
                     children: [
                       addVerticalSpace(constraints.maxHeight * 0.02),
-                      const Text(
-                          'Account settings',
-                          style: TextStyle(fontSize: 40)
+                  Container(
+                    width: constraints.maxWidth,
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.all(10),
+                      decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
+                    child: Center(
+                      child: Text(
+                          'Your Profile',
+                          style: TextStyle(fontSize: 33, color: COLOR_PURPLE, fontWeight: FontWeight.bold)
                       ),
+                    )
+                  ),
                       addVerticalSpace(constraints.maxHeight * 0.01),
-                      const Divider(
-                        color: COLOR_BLACK,
-                        //color of divider
-                        height: 5,
-                        //height spacing of divider
-                        thickness: 3,
-                        //thickness of divier line
-                        indent: 25,
-                        //spacing at the start of divider
-                        endIndent: 25, //spacing at the end of divider
-                      ),
                       addVerticalSpace(constraints.maxHeight * 0.01),
                       Container(
                           margin: const EdgeInsets.all(10),
@@ -127,14 +125,12 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text('Profile Picture'),
+                                SizedBox(width: 50),
                                 Container(
                                   width: 105.0,
                                   height: 105.0,
                                   decoration: const BoxDecoration(),
-                                  // child: uImage != null ? CircleAvatar(backgroundImage: uImage!) : assert_to_image(context, user_icons[user.gender])
-                                  child: /*uImage != null ? CircleAvatar(backgroundImage: uImage!) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
-                                      assert_to_image(context, user_icons[user.gender])))*/
+                                  child:
 
                                   Container(
                                         width: 600,
@@ -145,14 +141,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                         image != null ? FileImage(image!) : (uImage != null ? uImage! : AssetImage(user_icons[user.gender]))//FileImage(File(user_icons[user.gender])) as ImageProvider))
                                         , backgroundColor: Colors.transparent,)),
 
-
-                                  /*CachedNetworkImage(
-                                    imageUrl: apiURL + '/users/' + uId.toString() + '/image',
-                                    placeholder: (context, url) => const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => assert_to_image(context, user_icons[user.gender]),  //// YOU CAN CREATE YOUR OWN ERROR WIDGET HERE
-                                    httpHeaders: {'authorization': 'Bearer ' + token!},
-                                    imageBuilder: (context, imageProvider) =>  CircleAvatar(backgroundImage: imageProvider)
-                                  )*/
                                 ),
                                 ElevatedButton(onPressed: () async{
                                   showDialog(
@@ -170,15 +158,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                               child: Column(
                                                 children: [
                                                   Stack(
-                                                    children: [ /* uImage != null ? CircleAvatar(backgroundImage: uImage!) : (image != null ? Image.file(image!, fit: BoxFit.cover) : (
-                                                            assert_to_image(context, user_icons[user.gender]))) */
-
-                                                     /* ClipOval(
-                                                        clipper: MyClipper(),
-
-                                                          child: image != null ? Image.file(image!, fit: BoxFit.fill) : (uImage != null ? Image(image: uImage!) : assert_to_image(context, user_icons[user.gender]))
-
-                                                      ),*/
+                                                    children: [
                                                       Container(
                                                           height: 100,
                                                           width: 100,
@@ -219,26 +199,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                       await image_handle(context, s_resp, this);
 
                                                       setState((){});
-                                                     /* if (s_resp == null) {
-                                                        mySnackBar(context, Colors.red, COLOR_WHITE,'Failed to upload. Undefined error.', Icons.cloud_off_rounded);
-                                                        image = null;
-
-                                                      }
-                                                      else {
-                                                      r_resp = await Response.fromStream(s_resp);
-                                                      Map<String, dynamic> rBody = jsonDecode(r_resp.body) as Map<String, dynamic>;
-
-                                                      if (s_resp.statusCode == 415 || s_resp.statusCode == 413){
-                                                        // + (s_resp.reasonPhrase != null ? s_resp.reasonPhrase! : 'Unknow')
-                                                        mySnackBar(context, Colors.red, COLOR_WHITE,'Failed to upload. Reason: ' + rBody['detail'], Icons.cloud_off_rounded);
-                                                        image = null;
-                                                      }
-                                                      else{
-                                                          mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE,'Profile picture successfully uploaded', Icons.check_circle);
-                                                        }
-                                                      setState((){});
-
-                                                      }*/},
+                                                     },
                                                     child: const Icon(Icons.photo_size_select_actual),
                                                   ),
                                                 ),
@@ -272,38 +233,51 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                               ]
                           )),
                       addVerticalSpace(constraints.maxHeight * 0.005),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        margin: EdgeInsets.all(10),
+                        width: constraints.maxWidth,
+                        height: constraints.maxHeight *0.01,
+                        decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
+                      ),
                       Card(
+                          color: COLOR_WHITE,
                           child: ListTile(
                             title: Text("${user.first_name} ${user.last_name}"),
                             subtitle: Text("Name & Surname"),
                           )
                       ),
                       Card(
+                          color: COLOR_WHITE,
                           child: ListTile(
                             title: Text("${user.email} "),
                             subtitle: Text("E-mail"),
                           )
                       ),
                       Card(
+                          color: COLOR_WHITE,
                           child: ListTile(
                             title: Text("${user.age} "),
                             subtitle: Text("Age"),
                           )
                       ),
                       Card(
+                          color: COLOR_WHITE,
                           child: ListTile(
                             title: Text("${user.height} cm"),
                             subtitle: Text("Height"),
                           )
                       ),
                       Card(
+                          color: COLOR_WHITE,
                           child: ListTile(
                             title: Text("${genderItems[user.gender]} "),
                             subtitle: Text("Gender"),
                           )
                       ),
-                      //Current weight pridat sackbar
+
                       Card(
+                        color: COLOR_WHITE,
                         child: ListTile(
                             onTap: () {
                               setState(() {
@@ -321,7 +295,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                             child:
                                             Container(
                                               width: constraints.maxWidth * 0.4,
-                                              height: constraints.maxHeight * 0.28,
+                                              height: constraints.maxHeight * 0.35,
                                               child: Align(
                                                 alignment: Alignment.center,
                                                 child: Column(
@@ -330,25 +304,33 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                       margin: EdgeInsets.all(5),
                                                       child: Form(
                                                           key: _formKey,
-                                                          child: TextFormField(
-                                                            controller: currweightController,
-                                                            validator: (value) {
-                                                              if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value!) || value == '') {
-                                                                return '        Please enter a valid weight';
+                                                          child: Container(
+                                                              padding: EdgeInsets.all(10),
+                                                              margin: EdgeInsets.all(10),
+                                                              decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
+                                                            child: TextFormField(
+                                                              maxLength: 10,
+                                                              controller: currweightController,
+                                                              validator: (value) {
+                                                                if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value!) || value == '' || double.parse(value) > 800 || double.parse(value) < 30) {
+                                                                  return '        Please enter a valid weight';
 
-                                                              }
-                                                              else{
-                                                                return null;
-                                                              }
-                                                            },
-                                                            decoration: InputDecoration(
-                                                              filled: true,
-                                                              fillColor: Colors.grey.shade200,
-                                                              hintText: 'Current weight in kg',
-                                                              focusedBorder: formBorder,
-                                                              errorBorder: formBorder,
-                                                              focusedErrorBorder: formBorder,
-                                                              enabledBorder: formBorder,
+                                                                }
+                                                                else{
+                                                                  return null;
+                                                                }
+                                                              },
+                                                              decoration: const InputDecoration(
+                                                                  icon: Icon(
+                                                                    Icons.scale,
+                                                                    color: COLOR_PURPLE,
+                                                                  ),
+                                                                  counterText: "",
+                                                                  hintText: 'Current Weight in Kg',
+                                                                  enabledBorder: InputBorder.none,
+                                                                  focusedBorder: InputBorder.none,
+                                                                  border: InputBorder.none
+                                                              ),
                                                             ),
                                                           )
                                                       ),
@@ -367,25 +349,14 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                               if (!_formKey.currentState!.validate()){
                                                                 return;
                                                               }
-                                                              var ret = await WeightOp.add_weight(double.parse(currweightController.text));
-                                                              if(ret != null){
+                                                              //TODO odstríniť printy kde je response
+                                                              var response = await WeightOp.add_weight(double.parse(currweightController.text));
+                                                              if(add_weightmeasurement_handle(context, response)){
 
-
-                                                                final snackBar = SnackBar(backgroundColor: COLOR_MINT,
-                                                                    content: Row(
-                                                                      children: const [
-                                                                        Icon(Icons.check_circle),
-                                                                        SizedBox(width: 20),
-                                                                        Expanded(child: Text('Current weight successfully updated',
-                                                                            style: TextStyle(color: COLOR_BLACK)))
-                                                                      ],
-                                                                    ));
-
-                                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
+                                                                mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Weight updated", Icons.check_circle);
+                                                                setState(() {});
                                                               }
                                                               Navigator.pop(context);
-                                                              setState(() {});
 
                                                             },
                                                             child: const Icon(Icons.check),
@@ -414,7 +385,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                 );
                               });
                             },
-                            title: Text(currUserWeight!.weight.toString()),
+                            title: Text(currUserWeight!.weight.toString() + " kg"),
                             subtitle: Text("Current weight"),
                             trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -423,8 +394,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                 ])
                         ),
                       ),
-                      //Goal weight - done
+
                       Card(
+                        color: COLOR_WHITE,
                           child: ListTile(
                             onTap: () {
                               setState(() {
@@ -442,7 +414,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                             child:
                                             Container(
                                               width: constraints.maxWidth * 0.4,
-                                              height: constraints.maxHeight * 0.28,
+                                              height: constraints.maxHeight * 0.35,
                                               child: Align(
                                                 alignment: Alignment.center,
                                                 child: Column(
@@ -451,25 +423,33 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                       margin: EdgeInsets.all(5),
                                                       child: Form(
                                                           key: _formKey,
-                                                          child: TextFormField(
-                                                            controller: goalweightController,
-                                                            validator: (value) {
-                                                              if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value!) || value == '') {
-                                                                return '        Please enter a valid weight';
+                                                          child: Container(
+                                                              padding: EdgeInsets.all(10),
+                                                              margin: EdgeInsets.all(10),
+                                                              decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
+                                                            child: TextFormField(
+                                                              maxLength: 10,
+                                                              controller: goalweightController,
+                                                              validator: (value) {
+                                                                if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value!) || value == '' || double.parse(value) > 800 || double.parse(value) < 30) {
+                                                                  return '        Please enter a valid weight';
 
-                                                              }
-                                                              else{
-                                                                return null;
-                                                              }
-                                                            },
-                                                            decoration: InputDecoration(
-                                                              filled: true,
-                                                              fillColor: Colors.grey.shade200,
-                                                              hintText: 'Goal weight in kg',
-                                                              focusedBorder: formBorder,
-                                                              errorBorder: formBorder,
-                                                              focusedErrorBorder: formBorder,
-                                                              enabledBorder: formBorder,
+                                                                }
+                                                                else{
+                                                                  return null;
+                                                                }
+                                                              },
+                                                              decoration: const InputDecoration(
+                                                                  icon: Icon(
+                                                                    Icons.scale_outlined,
+                                                                    color: COLOR_PURPLE,
+                                                                  ),
+                                                                  counterText: "",
+                                                                  hintText: 'Goal weight in Kg',
+                                                                  enabledBorder: InputBorder.none,
+                                                                  focusedBorder: InputBorder.none,
+                                                                  border: InputBorder.none
+                                                              ),
                                                             ),
                                                           )
                                                       ),
@@ -491,28 +471,16 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                   Map<String, dynamic> upUserData = {
                                                                     "goal_weight": double.parse(goalweightController.text)
                                                                   };
-                                                                  var ret = await UserOp.update_user_data(upUserData);
 
-                                                                  setState(() {
-                                                                  });
+                                                                  var response = await UserOp.update_user_data(upUserData);
+                                                                  if(update_user_handle(context, response)){
 
-                                                                  Navigator.pop(context);
-
-                                                                  if(ret != null){
-
-                                                                    final snackBar = SnackBar(backgroundColor: COLOR_MINT,
-                                                                        content: Row(
-                                                                          children: const [
-                                                                            Icon(Icons.check_circle),
-                                                                            SizedBox(width: 20),
-                                                                            Expanded(child: Text('Goal weight successfully updated',
-                                                                                style: TextStyle(color: COLOR_BLACK)))
-                                                                          ],
-                                                                        ));
-
-                                                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                                    mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Goal weight updated", Icons.check_circle);
+                                                                    setState(() {});
 
                                                                   }
+
+                                                                  Navigator.pop(context);
                                                                 }
 
                                                             },
@@ -554,6 +522,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                       ),
                       // State
                       Card(
+                          color: COLOR_WHITE,
                           child: ListTile(
                             onTap: () {
                               setState(() {
@@ -590,7 +559,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                             addHorizontalSpace(15),
                                                             DropdownButton<String>(
                                                               alignment: Alignment.center,
-                                                              dropdownColor: Colors.grey.shade200,
+                                                              dropdownColor: COLOR_WHITE,
+                                                              focusColor: COLOR_WHITE,
                                                               value: stateChose,
                                                               style: const TextStyle(
                                                                   fontSize: 20,
@@ -623,27 +593,16 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                             backgroundColor: COLOR_DARKPURPLE,
                                                             onPressed: () async {
                                                                 Map<String, dynamic> upUserData = {
-                                                                  "state": ((stateChose == stateItems[user.state]) ? null : stateItems.indexOf(stateChose))
+                                                                  "state": ((stateChose == stateItems[user.state]) ? (stateChose == stateItems[user.state]) : stateItems.indexOf(stateChose))
                                                                 };
-                                                                var ret = await UserOp.update_user_data(upUserData);
-
-                                                                setState(() {
-                                                                });
+                                                                //TODO
+                                                                var response = await UserOp.update_user_data(upUserData);
+                                                                if (update_user_handle(context, response)){
+                                                                  mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "State updated", Icons.check_circle);
+                                                                  setState(() {});
+                                                                }
 
                                                                 Navigator.pop(context);
-
-                                                                if(ret != null){
-                                                                  final snackBar = SnackBar(backgroundColor: COLOR_MINT,
-                                                                      content: Row(
-                                                                        children: const [
-                                                                          Icon(Icons.check_circle),
-                                                                          SizedBox(width: 20),
-                                                                          Expanded(child: Text('State successfully updated',
-                                                                              style: TextStyle(color: COLOR_BLACK)))
-                                                                        ],
-                                                                      ));
-                                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                                                }
                                                             },
                                                             child: const Icon(Icons.check),
                                                           ),
@@ -683,6 +642,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                       ),
                       // Nutr adviser
                       Card(
+                        color: COLOR_WHITE,
                           child: ListTile(
                             onTap: () {
                               setState(() {
@@ -719,7 +679,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                             addHorizontalSpace(15),
                                                             DropdownButton<String>(
                                                               alignment: Alignment.center,
-                                                              dropdownColor: Colors.grey.shade200,
+                                                              dropdownColor: COLOR_WHITE,
+                                                              focusColor: COLOR_WHITE,
                                                               value: adviserChose,
                                                               style: const TextStyle(
                                                                   fontSize: 20,
@@ -752,29 +713,17 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                             backgroundColor: COLOR_DARKPURPLE,
                                                             onPressed: () async {
                                                                   Map<String, dynamic> upUserData = {
-                                                                    "is_nutr_adviser": ((adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) ? null : !user.is_nutr_adviser)
+                                                                    "is_nutr_adviser": ((adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) ? (adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) : !user.is_nutr_adviser)
                                                                   };
-                                                                  var ret = await UserOp.update_user_data(upUserData);
-
-                                                                  setState(() {
-                                                                  });
+                                                                  //TODO
+                                                                  var response = await UserOp.update_user_data(upUserData);
+                                                                  if(update_user_handle(context, response)){
+                                                                    mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Updated successfully", Icons.check_circle);
+                                                                    setState(() {});
+                                                                  }
 
                                                                   Navigator.pop(context);
 
-                                                                  if(ret != null){
-
-                                                                    final snackBar = SnackBar(backgroundColor: COLOR_MINT,
-                                                                        content: Row(
-                                                                          children: const [
-                                                                            Icon(Icons.check_circle),
-                                                                            SizedBox(width: 20),
-                                                                            Expanded(child: Text('Nutrition adviser status updated',
-                                                                                style: TextStyle(color: COLOR_BLACK)))
-                                                                          ],
-                                                                        ));
-
-                                                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                                                  }
 
                                                             },
                                                             child: const Icon(Icons.check),
@@ -814,6 +763,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                       ),
                       // WebRTC address
                       Card(
+                        color: COLOR_WHITE,
                         child: ListTile(
                           onTap: () {
                               setState(() {
@@ -831,36 +781,42 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                           child:
                                         Container(
                                         width: constraints.maxWidth * 0.4,
-                                          height: constraints.maxHeight * 0.28,
+                                          height: constraints.maxHeight * 0.35,
                                           child: Align(
                                             alignment: Alignment.center,
                                             child: Column(
                                               children: [
                                                 Container(
                                                   margin: EdgeInsets.all(5),
-                                                  child: Form(
-                                                      key: _formKey,
-                                                      child: TextFormField(
-                                                        controller: ipController,
-                                                        validator: (value) {
-                                                          if (validator.ip(value!) || value == '') {
-                                                            return null;
-                                                          }
-                                                          else{
-                                                            return '        Not a valid IP address format';
-                                                          }
-                                                        },
-                                                        decoration: InputDecoration(
-                                                          filled: true,
-                                                          fillColor: Colors.grey.shade200,
-                                                          hintText: webrtc_ip,
-                                                          focusedBorder: formBorder,
-                                                          errorBorder: formBorder,
-                                                          focusedErrorBorder: formBorder,
-                                                          enabledBorder: formBorder,
-                                                        ),
-                                                      )
-                                                  ),
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    margin: EdgeInsets.all(10),
+                                                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
+                                                    child: Form(
+                                                        key: _formKey,
+                                                        child: TextFormField(
+                                                          controller: ipController,
+                                                          validator: (value) {
+                                                            if (validator.ip(value!) || value == '') {
+                                                              return null;
+                                                            }
+                                                            else{
+                                                              return '        Not a valid IP address format';
+                                                            }
+                                                          },
+                                                          decoration: InputDecoration(
+                                                              icon: const Icon(
+                                                                Icons.wifi,
+                                                                color: COLOR_PURPLE,
+                                                              ),
+                                                              hintText: webrtc_ip,
+                                                              enabledBorder: InputBorder.none,
+                                                              focusedBorder: InputBorder.none,
+                                                              border: InputBorder.none
+                                                          ),
+                                                        )
+                                                    ),
+                                                  )
                                                 ),
                                                 addVerticalSpace(constraints.maxHeight * 0.04),
                                                 Row(
@@ -932,241 +888,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                 ])
                         ),
                       ),
-                      /*addVerticalSpace(constraints.maxHeight * 0.05),
-                      SizedBox(
-                          height: 40, // <-- match-parent
-                          width: 300,
-                          child:  ElevatedButton(onPressed: () async {
-                            showDialog(
-                                context: context,
-                                builder: (context){
-                                  return StatefulBuilder(builder: (context, setState) {
-                                  return AlertDialog(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                    backgroundColor: COLOR_WHITE,
-                                    content: Container(
-                                      width: constraints.maxWidth * 0.80,
-                                      height: constraints.maxHeight * 0.6,
-                                      child: Form(
-                                      key: _formKey,child: Align(
-                                        alignment: Alignment.center,
-                                        child: Column(
-                                          children: [
-                                            const Text(
-                                              "Update account information",
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: COLOR_BLACK,
-                                                  fontSize: 20
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.all(10),
-                                              child: TextFormField(
-                                                controller: goalweightController,
-                                                validator: (value) {
-                                                  if (value == null || value.isEmpty) {
-                                                    return null;
-                                                  }
-                                                  else if ((!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value)) || (double.parse(value) < 5)){
-                                                    return 'Please enter a valid weight';
-                                                  }
-                                                  return null;
-                                                },
-                                                decoration: InputDecoration(
-                                                  filled: true,
-                                                  fillColor: Colors.grey.shade200,
-                                                  icon: const Icon(
-                                                    Icons.restaurant_menu,
-                                                    color: COLOR_DARKPURPLE,
-                                                  ),
-                                                  hintText: 'Goal Weight',
-                                                  focusedBorder: formBorder,
-                                                  errorBorder: formBorder,
-                                                  focusedErrorBorder: formBorder,
-                                                  enabledBorder: formBorder,
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: const EdgeInsets.all(10),
-                                              child: TextFormField(
-                                                controller: heightController,
-                                                validator: (value) {
-                                                  if (value == null || value.isEmpty) {
-                                                    return null;
-                                                  }
-                                                  else if ((!RegExp(r'^[1-9]+[0-9]*[.]{0,1}[0-9]+$').hasMatch(value)) || (double.parse(value) < 40) || (double.parse(value) > 300)){
-                                                    return 'Please enter a valid height';
-                                                  }
-                                                  return null;
-                                                },
-                                                decoration: InputDecoration(
-                                                  filled: true,
-                                                  fillColor: Colors.grey.shade200,
-                                                  icon: const Icon(
-                                                    Icons.accessibility_new_outlined,
-                                                    color: COLOR_DARKPURPLE,
-                                                  ),
-                                                  hintText: 'Height in CM',
-                                                  focusedBorder: formBorder,
-                                                  errorBorder: formBorder,
-                                                  focusedErrorBorder: formBorder,
-                                                  enabledBorder: formBorder,
-                                                ),
-                                              ),
-                                            ),
-                                        Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: <Widget>[
-                                              const Text(
-                                                "State:",
-                                                textScaleFactor: 1.2,
-                                              ),
-                                              addHorizontalSpace(15),
-                                              DropdownButton<String>(
-                                                alignment: Alignment.center,
-                                                dropdownColor: Colors.grey.shade200,
-                                                value: stateChose,
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.black
-                                                ),
-                                                items: stateItems.map((valueItem) {
-                                                  return DropdownMenuItem<String>(
-                                                    value: valueItem,
-                                                    child: Text(valueItem),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (newValue) {
-                                                  setState(() {
-                                                    stateChose = newValue!;
-                                                  });
-                                                },
-                                              ),
-                                            ]
-                                        ),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: <Widget>[
-                                                const Text(
-                                                  "Nutr. adviser:",
-                                                  textScaleFactor: 1.2,
-                                                ),
-                                                addHorizontalSpace(15),
-                                                DropdownButton<String>(
-                                                  alignment: Alignment.center,
-                                                  dropdownColor: Colors.grey.shade200,
-                                                  value: adviserChose,
-                                                  style: const TextStyle(
-                                                      fontSize: 20,
-                                                      color: Colors.black
-                                                  ),
-                                                  items: adviserItems.map((valueItem) {
-                                                    return DropdownMenuItem<String>(
-                                                      value: valueItem,
-                                                      child: Text(valueItem),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged: (newValue) {
-                                                    adviserChose = newValue!;
-                                                    setState(() {
-                                                    });
-
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                            addVerticalSpace(constraints.maxHeight * 0.04),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                SizedBox(
-                                                  width: 50,
-                                                  height: 50,
-                                                  child: FloatingActionButton(
-                                                    backgroundColor: COLOR_DARKPURPLE,
-                                                    onPressed: () async {
-                                                      if (_formKey.currentState!.validate()){
-                                                        Map<String, dynamic> upUserData = {
-                                                          "goal_weight": ((goalweightController.text == '') ? null : double.parse(goalweightController.text)),
-                                                          "height": ((heightController.text == '') ? null : double.parse(heightController.text)),
-                                                          "state": ((stateChose == stateItems[user.state]) ? null : stateItems.indexOf(stateChose)),
-                                                          "is_nutr_adviser": ((adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) ? null : !user.is_nutr_adviser)
-                                                        };
-                                                        var ret = await UserOp.update_user_data(upUserData);
-
-                                                        setState(() {
-                                                        });
-
-                                                        Navigator.pop(context);
-
-                                                        if(ret != null){
-
-                                                              final snackBar = SnackBar(backgroundColor: COLOR_MINT,
-                                                                  content: Row(
-                                                              children: const [
-                                                                Icon(Icons.check_circle),
-                                                                SizedBox(width: 20),
-                                                                Expanded(child: Text('Successfully updated',
-                                                                style: TextStyle(color: COLOR_BLACK)))
-                                                              ],
-                                                              ));
-
-                                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                                                      } else {
-                                                          final snackBar = SnackBar(backgroundColor: COLOR_MINT,
-                                                              content: Row(
-                                                                children: const [
-                                                                  Icon(Icons.check_circle),
-                                                                  SizedBox(width: 20),
-                                                                  Expanded(child: Text('Nothing changed',
-                                                                      style: TextStyle(color: COLOR_BLACK)))
-                                                                ],
-                                                              ));
-
-                                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                                        }
-                                                      }
-                                                    },
-                                                    child: const Icon(Icons.check),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 50,
-                                                  height: 50,
-                                                  child: FloatingActionButton(
-                                                    backgroundColor: COLOR_MINT,
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: const Icon(Icons.arrow_back),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      )),
-                                    ),
-                                  );});
-                                }
-                            );
-                          },
-                              child: const Text('Edit account',
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                              style: ElevatedButton.styleFrom(
-                                  primary: COLOR_DARKPURPLE,
-                                  shape: StadiumBorder())
-                          )
-                      ),*/
                       addVerticalSpace(constraints.maxHeight * 0.015),
                       TextButton(
                         style: ButtonStyle(
@@ -1211,6 +932,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                   backgroundColor: Colors.red.shade700,
                                                   onPressed: () async {
                                                     try {
+                                                      //TODO
                                                       await UserOp.delete_user_account();
                                                       setState(() {
                                                       });
