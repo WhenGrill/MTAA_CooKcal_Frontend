@@ -37,9 +37,6 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
   late var ingredientsController = TextEditingController(text: data.ingredients);
   late var instructionsController = TextEditingController(text: data.instructions);
 
-  ShowText() {
-
-  }
 
   late RecipesOperations recipesOperations = RecipesOperations();
 
@@ -50,6 +47,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
 
       final imageTemporary = File(image.path);
       setState(() => this.image = imageTemporary);
+
     } on PlatformException catch (e) {
       print("failed to pick image: $e");
     }
@@ -154,8 +152,8 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                           if (value == null || value.isEmpty) {
                                             return 'Title field is required';
                                           }
-                                          else if (!RegExp(r'^[ľščťžýáíéďôäňŕĺóúĽŠČŤŽÝÁÍÉĎÔÄŇŔĹÓÚA-Za-z0-9 ]{2,80}$').hasMatch(value)){
-                                            return 'Title too short or too long';
+                                          else if (!RegExp(r'^[ľščťžýáíéďôäňŕĺóúĽŠČŤŽÝÁÍÉĎÔÄŇŔĹÓÚA-Za-z0-9 \n\t]{2,80}$').hasMatch(value)){
+                                            return 'Special characters are not allowed in recipe title';
                                           }
                                           return null;
                                         },
@@ -261,11 +259,12 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                           child: TextFormField(
                             textAlign: TextAlign.center,
                             controller: kcalController,
+                            maxLength: 10,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Kcal/100g field is required';
                               }
-                              else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) < 1) || (double.parse(value) > 900)){
+                              else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) <= 0) || (double.parse(value) > 900)){
                                 print("here");
                                 return 'Please enter a valid Kcal/100g';
                               }
@@ -273,6 +272,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                             },
                             decoration: const InputDecoration(
                               hintText: 'Kcal/100g',
+                                counterText: "",
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 border: InputBorder.none
@@ -313,8 +313,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
 
                                   if (image == null) {
                                     mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE,
-                                        'Recipe successfully updated but without image :(',
-                                        Icons.check_circle);
+                                        'Recipe successfully updated but without image :(', Icons.check_circle);
                                   } else {
                                     mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Recipe successfully updated.', Icons.check_circle);
                                   }
@@ -323,10 +322,13 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                 }
                               } else{
                                 mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, 'Failed to update recipe! Check your internet connection.', Icons.cloud_off_rounded);
+                                return;
                               }
                               setState(() {
 
                               });
+                              Navigator.pop(context);
+                              Navigator.pop(context);
                             },
                             child: const Text('Update Recipe'),
                           ),

@@ -85,6 +85,13 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                     ],
                   )
               ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                width: constraints.maxWidth,
+                height: constraints.maxHeight *0.01,
+                decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: foods.length,

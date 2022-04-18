@@ -132,8 +132,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                   if (value == null || value.isEmpty) {
                                     return 'Title field is required';
                                   }
-                                  else if (!RegExp(r'^[ľščťžýáíéďôäňŕĺóúĽŠČŤŽÝÁÍÉĎÔÄŇŔĹÓÚA-Za-z0-9]{2,80}$').hasMatch(value)){
-                                    return 'Title too short or too long';
+                                  else if (!RegExp(r'^[ľščťžýáíéďôäňŕĺóúĽŠČŤŽÝÁÍÉĎÔÄŇŔĹÓÚA-Za-z0-9 \n\t]{2,80}$').hasMatch(value)){
+                                    return 'Special characters are not allowed in recipe title';
                                   }
                                   return null;
                                 },
@@ -210,7 +210,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                   maxLines: null,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Ingredients field is required';
+                                      return 'Instruction field is required';
                                     }
                                     else if (value.length < 10){
                                       return 'Please enter at least 10 characters';
@@ -234,17 +234,19 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     child: TextFormField(
                       controller: kcalController,
                       textAlign: TextAlign.center,
+                      maxLength: 10,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Kcal/100g field is required';
                         }
-                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) <= 1) || (double.parse(value) > 900)){
+                        else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value) || (double.parse(value) <= 0) || (double.parse(value) > 900)){
                           print("here");
                           return 'Please enter a valid Kcal/100g';
                         }
                         return null;
                       },
                       decoration: const InputDecoration(
+                        counterText: "",
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           border: InputBorder.none,

@@ -234,8 +234,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                           )),
                       addVerticalSpace(constraints.maxHeight * 0.005),
                       Container(
-                        padding: EdgeInsets.all(10),
-                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
                         width: constraints.maxWidth,
                         height: constraints.maxHeight *0.01,
                         decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
