@@ -160,7 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           mySnackBar(context, Colors.red, COLOR_WHITE, "Something went wrong, check your network status", Icons.close);
                         }
                         else if (response.statusCode == 200){
-
+                          emailController.clear();
+                          passController.clear();
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => MainNavigationScreen()),
