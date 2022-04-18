@@ -156,6 +156,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                                                   margin: const EdgeInsets.all(10),
                                                   child: Center(
                                                     child: TextFormField(
+                                                      maxLength: 4,
                                                       textAlign: TextAlign.center,
                                                       controller: gramsControler,
                                                       validator: (value) {

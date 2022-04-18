@@ -15,7 +15,7 @@ import '../../model/recipes.dart';
 class EditRecipeScreen extends StatefulWidget {
   final RecipeUpdate data;
   final int id;
-  final ImageProvider? rImage;
+  final rImage;
   const EditRecipeScreen({Key? key, required this.data, required this.id, required this.rImage}) : super(key: key);
   @override
   _EditRecipeScreenState createState() => _EditRecipeScreenState();
