@@ -1,5 +1,6 @@
 import 'package:cookcal/HTTP/foodlist_operations.dart';
 import 'package:cookcal/HTTP/weight_operations.dart';
+import 'package:cookcal/Screens/Utils_screens/about_screen.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
@@ -181,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all<Color>(COLOR_DARKMINT),
+                      foregroundColor: MaterialStateProperty.all<Color>(COLOR_PURPLE),
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -190,6 +191,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     },
                     child: Text('or register HERE!',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  TextButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all<Color>(COLOR_DARKMINT),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AboutScreen()),
+                      );
+                    },
+                    child: Text('About',
                       style: TextStyle(fontSize: 16),
                     ),
                   )

@@ -1,5 +1,3 @@
-
-
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
 import 'package:flutter/cupertino.dart';

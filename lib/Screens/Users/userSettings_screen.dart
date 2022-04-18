@@ -1,24 +1,19 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/HTTP/weight_operations.dart';
-import 'package:cookcal/Screens/home_screen.dart';
-import 'package:cookcal/Screens/Login_register/register_screen.dart';
 import 'package:cookcal/Utils/api_const.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart';
-
 
 import '../../HTTP/login_register.dart';
 import '../../Status_code_handling/status_code_handling.dart';
@@ -26,7 +21,6 @@ import '../../Widgets/mySnackBar.dart';
 import '../../Widgets/neomoprishm_box.dart';
 import '../../model/users.dart';
 import '../../model/weight.dart';
-import '../MainNavigation_screen.dart';
 
 
 
@@ -152,7 +146,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                           backgroundColor: COLOR_WHITE,
                                           content: Container(
                                             width: constraints.maxWidth * 0.5,
-                                            height: constraints.maxHeight * 0.38,
+                                            height: constraints.maxHeight * 0.42,
                                             child: Align(
                                               alignment: Alignment.center,
                                               child: Column(
@@ -294,7 +288,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                             physics: NeverScrollableScrollPhysics(),
                                             child:
                                             Container(
-                                              width: constraints.maxWidth * 0.4,
+                                              width: constraints.maxWidth * 0.9,
                                               height: constraints.maxHeight * 0.35,
                                               child: Align(
                                                 alignment: Alignment.center,
@@ -313,7 +307,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                               controller: currweightController,
                                                               validator: (value) {
                                                                 if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value!) || value == '' || double.parse(value) > 800 || double.parse(value) < 30) {
-                                                                  return '        Please enter a valid weight';
+                                                                  return 'Please enter a valid weight';
 
                                                                 }
                                                                 else{
@@ -325,6 +319,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                     Icons.scale,
                                                                     color: COLOR_PURPLE,
                                                                   ),
+                                                                  errorMaxLines: 2,
                                                                   counterText: "",
                                                                   hintText: 'Current Weight in Kg',
                                                                   enabledBorder: InputBorder.none,
@@ -413,7 +408,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                             physics: NeverScrollableScrollPhysics(),
                                             child:
                                             Container(
-                                              width: constraints.maxWidth * 0.4,
+                                              width: constraints.maxWidth * 0.9,
                                               height: constraints.maxHeight * 0.35,
                                               child: Align(
                                                 alignment: Alignment.center,
@@ -432,7 +427,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                               controller: goalweightController,
                                                               validator: (value) {
                                                                 if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value!) || value == '' || double.parse(value) > 800 || double.parse(value) < 30) {
-                                                                  return '        Please enter a valid weight';
+                                                                  return 'Please enter a valid weight';
 
                                                                 }
                                                                 else{
@@ -445,6 +440,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                     color: COLOR_PURPLE,
                                                                   ),
                                                                   counterText: "",
+                                                                  errorMaxLines: 2,
                                                                   hintText: 'Goal weight in Kg',
                                                                   enabledBorder: InputBorder.none,
                                                                   focusedBorder: InputBorder.none,
@@ -780,7 +776,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                           physics: NeverScrollableScrollPhysics(),
                                           child:
                                         Container(
-                                        width: constraints.maxWidth * 0.4,
+                                          width: constraints.maxWidth * 0.9,
                                           height: constraints.maxHeight * 0.35,
                                           child: Align(
                                             alignment: Alignment.center,
@@ -801,7 +797,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                               return null;
                                                             }
                                                             else{
-                                                              return '        Not a valid IP address format';
+                                                              return 'Not a valid IP address format';
                                                             }
                                                           },
                                                           decoration: InputDecoration(
@@ -810,6 +806,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                 color: COLOR_PURPLE,
                                                               ),
                                                               hintText: webrtc_ip,
+                                                              errorMaxLines: 2,
                                                               enabledBorder: InputBorder.none,
                                                               focusedBorder: InputBorder.none,
                                                               border: InputBorder.none
@@ -903,7 +900,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                   backgroundColor: COLOR_WHITE,
                                   content: Container(
                                     width: constraints.maxWidth * 0.4,
-                                    height: constraints.maxHeight * 0.24,
+                                    height: constraints.maxHeight * 0.3,
                                     child: Align(
                                       alignment: Alignment.center,
                                       child: Column(

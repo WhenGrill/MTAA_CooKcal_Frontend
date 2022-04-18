@@ -4,7 +4,6 @@ import 'package:cookcal/Screens/Users/userProfile_screen.dart';
 import 'package:cookcal/Status_code_handling/status_code_handling.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Utils/custom_functions.dart';

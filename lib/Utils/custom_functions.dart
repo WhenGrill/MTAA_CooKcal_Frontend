@@ -8,6 +8,7 @@ import 'dart:math';
 import '../model/foodlist.dart';
 import '../model/weight.dart';
 
+int last_x_graph = 10;
 
 Widget addVerticalSpace(double height){
   return SizedBox(
@@ -60,6 +61,10 @@ List<FlSpot> make_plot(List<WeightOut> weights){
     }
   }
 
+  if (weights.length > last_x_graph){
+    weights = weights.sublist(weights.length-last_x_graph, weights.length);
+  }
+
   for (WeightOut weight in weights){
     spots.add(FlSpot(
       x,weight.weight
@@ -72,6 +77,11 @@ List<FlSpot> make_plot(List<WeightOut> weights){
 }
 
 double get_max_weight(List<WeightOut> weights){
+
+  if (weights.length > last_x_graph){
+    weights = weights.sublist(weights.length-last_x_graph, weights.length);
+  }
+
   double max = 0;
   for (WeightOut weight in weights){
     if (max < weight.weight){
@@ -147,18 +157,3 @@ class MyClipper extends CustomClipper<Rect>{
   }
   
 }
-/*Future scanBarcode() async {
-  String barcode;
-
-  try {
-    barcode = await FlutterBarcodeScanner.scanBarcode(
-        "#ff666",
-        "Cancel",
-        true,
-        ScanMode.BARCODE);
-  } on PlatformException {
-    barcode = "failed to scan";
-  }
-
-  print(barcode);
-}*/

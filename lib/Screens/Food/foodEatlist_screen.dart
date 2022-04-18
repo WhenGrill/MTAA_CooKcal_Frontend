@@ -171,15 +171,15 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                                                   margin: const EdgeInsets.all(10),
                                                   child: Center(
                                                     child: TextFormField(
-                                                      maxLength: 4,
+                                                      maxLength: 10,
                                                       textAlign: TextAlign.center,
                                                       controller: gramsControler,
                                                       validator: (value) {
                                                         if (value == null || value.isEmpty) {
-                                                          return 'Enter food measurement';
+                                                          return '                 Enter a food measurement';
                                                         }
                                                         else if (!RegExp(r'^[1-9]+[0-9]*([.]{1}[0-9]+|)$').hasMatch(value)){
-                                                          return 'Please enter a valid number';
+                                                          return '               Please enter a valid number';
                                                         }
                                                         return null;
                                                       },

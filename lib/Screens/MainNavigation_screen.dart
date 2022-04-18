@@ -8,7 +8,7 @@ import 'package:cookcal/Screens/Food/foodEatlist_screen.dart';
 import 'package:cookcal/Screens/FoodList/foodlist_screen.dart';
 import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/Users/userSettings_screen.dart';
-import 'package:cookcal/Screens/Welcome_screen.dart';
+import 'package:cookcal/Screens/Utils_screens/Welcome_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/main.dart';
 import 'package:cookcal/model/foodlist.dart';

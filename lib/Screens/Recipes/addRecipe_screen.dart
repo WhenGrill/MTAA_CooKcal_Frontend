@@ -299,10 +299,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             mySnackBar(context, Colors.red,COLOR_WHITE, loginEx, Icons.close);
                             Navigator.pop(context);
                           }else{
-                            mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, unknowError, Icons.cloud_off_rounded);
+                            mySnackBar(context, Colors.red,COLOR_WHITE, unknowError, Icons.cloud_off_rounded);
                           }
                         } else{
-                          mySnackBar(context, COLOR_DARKMINT,COLOR_WHITE, unknowError, Icons.cloud_off_rounded);
+                          mySnackBar(context, Colors.red,COLOR_WHITE, unknowError, Icons.cloud_off_rounded);
                         }
 
                         titleController.text = "";
