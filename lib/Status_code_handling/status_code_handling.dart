@@ -1,7 +1,11 @@
 
+import 'dart:convert';
+
+import 'package:cookcal/Screens/Users/userSettings_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Widgets/mySnackBar.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 String loginEx = "Login expired please log in again";
 String unknowError = "Something went wrong, check you network status";
@@ -100,6 +104,28 @@ weight_curruser_handle(context, code_weight, code_user){
     mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
 
     return false;
+  }
+
+}
+
+image_handle(context, StreamedResponse? resp, var state) async{
+
+  if (resp == null) {
+    mySnackBar(context, Colors.red, COLOR_WHITE,'Failed to upload. Undefined error.', Icons.cloud_off_rounded);
+    //image = null;
+    state.image = null;
+  }
+  else {
+    if (resp.statusCode == 415 || resp.statusCode == 413){
+      Response r_resp = await Response.fromStream(resp);
+      Map<String, dynamic> rBody = jsonDecode(r_resp.body) as Map<String, dynamic>;
+      mySnackBar(context, Colors.red, COLOR_WHITE,'Failed to upload. Reason: ' + rBody['detail'], Icons.cloud_off_rounded);
+      //image = null;
+      state.image = null;
+    }
+    else{
+      mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE,'Profile picture successfully uploaded', Icons.check_circle);
+    }
   }
 
 }

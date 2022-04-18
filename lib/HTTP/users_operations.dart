@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:cookcal/Utils/constants.dart';
+import 'package:cookcal/Widgets/mySnackBar.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
@@ -118,7 +121,11 @@ class UsersOperations {
         if (response.statusCode == 200)
         {
           print("Uploaded!");
-          return 200;
+          return response;
+        }
+        else if (response.statusCode == 415 || response.statusCode == 413){
+
+              return response;
         }
         else
         {

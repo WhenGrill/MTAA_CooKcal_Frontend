@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cookcal/HTTP/users_operations.dart';
@@ -16,9 +17,12 @@ import 'package:regexed_validator/regexed_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:http/http.dart';
 
 
 import '../../HTTP/login_register.dart';
+import '../../Status_code_handling/status_code_handling.dart';
+import '../../Widgets/mySnackBar.dart';
 import '../../model/users.dart';
 import '../../model/weight.dart';
 import '../MainNavigation_screen.dart';
@@ -209,36 +213,32 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
                                                       await pickImage();
 
-                                                      var resp = await UserOp.upload_user_image(image!);
-                                                      setState((){});
+                                                     StreamedResponse? s_resp = await UserOp.upload_user_image(image!);
+                                                     //Response? r_resp;
                                                       Navigator.pop(context);
-                                                        if (resp != null){
-                                                          final snackBar = SnackBar(backgroundColor: COLOR_MINT,
-                                                              content: Row(
-                                                                children: const [
-                                                                  Icon(Icons.check_circle),
-                                                                  SizedBox(width: 20),
-                                                                  Expanded(child: Text('Profile picture successfully uploaded',
-                                                                      style: TextStyle(color: COLOR_BLACK)))
-                                                                ],
-                                                              ));
+                                                      await image_handle(context, s_resp, this);
 
-                                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                                        } else {
-                                                          final snackBar = SnackBar(backgroundColor:  Colors.red.shade700,
-                                                              content: Row(
-                                                                children: const [
-                                                                  Icon(Icons.cloud_off_rounded),
-                                                                  SizedBox(width: 20),
-                                                                  Expanded(child: Text('Failed to upload image!',
-                                                                      style: TextStyle(color: COLOR_BLACK)))
-                                                                ],
-                                                              ));
+                                                      setState((){});
+                                                     /* if (s_resp == null) {
+                                                        mySnackBar(context, Colors.red, COLOR_WHITE,'Failed to upload. Undefined error.', Icons.cloud_off_rounded);
+                                                        image = null;
 
-                                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                      }
+                                                      else {
+                                                      r_resp = await Response.fromStream(s_resp);
+                                                      Map<String, dynamic> rBody = jsonDecode(r_resp.body) as Map<String, dynamic>;
+
+                                                      if (s_resp.statusCode == 415 || s_resp.statusCode == 413){
+                                                        // + (s_resp.reasonPhrase != null ? s_resp.reasonPhrase! : 'Unknow')
+                                                        mySnackBar(context, Colors.red, COLOR_WHITE,'Failed to upload. Reason: ' + rBody['detail'], Icons.cloud_off_rounded);
+                                                        image = null;
+                                                      }
+                                                      else{
+                                                          mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE,'Profile picture successfully uploaded', Icons.check_circle);
                                                         }
+                                                      setState((){});
 
-                                                      },
+                                                      }*/},
                                                     child: const Icon(Icons.photo_size_select_actual),
                                                   ),
                                                 ),
