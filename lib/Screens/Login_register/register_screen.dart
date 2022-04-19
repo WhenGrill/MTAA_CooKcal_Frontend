@@ -29,6 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final emailController = TextEditingController();
   final passController = TextEditingController();
+  final confirmPassController = TextEditingController();
   final fnameController = TextEditingController();
   final lnameController = TextEditingController();
   final ageController = TextEditingController();
@@ -111,7 +112,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           border: InputBorder.none
                       ),
                     ),
-                  ),Container(
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(10),
+                    decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
+                    child: TextFormField(
+                      controller: confirmPassController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Confirm password field is required';
+                        }
+                        else if (value != passController.text){
+                          return 'Passwords are not the same';
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                          icon: Icon(
+                            Icons.check,
+                            color: COLOR_PURPLE,
+                          ),
+                          hintText: 'Confirm Password',
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          border: InputBorder.none
+                      ),
+                    ),
+                  ),
+                  Container(
                     padding: EdgeInsets.all(10),
                     margin: EdgeInsets.all(10),
                     decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),

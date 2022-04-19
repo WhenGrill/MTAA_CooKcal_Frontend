@@ -161,12 +161,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           mySnackBar(context, Colors.red, COLOR_WHITE, "Something went wrong, check your network status", Icons.close);
                         }
                         else if (response.statusCode == 200){
-                          emailController.clear();
-                          passController.clear();
-                          Navigator.push(
+                          await Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => MainNavigationScreen()),
                           );
+                          emailController.clear();
+                          passController.clear();
                         }
                         else if (response.statusCode == 403){
                           mySnackBar(context, Colors.red, COLOR_WHITE, "Invalid E-mail or password", Icons.close);

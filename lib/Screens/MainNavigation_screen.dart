@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cookcal/HTTP/foodlist_operations.dart';
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/HTTP/login_register.dart';
@@ -10,17 +8,14 @@ import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/Users/userSettings_screen.dart';
 import 'package:cookcal/Screens/Utils_screens/Welcome_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
-import 'package:cookcal/main.dart';
 import 'package:cookcal/model/foodlist.dart';
 import 'package:cookcal/model/weight.dart';
-import 'package:dio/dio.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Recipes/recipeslist_screen.dart';
 import 'package:cookcal/Screens/Users/userslist_screen.dart';
-//import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +23,6 @@ import '../Status_code_handling/status_code_handling.dart';
 import '../Utils/api_const.dart';
 import '../Utils/custom_functions.dart';
 import '../WebRTC/call_sample/call_sample.dart';
-import '../Widgets/mySnackBar.dart';
 import '../model/users.dart';
 
 
@@ -223,7 +217,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     });
                   }
 
-              }, icon: const Icon(Icons.person_sharp, color: Colors.white))
+              }, icon: currentTab == -1 ? const Icon(Icons.person_sharp, color: COLOR_MINT) : const Icon(Icons.person_sharp, color: Colors.white)
+              )
             ],
           ),
           body: currentScreen,
@@ -272,7 +267,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                       UserOneOut user  = UserOneOut.fromJson(response_user.data);
                       setState(() {
                         currentScreen = CallSample(host: webrtc_ip, user: user);
-                        currentTab = -1;
+                        currentTab = -10;
                       });
                     }
                   }

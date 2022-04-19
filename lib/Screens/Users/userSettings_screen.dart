@@ -347,8 +347,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                               //TODO odstríniť printy kde je response
                                                               var response = await WeightOp.add_weight(double.parse(currweightController.text));
                                                               if(add_weightmeasurement_handle(context, response)){
-
-                                                                mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Weight updated", Icons.check_circle);
+                                                                mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Weight updated, please refresh this screen", Icons.check_circle);
                                                                 setState(() {});
                                                               }
                                                               Navigator.pop(context);
@@ -471,7 +470,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                   var response = await UserOp.update_user_data(upUserData);
                                                                   if(update_user_handle(context, response)){
 
-                                                                    mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Goal weight updated", Icons.check_circle);
+                                                                    mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Goal weight updated, please refresh this screen", Icons.check_circle);
                                                                     setState(() {});
 
                                                                   }
@@ -594,7 +593,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                 //TODO
                                                                 var response = await UserOp.update_user_data(upUserData);
                                                                 if (update_user_handle(context, response)){
-                                                                  mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "State updated", Icons.check_circle);
+                                                                  mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "State updated, please refresh this screen", Icons.check_circle);
                                                                   setState(() {});
                                                                 }
 
@@ -714,7 +713,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                   //TODO
                                                                   var response = await UserOp.update_user_data(upUserData);
                                                                   if(update_user_handle(context, response)){
-                                                                    mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Updated successfully", Icons.check_circle);
+                                                                    mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Updated successfully, please refresh this screen", Icons.check_circle);
                                                                     setState(() {});
                                                                   }
 
