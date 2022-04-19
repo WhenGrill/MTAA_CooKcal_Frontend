@@ -23,6 +23,7 @@ import '../Status_code_handling/status_code_handling.dart';
 import '../Utils/api_const.dart';
 import '../Utils/custom_functions.dart';
 import '../WebRTC/call_sample/call_sample.dart';
+import '../Widgets/mySnackBar.dart';
 import '../model/users.dart';
 
 
@@ -266,6 +267,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     if(user_handle(context, response_user)){
                       UserOneOut user  = UserOneOut.fromJson(response_user.data);
                       setState(() {
+                        mySnackBar(context, Colors.orange, COLOR_WHITE, "Trying to connect to WebRTC server...", Icons.incomplete_circle_rounded);
                         currentScreen = CallSample(host: webrtc_ip, user: user);
                         currentTab = -10;
                       });
