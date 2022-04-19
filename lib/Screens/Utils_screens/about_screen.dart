@@ -28,7 +28,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       height: 250,
                       child: Image.asset("assets/images/logo.png"),
                     ),
-                    addVerticalSpace(50),
+                    addVerticalSpace(35),
                     Text(
                         "Special thanks to:",
                       style: TextStyle(color: COLOR_PURPLE, fontSize: 25, fontWeight: FontWeight.bold),
@@ -61,6 +61,21 @@ class _AboutScreenState extends State<AboutScreen> {
                     addVerticalSpace(6),
                     Text(
                       "Triangle Squad",
+                      style: TextStyle(color: COLOR_PURPLE, fontSize: 17),
+                    ),
+                    addVerticalSpace(20),
+                    Text(
+                      "Web RTC library used from github:",
+                      style: TextStyle(color: COLOR_DARKMINT, fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    addVerticalSpace(6),
+                    Text(
+                      "flutter-webrtc/flutter-webrtc-demo",
+                      style: TextStyle(color: COLOR_DARKMINT, fontSize: 17),
+                    ),
+                    addVerticalSpace(6),
+                    Text(
+                      "flutter-webrtc/flutter-webrtc-server",
                       style: TextStyle(color: COLOR_PURPLE, fontSize: 17),
                     )
                   ]

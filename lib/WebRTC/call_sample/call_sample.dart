@@ -137,21 +137,24 @@ class _CallSampleState extends State<CallSample> {
 
   Future<bool?> _showAcceptDialog() {
     return showDialog<bool?>(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("title"),
-          content: Text("accept?"),
+          backgroundColor: COLOR_WHITE,
+          title: Text("Incoming Call...", style: TextStyle(color: COLOR_PURPLE),),
           actions: <Widget>[
-            TextButton(
-              child: Text("reject"),
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-            TextButton(
-              child: Text("accept"),
+            IconButton(
+              icon: Icon(Icons.phone_in_talk, color: Colors.green,),
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
+
+            ),
+            IconButton(
+              icon: Icon(Icons.phone_disabled, color: Colors.red,),
+              onPressed: () => Navigator.of(context).pop(false),
+
             ),
           ],
         );
@@ -162,15 +165,16 @@ class _CallSampleState extends State<CallSample> {
   Future<bool?> _showInviteDialog() {
     return showDialog<bool?>(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: Text("Incoming call from"),
-          content: Text("waiting"),
+          backgroundColor: COLOR_WHITE,
+          title: Text("Calling Nutrition adviser", style: TextStyle(color: COLOR_PURPLE),),
+          content: Text("Ringing..."),
           actions: <Widget>[
-            TextButton(
-              child: Text("cancel"),
+            IconButton(
+              icon: Icon(Icons.phone_disabled, color: Colors.red,),
               onPressed: () {
-                Navigator.of(context).pop(false);
                 _hangUp();
                 },
 
@@ -218,7 +222,10 @@ class _CallSampleState extends State<CallSample> {
     var user = (peer['user_agent'] != 'Nutrition Adviser');
     return ListBody(children: <Widget>[
       ListTile(
-        title: Text(self ? peer['name'] + ' [Your self]' : peer['name']), // Text(self ? peer['name'] + ', ID: ${peer['id']} ' + ' [Your self]' : peer['name'] + ', ID: ${peer['id']} '),
+        focusColor: COLOR_WHITE,
+        tileColor: COLOR_WHITE,
+        textColor: COLOR_PURPLE,
+        title: Text(self ? peer['name'] + ' [Your self] Connected successfuly!': peer['name']), // Text(self ? peer['name'] + ', ID: ${peer['id']} ' + ' [Your self]' : peer['name'] + ', ID: ${peer['id']} '),
         onTap: null,
         trailing: SizedBox(
             width: 100.0,
@@ -227,7 +234,7 @@ class _CallSampleState extends State<CallSample> {
                 children: <Widget>[
                   IconButton(
                     icon: Icon((self || user) ? Icons.close : Icons.videocam,
-                        color: (self || user) ? Colors.grey : Colors.black),
+                        color: (self || user) ? Colors.grey : COLOR_PURPLE),
                     onPressed: (){
 
                       if (self){
@@ -264,6 +271,7 @@ class _CallSampleState extends State<CallSample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: COLOR_WHITE,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: _inCalling
           ? SizedBox(
@@ -272,17 +280,19 @@ class _CallSampleState extends State<CallSample> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     FloatingActionButton(
-                      child: const Icon(Icons.switch_camera),
+                      backgroundColor: COLOR_PURPLE,
+                      child: const Icon(Icons.switch_camera, color: COLOR_WHITE,),
                       onPressed: _switchCamera,
                     ),
                     FloatingActionButton(
                       onPressed: _hangUp,
                       tooltip: 'Hangup',
                       child: Icon(Icons.call_end),
-                      backgroundColor: Colors.pink,
+                      backgroundColor: Colors.red,
                     ),
                     FloatingActionButton(
-                      child: isMute ? Icon(Icons.mic_off) : Icon(Icons.mic),
+                      backgroundColor: COLOR_DARKMINT,
+                      child: isMute ? Icon(Icons.mic_off, color: COLOR_GREY) : Icon(Icons.mic, color: COLOR_WHITE),
                       onPressed: () {
                         setState(() {
                           isMute = _muteMic();
