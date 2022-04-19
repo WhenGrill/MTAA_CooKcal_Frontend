@@ -25,6 +25,7 @@ class _CallSampleState extends State<CallSample> {
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   bool _inCalling = false;
   Session? _session;
+
   bool isMute = false;
 
 
@@ -38,7 +39,7 @@ class _CallSampleState extends State<CallSample> {
   initState() {
     super.initState();
     initRenderers();
-    _connect();
+        _connect();
   }
 
   initRenderers() async {
@@ -55,12 +56,19 @@ class _CallSampleState extends State<CallSample> {
   }
 
   void _connect() async {
-    _signaling ??= Signaling(widget.host, widget.user)..connect();
+   // mySnackBar(context, Colors.orange, COLOR_WHITE, "Trying to connect to WebRTC server...", Icons.incomplete_circle_rounded);
+    //print('De je snack barik');
+    _signaling ??= Signaling(widget.host, widget.user, this)..connect();
     _signaling?.onSignalingStateChange = (SignalingState state) {
       switch (state) {
         case SignalingState.ConnectionClosed:
+          //mySnackBar(context, Colors.red, COLOR_WHITE, "Connection to WebRTC server failed. Check your network status.", Icons.cloud_off_rounded);
+          break;
         case SignalingState.ConnectionError:
+         // mySnackBar(context, Colors.red, COLOR_WHITE, "Connection to WebRTC server failed. Check your network status.", Icons.cloud_off_rounded);
+          break;
         case SignalingState.ConnectionOpen:
+          //mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Connection to WebRTC server established", Icons.check);
           break;
       }
     };
@@ -76,7 +84,9 @@ class _CallSampleState extends State<CallSample> {
           bool? accept = await _showAcceptDialog();
           if (accept!) {
             _accept();
+            isMute = false;
             setState(() {
+              isMute = false;
               _inCalling = true;
             });
           }
@@ -111,7 +121,6 @@ class _CallSampleState extends State<CallSample> {
           });
 
           break;
-        case CallState.CallStateRinging:
       }
     };
 
@@ -270,6 +279,7 @@ class _CallSampleState extends State<CallSample> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: COLOR_WHITE,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -294,8 +304,8 @@ class _CallSampleState extends State<CallSample> {
                       backgroundColor: COLOR_DARKMINT,
                       child: isMute ? Icon(Icons.mic_off, color: COLOR_GREY) : Icon(Icons.mic, color: COLOR_WHITE),
                       onPressed: () {
+                        isMute = !_muteMic();
                         setState(() {
-                          isMute = _muteMic();
                         });
                         },
                     )

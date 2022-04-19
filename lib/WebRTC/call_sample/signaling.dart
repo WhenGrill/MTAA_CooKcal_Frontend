@@ -35,7 +35,7 @@ class Session {
 }
 
 class Signaling {
-  Signaling(this._host, this._user);
+  Signaling(this._host, this._user, this._call_sample);
 
   JsonEncoder _encoder = JsonEncoder();
   JsonDecoder _decoder = JsonDecoder();
@@ -49,6 +49,7 @@ class Signaling {
   List<MediaStream> _remoteStreams = <MediaStream>[];
 
   UserOneOut _user;
+  var _call_sample;
 
   Function(SignalingState state)? onSignalingStateChange;
   Function(Session session, CallState state)? onCallStateChange;
@@ -107,7 +108,7 @@ class Signaling {
     if (_localStream != null) {
       bool enabled = _localStream!.getAudioTracks()[0].enabled;
       _localStream!.getAudioTracks()[0].enabled = !enabled;
-      return !enabled;
+      return _localStream!.getAudioTracks()[0].enabled;
     }
     return false;
   }
@@ -241,7 +242,9 @@ class Signaling {
           var sessionId = data['session_id'];
           print('bye: ' + sessionId);
           var session = _sessions.remove(sessionId);
+          //_call_sample._waitAccept = true;
           if (session != null) {
+
             onCallStateChange?.call(session, CallState.CallStateBye);
             _closeSession(session);
           }
