@@ -8,6 +8,7 @@ import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/Users/userSettings_screen.dart';
 import 'package:cookcal/Screens/Utils_screens/Welcome_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
+import 'package:cookcal/Widgets/myProgressbar.dart';
 import 'package:cookcal/model/foodlist.dart';
 import 'package:cookcal/model/weight.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -38,6 +39,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int currentTab= -5;
   final isDialOpen = ValueNotifier(false);
 
+  bool isLoading = false;
+
   UsersOperations UserOp = UsersOperations();
   FoodListOperations FoodListOp = FoodListOperations();
   WeightOperations WeightOp = WeightOperations();
@@ -51,7 +54,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   load_food_data() async {
     var response = await FoodListOp.get_user_foodlist();
-
     if (response == null || response.statusCode != 200){
       return response;
     }
@@ -175,9 +177,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 );
               }
           );} else {
+            setState(() {
+              isLoading = true;
+            });
             var response_food = await load_food_data();
             var response_weight = await load_weight_data();
             var response_user = await UserOp.get_current_user_info();
+            setState(() {
+              isLoading = false;
+            });
 
             if (food_weight_curruser_handle(context, response_food, response_weight, response_user)){
               UserOneOut user  = UserOneOut.fromJson(response_user.data);
@@ -199,11 +207,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             backgroundColor: COLOR_VERYDARKPURPLE,
             actions: [
               IconButton(onPressed: () async{
+                  setState(() {
+                    isLoading = true;
+                  });
                   SharedPreferences prefs = await SharedPreferences.getInstance();
 
                   var response_user = await UserOp.get_current_user_info();
                   var response_weight = await  WeightOp.get_all_weight('');
-
+                  setState(() {
+                    isLoading = false;
+                  });
                   if (weight_curruser_handle(context, response_weight, response_user)){
                     int? uId = prefs.getInt('user_id');
                     String? token = prefs.getString('token');
@@ -222,7 +235,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               )
             ],
           ),
-          body: currentScreen,
+          body: Stack(
+            alignment: Alignment.topCenter,
+              children: [currentScreen,myProgressBar(isLoading)]
+          ),
           floatingActionButton: SpeedDial(
             animatedIcon: AnimatedIcons.menu_close,
             backgroundColor: COLOR_DARKPURPLE,
@@ -245,9 +261,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 child: Icon(Icons.restaurant),
                 label: 'Food I ate today',
                 onTap: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
                   var response_food = await load_food_data();
                   var response_weight = await load_weight_data();
                   var response_user = await UserOp.get_current_user_info();
+                  setState(() {
+                    isLoading = false;
+                  });
                   if (food_weight_curruser_handle(context, response_food, response_weight, response_user)){
                     UserOneOut user  = UserOneOut.fromJson(response_user.data);
                     setState(() {
@@ -261,13 +283,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   child: Icon(Icons.local_phone_rounded),
                   label: 'Call nutrition adviser',
                   onTap: () async{
-
+                    setState(() {
+                      isLoading = true;
+                    });
                     var response_user = await UserOp.get_current_user_info();
-
+                    setState(() {
+                      isLoading = false;
+                    });
                     if(user_handle(context, response_user)){
                       UserOneOut user  = UserOneOut.fromJson(response_user.data);
                       setState(() {
-                        mySnackBar(context, Colors.orange, COLOR_WHITE, "Trying to connect to WebRTC server...", Icons.incomplete_circle_rounded);
+                        mySnackBar(context, Colors.orange, COLOR_WHITE, "Connecting to WebRTC server...", Icons.incomplete_circle_rounded);
                         currentScreen = CallSample(host: webrtc_ip, user: user);
                         currentTab = -10;
                       });
@@ -293,9 +319,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                         MaterialButton(
                           minWidth: 40,
                           onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
                             var response_food = await load_food_data();
                             var response_weight = await load_weight_data();
                             var response_user = await UserOp.get_current_user_info();
+                            setState(() {
+                              isLoading = false;
+                            });
 
                             if(food_weight_curruser_handle(context, response_food, response_weight, response_user)){
                               UserOneOut user  = UserOneOut.fromJson(response_user.data);
