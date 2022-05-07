@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:api_cache_manager/api_cache_manager.dart';
+import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:cookcal/HTTP/foodlist_operations.dart';
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/HTTP/login_register.dart';
@@ -53,10 +57,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget currentScreen = WelcomeScreen();
 
   load_food_data() async {
+
     var response = await FoodListOp.get_user_foodlist();
     if (response == null || response.statusCode != 200){
       return response;
     }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? uId = prefs.getInt('user_id');
+
+    APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}_Food", syncData: json.encode(response.data));
+    await APICacheManager().addCacheData(cacheDBModel);
 
     List<FoodListOut> food_data = List<FoodListOut>.from(
         response.data.map((x) => FoodListOut.fromJson(x)));
@@ -77,6 +87,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     if (response == null || response.statusCode != 200){
       return response;
     }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? uId = prefs.getInt('user_id');
+
+    APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}_Weight", syncData: json.encode(response.data));
+    await APICacheManager().addCacheData(cacheDBModel);
 
     List<WeightOut> weight_data = List<WeightOut>.from(
         response.data.map((x) => WeightOut.fromJson(x)));
@@ -172,7 +187,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                           )
                         ],
                       ),
-                    ),
+                    )
                   ),
                 );
               }
@@ -188,6 +203,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             });
 
             if (food_weight_curruser_handle(context, response_food, response_weight, response_user)){
+
+              APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User", syncData: json.encode(response_user.data));
+              await APICacheManager().addCacheData(cacheDBModel);
+
               UserOneOut user  = UserOneOut.fromJson(response_user.data);
               spots = make_plot(weights);
               double max_weight = get_max_weight(weights);
@@ -195,6 +214,51 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
                 currentTab = 4;
               });
+            } else if(response_food == null && response_user == null && response_weight == null) {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              int? uId = prefs.getInt('user_id');
+
+              var CacheUser = await APICacheManager().isAPICacheKeyExist("User${uId}");
+              var CacheFood = await APICacheManager().isAPICacheKeyExist("User${uId}_Food");
+              var CacheWeight = await APICacheManager().isAPICacheKeyExist("User${uId}_Weight");
+
+              if(CacheWeight && CacheUser && CacheFood){
+                var UserCache = await APICacheManager().getCacheData("User${uId}");
+                var UserFoodCache = await APICacheManager().getCacheData("User${uId}_Food");
+                var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Weight");
+                UserOneOut user = UserOneOut.fromJson(json.decode(UserCache.syncData));
+
+                List<FoodListOut> food_data = List<FoodListOut>.from(
+                    json.decode(UserFoodCache.syncData).map((x) => FoodListOut.fromJson(x)));
+
+                print("this -> ${foods}");
+                foods.clear();
+                food_data.forEach((element) {
+                  foods.add(element);
+                  print(element.id);
+                });
+
+                List<WeightOut> weight_data = List<WeightOut>.from(
+                    json.decode(UserWeightCache.syncData).map((x) => WeightOut.fromJson(x)));
+
+                print(weight_data);
+                print(weight_data.runtimeType);
+                weights.clear();
+                weight_data.forEach((element) {
+                  weights.add(element);
+                  print(element.weight);
+                });
+
+                spots = make_plot(weights);
+                double max_weight = get_max_weight(weights);
+                setState(()  {
+                  currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
+                  currentTab = 4;
+                });
+
+              }
+            } else {
+              mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
             }
           }
           return false;
@@ -219,16 +283,39 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   });
                   if (weight_curruser_handle(context, response_weight, response_user)){
                     int? uId = prefs.getInt('user_id');
+                    APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}", syncData: json.encode(response_user.data));
+                    await APICacheManager().addCacheData(cacheDBModel);
+
                     String? token = prefs.getString('token');
                     ImageProvider? uImage = await UserOp.get_user_image(uId);
                     UserOneOut user  = UserOneOut.fromJson(response_user.data);
-                    WeightOut currWeight = WeightOp.get_last_weightMeasure(response_weight);
-
+                    WeightOut currWeight = WeightOp.get_last_weightMeasure(response_weight.data);
 
                     setState(() {
                       currentScreen = UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token, currUserWeight: currWeight);
                       currentTab = -1;
                     });
+                  } else if (response_user == null && response_weight == null){
+                    String? token = prefs.getString('token');
+                    int? uId = prefs.getInt('user_id');
+                    var CacheUser = await APICacheManager().isAPICacheKeyExist("User${uId}");
+                    var CacheWeight = await APICacheManager().isAPICacheKeyExist("User${uId}_Weight");
+                    if(CacheWeight && CacheUser){
+                      var UserCache = await APICacheManager().getCacheData("User${uId}");
+                      var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Weight");
+
+                      UserOneOut user = UserOneOut.fromJson(json.decode(UserCache.syncData));
+
+                      WeightOut currWeight = WeightOp.get_last_weightMeasure(json.decode(UserWeightCache.syncData));
+
+                      setState(() {
+                        currentScreen = UserSettingsScreen(user: user, uImage: null ,uId : uId, token: token, currUserWeight: currWeight);
+                        currentTab = -1;
+                      });
+
+                    }else{
+                      mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+                    }
                   }
 
               }, icon: currentTab == -1 ? const Icon(Icons.person_sharp, color: COLOR_MINT) : const Icon(Icons.person_sharp, color: Colors.white)
@@ -264,6 +351,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   setState(() {
                     isLoading = true;
                   });
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  int? uId = prefs.getInt('user_id');
+
                   var response_food = await load_food_data();
                   var response_weight = await load_weight_data();
                   var response_user = await UserOp.get_current_user_info();
@@ -271,11 +361,54 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     isLoading = false;
                   });
                   if (food_weight_curruser_handle(context, response_food, response_weight, response_user)){
+
+                    APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}", syncData: json.encode(response_user.data));
+                    await APICacheManager().addCacheData(cacheDBModel);
+
                     UserOneOut user  = UserOneOut.fromJson(response_user.data);
                     setState(() {
                       currentScreen = FoodListScreen(foods: foods, curr_weight: weights.last.weight.toInt(), user: user);
                       currentTab = 0;
                     });
+                  } else if (response_user == null && response_weight == null && response_food == null){
+                      var CacheUser = await APICacheManager().isAPICacheKeyExist("User${uId}");
+                      var CacheFood = await APICacheManager().isAPICacheKeyExist("User${uId}_Food");
+                      var CacheWeight = await APICacheManager().isAPICacheKeyExist("User${uId}_Weight");
+
+                      if(CacheWeight && CacheUser && CacheFood){
+                        var UserCache = await APICacheManager().getCacheData("User${uId}");
+                        var UserFoodCache = await APICacheManager().getCacheData("User${uId}_Food");
+                        var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Weight");
+
+                        UserOneOut user = UserOneOut.fromJson(json.decode(UserCache.syncData));
+
+                        List<FoodListOut> food_data = List<FoodListOut>.from(
+                            json.decode(UserFoodCache.syncData).map((x) => FoodListOut.fromJson(x)));
+
+                        print("this -> ${foods}");
+                        foods.clear();
+                        food_data.forEach((element) {
+                          foods.add(element);
+                          print(element.id);
+                        });
+
+                        List<WeightOut> weight_data = List<WeightOut>.from(
+                            json.decode(UserWeightCache.syncData).map((x) => WeightOut.fromJson(x)));
+
+                        print(weight_data);
+                        print(weight_data.runtimeType);
+                        weights.clear();
+                        weight_data.forEach((element) {
+                          weights.add(element);
+                          print(element.weight);
+                        });
+                        setState(() {
+                          currentScreen = FoodListScreen(foods: foods, curr_weight: weights.last.weight.toInt(), user: user);
+                          currentTab = 0;
+                        });
+                      }
+                  } else {
+                    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
                   }
                 }
               ),
@@ -322,6 +455,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                             setState(() {
                               isLoading = true;
                             });
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            int? uId = prefs.getInt('user_id');
+
                             var response_food = await load_food_data();
                             var response_weight = await load_weight_data();
                             var response_user = await UserOp.get_current_user_info();
@@ -329,7 +465,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                               isLoading = false;
                             });
 
-                            if(food_weight_curruser_handle(context, response_food, response_weight, response_user)){
+                            if (food_weight_curruser_handle(context, response_food, response_weight, response_user)){
+
+                              APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}", syncData: json.encode(response_user.data));
+                              await APICacheManager().addCacheData(cacheDBModel);
+
                               UserOneOut user  = UserOneOut.fromJson(response_user.data);
                               spots = make_plot(weights);
                               double max_weight = get_max_weight(weights);
@@ -337,6 +477,48 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                                 currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
                                 currentTab = 4;
                               });
+                            } else if(response_food == null && response_user == null && response_weight == null) {
+                              var CacheUser = await APICacheManager().isAPICacheKeyExist("User${uId}");
+                              var CacheFood = await APICacheManager().isAPICacheKeyExist("User${uId}_Food");
+                              var CacheWeight = await APICacheManager().isAPICacheKeyExist("User${uId}_Weight");
+
+                              if(CacheWeight && CacheUser && CacheFood){
+                                var UserCache = await APICacheManager().getCacheData("User${uId}");
+                                var UserFoodCache = await APICacheManager().getCacheData("User${uId}_Food");
+                                var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Weight");
+                                UserOneOut user = UserOneOut.fromJson(json.decode(UserCache.syncData));
+
+                                List<FoodListOut> food_data = List<FoodListOut>.from(
+                                    json.decode(UserFoodCache.syncData).map((x) => FoodListOut.fromJson(x)));
+
+                                print("this -> ${foods}");
+                                foods.clear();
+                                food_data.forEach((element) {
+                                  foods.add(element);
+                                  print(element.id);
+                                });
+
+                                List<WeightOut> weight_data = List<WeightOut>.from(
+                                    json.decode(UserWeightCache.syncData).map((x) => WeightOut.fromJson(x)));
+
+                                print(weight_data);
+                                print(weight_data.runtimeType);
+                                weights.clear();
+                                weight_data.forEach((element) {
+                                  weights.add(element);
+                                  print(element.weight);
+                                });
+
+                                spots = make_plot(weights);
+                                double max_weight = get_max_weight(weights);
+                                setState(()  {
+                                  currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
+                                  currentTab = 4;
+                                });
+
+                              }
+                            } else {
+                              mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
                             }
 
                           },
@@ -353,7 +535,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                               )
                             ],
                           ),
-                        ), // home
+                        ),
                         MaterialButton(
                           minWidth: 40,
                           onPressed:  () {

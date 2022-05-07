@@ -26,7 +26,7 @@ class WeightOperations {
    get_last_weightMeasure(response) {
 
     List<WeightOut> weight = List<WeightOut>.from(
-          response.data.map((x) => WeightOut.fromJson(x)));
+          response.map((x) => WeightOut.fromJson(x)));
 
     return weight.last;
 

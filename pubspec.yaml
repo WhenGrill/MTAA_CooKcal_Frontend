@@ -52,6 +52,7 @@ dependencies:
   flutter_webrtc: ^0.8.3
   http: ^0.13.3
   path_provider: ^2.0.2
+  api_cache_manager: ^1.0.2
 
 dev_dependencies:
   slide_to_act: ^2.0.1

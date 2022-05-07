@@ -13,8 +13,6 @@ String unknowError = "Something went wrong, check you network status";
 food_weight_curruser_handle(context, code_food, code_weight, code_user){
 
   if (code_food == null || code_weight == null || code_user == null) {
-    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
-
     return false;
   }
 
@@ -95,8 +93,6 @@ user_handle(context, code_user){
 weight_curruser_handle(context, code_weight, code_user){
 
   if (code_weight == null || code_user == null) {
-    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
-
     return false;
   }
 

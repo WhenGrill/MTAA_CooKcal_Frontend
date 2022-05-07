@@ -17,7 +17,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
+    WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: COLOR_VERYDARKPURPLE));
 
     return ChangeNotifierProvider(create: (ctx) => Userauth(),

@@ -164,13 +164,9 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                                   });
                                   ImageProvider? rImage = await recipesOp.get_recipe_image(recipe.id);
                                   await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id, rImage: rImage,)));
-                                  var response = await load_data(last_text);
                                   setState(() {
                                     isLoading = false;
                                   });
-                                  if (get_all_recipes_handle(context, response)){
-                                    setState(() {});
-                                  }
                                 },
                                 leading: CircleAvatar(
                                   backgroundColor: COLOR_WHITE,
