@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:cookcal/HTTP/recipes_operations.dart';
 import 'package:cookcal/HTTP/users_operations.dart';
 import 'package:cookcal/Screens/Recipes/recipeProfile_screen.dart';
@@ -9,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/searchBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Utils/api_const.dart';
+import '../../WebRTC/utils/AutoReconnectWebSocket.dart';
 import '../../Widgets/neomoprishm_box.dart';
 import '../../model/recipes.dart';
 
@@ -21,7 +27,7 @@ class RecipeListScreen extends StatefulWidget {
 }
 
 class _RecipeListScreenState extends State<RecipeListScreen> {
-
+  var ws = AutoReconnectWebSocket(Uri.parse(wbapiURL+ '/recipes/ws'), "Recipes");
   final myController = TextEditingController();
   UsersOperations usersOperations = UsersOperations();
   RecipesOperations recipesOp = RecipesOperations();
@@ -37,6 +43,21 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
     myController.dispose();
     super.dispose();
   }
+
+
+  @override
+  initState(){
+    super.initState();
+    myController.addListener(searchControllerListener);
+    ws.sink.add(myController.text);
+  }
+
+  void searchControllerListener() {
+    print(myController.text);
+    ws.sink.add(myController.text);
+    ws.startReconnect();
+  }
+
 
   load_data(String text) async {
     var response = await RecipesOperations().get_all_recipes(text);
@@ -70,6 +91,30 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   }
 
 
+  ws_load_data(var ws_recipes) async {
+    List<RecipeOut> recipes_data = List<RecipeOut>.from(ws_recipes.map((x)=> RecipeOut.fromJson(x)));
+    recipes.clear();
+    if (isChecked){
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      curr_id = prefs.getInt("user_id")!;
+      recipes_data.forEach((element) {
+        if (element.creator['id'] == curr_id) {
+          recipes.add(element);
+        }
+      });
+    } else {
+      recipes_data.forEach((element) {
+        String name = element.title.toLowerCase();
+        if (name.contains(myController.text.toLowerCase())) {
+          recipes.add(element);
+          print(element.id);
+        }
+      });
+    }
+    print(recipes);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +133,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   ),
                 ),
                 addVerticalSpace(constraints.maxHeight * 0.02),
-                ButtonTheme(
+                /*ButtonTheme(
                   minWidth: 500,
                   height: 200,
                   child: ElevatedButton(
@@ -117,7 +162,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                     },
                     child: const Text('Search Recipes'),
                   ),
-                ),
+                ),*/
                 addVerticalSpace(constraints.maxHeight * 0.01),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -148,35 +193,51 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                   decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                 ),
                 Expanded(
-                    child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: recipes.length,
-                      itemBuilder: (context, index){
-                        final recipe = recipes[index];
-                        return Padding(padding: EdgeInsets.all(5),
-                          child: Container(
-                              decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 15),
-                              child: ListTile(
-                                trailing: const Icon(Icons.arrow_forward_ios_rounded),
-                                onTap: () async {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  ImageProvider? rImage = await recipesOp.get_recipe_image(recipe.id);
-                                  await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id, rImage: rImage,)));
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                },
-                                leading: CircleAvatar(
-                                  backgroundColor: COLOR_WHITE,
-                                  backgroundImage: AssetImage(food_icons[random(0,4)]), // no matter how big it is, it won't overflow
-                                ),
-                                title: Text(recipe.title),
-                                subtitle: Text("${recipe.creator["first_name"]} ${recipe.creator["last_name"]}"),
+                    child: StreamBuilder(
+                      stream: ws.stream,
+                      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                        if (snapshot.data != null){
 
-                              )
-                          ),
+                          var data = json.decode(snapshot.data);
+                          if (myController.text == ""){
+                            APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Recipes", syncData: json.encode(data));
+                            APICacheManager().addCacheData(cacheDBModel);
+                          }
+
+                          ws_load_data(data['detail']);
+
+                        }
+                        return ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: recipes.length,
+                          itemBuilder: (context, index){
+                            final recipe = recipes[index];
+                            return Padding(padding: EdgeInsets.all(5),
+                              child: Container(
+                                  decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 4, 15),
+                                  child: ListTile(
+                                    trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                                    onTap: () async {
+                                      /*setState(() {
+                                    isLoading = true;
+                                  });*/
+                                      ImageProvider? rImage = await recipesOp.get_recipe_image(recipe.id);
+                                      await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id, rImage: rImage,)));
+                                      /**setState(() {
+                                          isLoading = false;
+                                          });*/
+                                    },
+                                    leading: CircleAvatar(
+                                      backgroundColor: COLOR_WHITE,
+                                      backgroundImage: AssetImage(food_icons[random(0,4)]), // no matter how big it is, it won't overflow
+                                    ),
+                                    title: Text(recipe.title),
+                                    subtitle: Text("${recipe.creator["first_name"]} ${recipe.creator["last_name"]}"),
+
+                                  )
+                              ),
+                            );
+                          },
                         );
                       },
                     )

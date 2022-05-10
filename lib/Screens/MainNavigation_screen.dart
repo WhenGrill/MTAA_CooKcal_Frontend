@@ -198,14 +198,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             var response_food = await load_food_data();
             var response_weight = await load_weight_data();
             var response_user = await UserOp.get_current_user_info();
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            int? uId = prefs.getInt('user_id');
             setState(() {
               isLoading = false;
             });
 
             if (food_weight_curruser_handle(context, response_food, response_weight, response_user)){
 
-              APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User", syncData: json.encode(response_user.data));
-              await APICacheManager().addCacheData(cacheDBModel);
+              APICacheDBModel cacheDBModeluser = new APICacheDBModel(key: "User${uId}", syncData: json.encode(response_user.data));
+              await APICacheManager().addCacheData(cacheDBModeluser);
 
               UserOneOut user  = UserOneOut.fromJson(response_user.data);
               spots = make_plot(weights);
@@ -215,8 +217,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 currentTab = 4;
               });
             } else if(response_food == null && response_user == null && response_weight == null) {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              int? uId = prefs.getInt('user_id');
 
               var CacheUser = await APICacheManager().isAPICacheKeyExist("User${uId}");
               var CacheFood = await APICacheManager().isAPICacheKeyExist("User${uId}_Food");
@@ -473,6 +473,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                               UserOneOut user  = UserOneOut.fromJson(response_user.data);
                               spots = make_plot(weights);
                               double max_weight = get_max_weight(weights);
+                              print(weights.last.weight);
                               setState(()  {
                                 currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
                                 currentTab = 4;
@@ -538,9 +539,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                         ),
                         MaterialButton(
                           minWidth: 40,
-                          onPressed:  () {
+                          onPressed:  () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            int? id = prefs.getInt('user_id');
                             setState(() {
-                              currentScreen = UserListScreen();
+                              currentScreen = UserListScreen(curr_id: id);
                               currentTab = 3;
                             });
                           },

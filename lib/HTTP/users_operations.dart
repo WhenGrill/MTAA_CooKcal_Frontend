@@ -72,13 +72,13 @@ class UsersOperations {
         Dio d = Dio();
         d.options.headers['authorization'] = 'Bearer ' + token!;
 
-        Response response = await d.get(apiURL + '/users/' + id.toString() + '/image/');
+        Response response = await d.get(apiURL + '/users/' + id.toString() + '/image');
         print(response.statusCode);
         if (response.statusCode != 200){
           return null;
         } else {
           ImageProvider? img = NetworkImage(
-              apiURL + '/users/' + id.toString() + '/image/',
+              apiURL + '/users/' + id.toString() + '/image',
               headers: {'authorization': 'Bearer ' + token});
           return img;
         }

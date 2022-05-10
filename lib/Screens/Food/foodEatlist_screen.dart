@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:cookcal/Screens/Recipes/recipeProfile_screen.dart';
 import 'package:cookcal/Status_code_handling/status_code_handling.dart';
 import 'package:cookcal/Utils/constants.dart';
@@ -10,6 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../HTTP/food_operations.dart';
 import '../../HTTP/foodlist_operations.dart';
+import '../../Utils/api_const.dart';
+import '../../WebRTC/utils/AutoReconnectWebSocket.dart';
 import '../../Widgets/neomoprishm_box.dart';
 import '../../model/food.dart';
 import '../../model/foodlist.dart';
@@ -23,7 +29,7 @@ class FoodEatListScreen extends StatefulWidget {
 }
 
 class _FoodEatListScreenState extends State<FoodEatListScreen> {
-
+  var ws = AutoReconnectWebSocket(Uri.parse(wbapiURL+ '/food/ws'), "Foods");
   final gramsControler = TextEditingController();
   final searchControler = TextEditingController();
   bool isLoading = false;
@@ -44,6 +50,18 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
     super.dispose();
   }
 
+  @override
+  initState(){
+    super.initState();
+    searchControler.addListener(searchControllerListener);
+    ws.sink.add(searchControler.text);
+  }
+
+  void searchControllerListener() {
+    print(searchControler.text);
+    ws.sink.add(searchControler.text);
+    ws.startReconnect();
+  }
 
   load_data() async {
     var response = await FoodOperations().get_all_food(searchControler.text);
@@ -63,6 +81,22 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
     return response;
   }
 
+
+  ws_load_data(var ws_foods) async {
+    List<FoodOut> users_data = List<FoodOut>.from(ws_foods.map((x)=> FoodOut.fromJson(x)));
+    foods.clear();
+    users_data.forEach((element) {
+      String name = element.title.toLowerCase();
+      if (name.contains(searchControler.text.toLowerCase())){
+        foods.add(element);
+        print(element.id);
+      }
+    }
+    );
+    print(foods);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +115,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                   ),
                 ),
                 addVerticalSpace(constraints.maxHeight * 0.02),
-                ButtonTheme(
+                /*ButtonTheme(
                   minWidth: 500,
                   height: 200,
                   child: ElevatedButton(
@@ -110,7 +144,7 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                     },
                     child: const Text('Search Food'),
                   ),
-                ),
+                ),*/
                 addVerticalSpace(constraints.maxHeight * 0.02),
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -120,7 +154,21 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                   decoration: neumorphism(COLOR_WHITE, Colors.grey[500]!, Colors.white, 2,10),
                 ),
                 Expanded(
-                    child: ListView.builder(
+                    child: StreamBuilder(
+                        stream: ws.stream,
+                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
+                          if (snapshot.data != null){
+
+                            var data = json.decode(snapshot.data);
+                            if (searchControler.text == ""){
+                              APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Foods", syncData: json.encode(data));
+                              APICacheManager().addCacheData(cacheDBModel);
+                            }
+
+                            ws_load_data(data['detail']);
+
+                          }
+                        return ListView.builder(
                       itemCount: foods.length,
                       itemBuilder: (context, index){
                         final food = foods[index];
@@ -222,16 +270,8 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                                                               id_food: food.id,
                                                               amount: double.parse(gramsControler.text),
                                                             );
-                                                            setState(() {
-                                                              isLoading = true;
-                                                            });
                                                             var response = await foodListOperations.AddFood(data);
-                                                            setState(() {
-                                                              isLoading = false;
-                                                            });
-
                                                             if (add_food_handle(context, response)){
-
                                                               mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, 'Food added successfully', Icons.check_circle);
                                                             }
                                                             gramsControler.text = "";
@@ -273,6 +313,8 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                           ),
                         );
                       },
+                    );
+                        }
                     )
                 )
               ],
