@@ -50,13 +50,12 @@ class AutoReconnectWebSocket {
     }, onError: (e) async {
       _recipientCtrl.addError(e);
       isConnected = false;
-      if (e.toString().contains("Network is unreachable")){
+      print("WS error: "+e.toString());
         var CacheInstance = await APICacheManager().isAPICacheKeyExist(Key);
         if (CacheInstance){
           var DataCache = await APICacheManager().getCacheData(Key);
           _recipientCtrl.add(DataCache.syncData);
         }
-      }
 
     }, onDone: () async {
       isConnected = false;

@@ -563,9 +563,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                         ), //users
                         MaterialButton(
                           minWidth: 40,
-                            onPressed: (){
+                            onPressed: () async {
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              int curr_id = prefs.getInt("user_id")!;
                                 setState(() {
-                                  currentScreen = RecipeListScreen();
+                                  currentScreen = RecipeListScreen(curr_id: curr_id);
                                   currentTab = 1;
                                 });
                         },

@@ -25,7 +25,7 @@ import 'editRecipe_screen.dart';
 
 class RecipeProfileScreen extends StatefulWidget {
   final RecipeOut recipe;
-  final int curr_id;
+  final int? curr_id;
   final ImageProvider? rImage;
   const RecipeProfileScreen({Key? key, required this.recipe, required this.curr_id, required this.rImage}) : super(key: key);
   @override
@@ -34,7 +34,7 @@ class RecipeProfileScreen extends StatefulWidget {
 
 class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
   late RecipeOut recipe = widget.recipe;
-  late int curr_id = widget.curr_id;
+  late int? curr_id = widget.curr_id;
   late ImageProvider? rImage = widget.rImage;
   bool isLoading = false;
   File? image;

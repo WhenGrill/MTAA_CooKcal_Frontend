@@ -20,7 +20,8 @@ import '../../model/recipes.dart';
 
 
 class RecipeListScreen extends StatefulWidget {
-  const RecipeListScreen({Key? key}) : super(key: key);
+  final int? curr_id;
+  const RecipeListScreen({Key? key, required this.curr_id}) : super(key: key);
 
   @override
   _RecipeListScreenState createState() => _RecipeListScreenState();
@@ -32,7 +33,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   UsersOperations usersOperations = UsersOperations();
   RecipesOperations recipesOp = RecipesOperations();
   List<RecipeOut> recipes = [];
-  late int curr_id = 0;
+  late int? curr_id = widget.curr_id;
   String last_text = "";
   bool isChecked = false;
   bool isLoading = false;
@@ -73,7 +74,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
         response.data.map((x) => RecipeOut.fromJson(x)));
 
     recipes.clear();
-
+    print(isChecked);
     if (isChecked){
       recipes_data.forEach((element) {
         if (element.creator['id'] == curr_id) {
@@ -95,10 +96,8 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
     List<RecipeOut> recipes_data = List<RecipeOut>.from(ws_recipes.map((x)=> RecipeOut.fromJson(x)));
     recipes.clear();
     if (isChecked){
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      curr_id = prefs.getInt("user_id")!;
       recipes_data.forEach((element) {
-        if (element.creator['id'] == curr_id) {
+        if (element.creator['id'] == widget.curr_id) {
           recipes.add(element);
         }
       });
