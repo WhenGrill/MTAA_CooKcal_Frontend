@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:cookcal/HTTP/foodlist_operations.dart';
 import 'package:cookcal/HTTP/login_register.dart';
 import 'package:cookcal/Status_code_handling/status_code_handling.dart';
@@ -9,6 +13,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:cookcal/Widgets/CircleProgress.dart';
 import 'package:cookcal/Utils/custom_functions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Widgets/neomoprishm_box.dart';
 
@@ -152,10 +157,18 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                                               });
                                                               if (foodlist_del_handle(context, response)){
                                                                 foods.removeWhere((element) => foods.indexOf(element) == index);
-                                                                setState(() {
-
-                                                                });
                                                                 mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, 'Food removed', Icons.check_circle);
+                                                              } else if (response == null) {
+                                                                foods.removeWhere((element) => foods.indexOf(element) == index);
+                                                                final prefs = await SharedPreferences.getInstance();
+                                                                int uId = prefs.getInt('user_id')!;
+                                                                var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Food");
+                                                                List<dynamic> cache_data = json.decode(UserWeightCache.syncData);
+                                                                cache_data.removeAt(index);
+                                                                APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}_Food", syncData: json.encode(cache_data));
+                                                                await APICacheManager().addCacheData(cacheDBModel);
+                                                                setState(() {
+                                                                });
                                                               }
                                                               Navigator.pop(context);
                                                             },

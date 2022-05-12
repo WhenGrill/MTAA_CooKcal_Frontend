@@ -34,15 +34,22 @@ class WeightOperations {
   }
 
   add_weight(double weight) async {
+    Dio dio = Dio();
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    dio.options.headers['authorization'] = 'Bearer ' + token!;
+
     try {
-      Dio dio = Dio();
-      final prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString('token');
-      dio.options.headers['authorization'] = 'Bearer ' + token!;
       Response response = await dio.post(apiURL + '/weight_measurement/', data: {'weight': weight});
       return response;
     }
     on DioError catch (e) {
+      failedAPICallsQueue.add({
+        'url': apiURL + '/weight_measurement/',
+        'token': token,
+        'method': 'POST',
+        'data': {'weight': weight}
+      });
       return e.response;
     }
   }

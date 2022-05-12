@@ -1,5 +1,6 @@
 export '../model/users.dart';
 
+import 'package:cookcal/HTTP/FailedAPICallQueue.dart';
 import 'package:cookcal/Utils/api_const.dart';
 import 'package:cookcal/model/users.dart';
 import 'package:dio/dio.dart';
@@ -21,8 +22,13 @@ class Userauth with ChangeNotifier{
 
       var token = response.data['access_token'];
       await prefs.setString('token', token);
-      
-      await prefs.setInt('user_id', Jwt.parseJwt(token)['user_id']);
+      int userid = Jwt.parseJwt(token)['user_id'];
+      await prefs.setInt('user_id', userid);
+
+      failedAPICallsQueue = FailedAPICallsQueue(userid, token);
+      print(failedAPICallsQueue.token);
+      print(failedAPICallsQueue.user_id);
+      print(failedAPICallsQueue.box);
 
       print(prefs.getString('token'));
       print(prefs.getInt('user_id'));

@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:cookcal/HTTP/recipes_operations.dart';
 import 'package:cookcal/Screens/Recipes/addRecipe_screen.dart';
 import 'package:cookcal/Screens/home_screen.dart';
@@ -16,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../HTTP/login_register.dart';
+import '../../Utils/api_const.dart';
 import '../../Widgets/mySnackBar.dart';
 import '../../Widgets/neomoprishm_box.dart';
 import '../../model/recipes.dart';
@@ -213,6 +217,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                               setState(() {
                                 isLoading = false;
                               });
+                              await failedAPICallsQueue.execute_all_pending();
                               Navigator.of(context).push(MaterialPageRoute(builder: (context)=> EditRecipeScreen(data: data, id: recipe.id, rImage: rImage,)));
                             },
                             backgroundColor: COLOR_DARKMINT,
@@ -276,7 +281,21 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                                                         });
                                                         if (response == null){
                                                           Navigator.pop(context);
-                                                          mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+                                                          Navigator.pop(context);
+                                                          {
+                                                            var RecipesCache = await APICacheManager().getCacheData("Recipes");
+                                                            var ori_cache_data = json.decode(RecipesCache.syncData);
+                                                            int i = 0;
+                                                            List<dynamic> cache_data = ori_cache_data['detail'];
+                                                            for (var recipes in cache_data){
+                                                              if (recipes['id'] == recipe.id){
+                                                                i = cache_data.indexOf(recipes);
+                                                              }
+                                                            }
+                                                            ori_cache_data["detail"].removeAt(i);
+                                                            APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Recipes", syncData: json.encode(ori_cache_data));
+                                                            await APICacheManager().addCacheData(cacheDBModel);
+                                                          }
                                                         }
                                                         else if (response.statusCode == 204){
                                                           Navigator.pop(context);

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:cookcal/HTTP/FailedAPICallQueue.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Widgets/mySnackBar.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,6 @@ class UsersOperations {
       d.options.headers['authorization'] = 'Bearer ' + token!;
 
       Response response = await d.get(apiURL + '/users/' + id.toString());
-
       return response;
     }
     on DioError catch (e) {
@@ -128,11 +128,13 @@ class UsersOperations {
   }
 
   update_user_data(Map<String, dynamic> upUserData) async{
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var id = prefs.getInt('user_id');
+
     try {
       Dio d = Dio();
-      final prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString('token');
-      var id = prefs.getInt('user_id');
+
       d.options.headers['authorization'] = 'Bearer ' + token!;
 
       Map<String, dynamic> tmp =  Map<String, dynamic>.from(upUserData);
@@ -151,6 +153,13 @@ class UsersOperations {
 
     }
     on DioError catch (e){
+      failedAPICallsQueue.add({
+        'url': apiURL + '/users/' + id.toString(),
+        'token': token,
+        'method': 'PUT',
+        'data': upUserData
+      });
+
 
       return e.response;
     }

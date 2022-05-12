@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:cookcal/HTTP/recipes_operations.dart';
 import 'package:cookcal/Screens/MainNavigation_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
@@ -10,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Status_code_handling/status_code_handling.dart';
 import '../../Widgets/mySnackBar.dart';
@@ -340,9 +344,25 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                     else{
                                       mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
                                     }
-                                  }
-                                  else{
-                                    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+                                  } else if(response == null){
+                                    var RecipesCache = await APICacheManager().getCacheData("Recipes");
+                                    var ori_cache_data = json.decode(RecipesCache.syncData);
+                                    var cache_data = ori_cache_data['detail'];
+                                    for (var recipe in cache_data){
+                                     if (recipe['id'] == widget.id){
+                                        cache_data[cache_data.indexOf(recipe)] = {
+                                          "id": recipe['id'],
+                                          "title": titleController.text,
+                                          "ingredients": ingredientsController.text,
+                                          "instructions": instructionsController.text,
+                                          "kcal_100g": double.parse(kcalController.text),
+                                          "creator": recipe["creator"]
+                                        };
+                                      }
+                                    }
+                                    ori_cache_data['detail'] = cache_data;
+                                    APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Recipes", syncData: json.encode(ori_cache_data));
+                                    await APICacheManager().addCacheData(cacheDBModel);
                                   }
                                   setState(() {
                                     isLoading = true;

@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:cookcal/HTTP/recipes_operations.dart';
 import 'package:cookcal/Screens/home_screen.dart';
 import 'package:cookcal/Screens/Login_register/register_screen.dart';
@@ -15,6 +18,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../HTTP/login_register.dart';
 import '../../Widgets/neomoprishm_box.dart';
@@ -317,8 +321,33 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                               }else{
                                 mySnackBar(context, Colors.red,COLOR_WHITE, unknowError, Icons.cloud_off_rounded);
                               }
-                            } else{
-                              mySnackBar(context, Colors.red,COLOR_WHITE, unknowError, Icons.cloud_off_rounded);
+                            } else if(response == null){
+                              final prefs = await SharedPreferences.getInstance();
+                              int uId = prefs.getInt('user_id')!;
+                              var RecipesCache = await APICacheManager().getCacheData("Recipes");
+                              var UserCache = await APICacheManager().getCacheData("User${uId}");
+                              var ori_cache_data = json.decode(RecipesCache.syncData);
+                              var user = json.decode(UserCache.syncData);
+                              ori_cache_data['detail'].add(
+                                  {
+                                    "id": random(-99999, -9),
+                                    "title": titleController.text,
+                                    "ingredients": ingredientsController.text,
+                                    "instructions": instructionsController.text,
+                                    "kcal_100g": double.parse(kcalController.text),
+                                    "creator": {
+                                      "id": user["id"],
+                                      "first_name": user["first_name"],
+                                      "last_name": user["last_name"],
+                                      "gender": user["gender"],
+                                      "age": user["age"],
+                                      "state": user["state"],
+                                      "is_nutr_adviser": user["is_nutr_adviser"]
+                                    }
+                                  }
+                              );
+                              APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Recipes", syncData: json.encode(ori_cache_data));
+                              await APICacheManager().addCacheData(cacheDBModel);
                             }
 
                             titleController.text = "";

@@ -15,6 +15,7 @@ import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Widgets/myProgressbar.dart';
 import 'package:cookcal/model/foodlist.dart';
 import 'package:cookcal/model/weight.dart';
+import 'package:dio/dio.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -112,6 +113,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
     return WillPopScope(
         onWillPop: () async {
+          await failedAPICallsQueue.execute_all_pending();
           if (isDialOpen.value) {
             isDialOpen.value = false;
             return false;
@@ -213,6 +215,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               spots = make_plot(weights);
               double max_weight = get_max_weight(weights);
               setState(()  {
+
                 currentScreen = HomeScreen(foods: foods, weights: spots, curr_weight: weights.last.weight.toInt(), max_weight: max_weight, user: user);
                 currentTab = 4;
               });
@@ -275,7 +278,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     isLoading = true;
                   });
                   SharedPreferences prefs = await SharedPreferences.getInstance();
-
+                  await failedAPICallsQueue.execute_all_pending();
                   var response_user = await UserOp.get_current_user_info();
                   var response_weight = await  WeightOp.get_all_weight('');
                   setState(() {
@@ -290,6 +293,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                     ImageProvider? uImage = await UserOp.get_user_image(uId);
                     UserOneOut user  = UserOneOut.fromJson(response_user.data);
                     WeightOut currWeight = WeightOp.get_last_weightMeasure(response_weight.data);
+
+
 
                     setState(() {
                       currentScreen = UserSettingsScreen(user: user, uImage: uImage,uId : uId, token: token, currUserWeight: currWeight);
@@ -337,7 +342,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               SpeedDialChild(
                   child: Icon(Icons.add),
                   label: 'Add Food',
-                  onTap: () {
+                  onTap: () async{
+                    await failedAPICallsQueue.execute_all_pending();
                     setState(() {
                       currentScreen = FoodEatListScreen();
                       currentTab = 0;
@@ -348,6 +354,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 child: Icon(Icons.restaurant),
                 label: 'Food I ate today',
                 onTap: () async {
+                  await failedAPICallsQueue.execute_all_pending();
                   setState(() {
                     isLoading = true;
                   });
@@ -455,12 +462,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                             setState(() {
                               isLoading = true;
                             });
+                            await failedAPICallsQueue.execute_all_pending();
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             int? uId = prefs.getInt('user_id');
 
                             var response_food = await load_food_data();
                             var response_weight = await load_weight_data();
                             var response_user = await UserOp.get_current_user_info();
+
+                            //failedAPICallsQueue.add(UserOp.get_current_user_info());
+                            //var resp = await failedAPICallsQueue.execute_first();
+
                             setState(() {
                               isLoading = false;
                             });
@@ -542,6 +554,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                           onPressed:  () async {
                             final prefs = await SharedPreferences.getInstance();
                             int? id = prefs.getInt('user_id');
+
+                            await failedAPICallsQueue.execute_all_pending();
+
                             setState(() {
                               currentScreen = UserListScreen(curr_id: id);
                               currentTab = 3;
@@ -566,6 +581,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                             onPressed: () async {
                               SharedPreferences prefs = await SharedPreferences.getInstance();
                               int curr_id = prefs.getInt("user_id")!;
+
+                              await failedAPICallsQueue.execute_all_pending();
+
                                 setState(() {
                                   currentScreen = RecipeListScreen(curr_id: curr_id);
                                   currentTab = 1;
@@ -587,7 +605,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                         ), // recipes
                         MaterialButton(
                           minWidth: 40,
-                          onPressed: (){
+                          onPressed: () async{
+
+                            await failedAPICallsQueue.execute_all_pending();
+
                             setState(() {
                               currentScreen = AddRecipeScreen();
                               currentTab = 2;

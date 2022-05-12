@@ -166,6 +166,7 @@ class _UserListScreenState extends State<UserListScreen> {
                                     trailing: const Icon(Icons.arrow_forward_ios_rounded),
                                     onTap: () async {
                                       ImageProvider? uImage = await userOp.get_user_image(user.id);
+                                      await failedAPICallsQueue.execute_all_pending();
                                       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>UserProfileScreen(user: user, uImage: uImage)));
                                     },
                                     leading: CircleAvatar(

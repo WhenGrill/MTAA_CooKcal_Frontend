@@ -43,18 +43,25 @@ class RecipesOperations {
 
       return response;
     }
-    catch (e) {
+    on DioError catch (e) {
       print(e);
+      failedAPICallsQueue.add({
+        'url': apiURL + '/recipes/',
+        'token': token,
+        'method': 'POST',
+        'data': recipe.toJson()
+      });
+      return e.response;
     }
   }
 
   UpdateRecipe(Map<String, dynamic> upRecipeData, int recipe_id) async{
-    try {
-      Dio d = Dio();
-      final prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString('token');
-      d.options.headers['authorization'] = 'Bearer ' + token!;
+    Dio d = Dio();
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    d.options.headers['authorization'] = 'Bearer ' + token!;
 
+    try {
       Map<String, dynamic> tmp =  Map<String, dynamic>.from(upRecipeData);
       for (var x in tmp.entries) {
         if (x.value == null) {
@@ -66,21 +73,35 @@ class RecipesOperations {
       print(response.statusCode);
       return response;
     }
-    catch (e){
-      print(e);
+    on DioError catch (e){
+      failedAPICallsQueue.add({
+        'url': apiURL + '/recipes/' + recipe_id.toString(),
+        'token': token,
+        'id': recipe_id,
+        'method': 'PUT',
+        'data': upRecipeData
+      });
+      return e.response;
     }
   }
 
   delete_recipe(recipe_id) async {
     Dio d = Dio();
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    d.options.headers['authorization'] = 'Bearer ' + token!;
+
     try {
-      final prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString('token');
-      d.options.headers['authorization'] = 'Bearer ' + token!;
       Response response = await d.delete(apiURL + '/recipes/' + recipe_id.toString());
       return response;
     }
     on DioError catch(e){
+      failedAPICallsQueue.add({
+        'url': apiURL + '/recipes/' + recipe_id.toString(),
+        'id': recipe_id,
+        'token': token,
+        'method': 'DELETE',
+      });
       return e.response;
     }
   }

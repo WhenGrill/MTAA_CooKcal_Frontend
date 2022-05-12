@@ -56,7 +56,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   void searchControllerListener() {
     print(myController.text);
     ws.sink.add(myController.text);
-    ws.startReconnect();
+    // ws.startReconnect();
   }
 
 
@@ -97,12 +97,14 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
     recipes.clear();
     if (isChecked){
       recipes_data.forEach((element) {
+        print(element.title);
         if (element.creator['id'] == widget.curr_id) {
           recipes.add(element);
         }
       });
     } else {
       recipes_data.forEach((element) {
+        print(element.title);
         String name = element.title.toLowerCase();
         if (name.contains(myController.text.toLowerCase())) {
           recipes.add(element);
@@ -195,9 +197,11 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                     child: StreamBuilder(
                       stream: ws.stream,
                       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+
                         if (snapshot.data != null){
 
                           var data = json.decode(snapshot.data);
+
                           if (myController.text == ""){
                             APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Recipes", syncData: json.encode(data));
                             APICacheManager().addCacheData(cacheDBModel);
@@ -217,14 +221,12 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                                   child: ListTile(
                                     trailing: const Icon(Icons.arrow_forward_ios_rounded),
                                     onTap: () async {
-                                      /*setState(() {
-                                    isLoading = true;
-                                  });*/
+
                                       ImageProvider? rImage = await recipesOp.get_recipe_image(recipe.id);
+                                      await failedAPICallsQueue.execute_all_pending();
                                       await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id, rImage: rImage,)));
-                                      /**setState(() {
-                                          isLoading = false;
-                                          });*/
+                                      ws.sink.add(myController.text);
+
                                     },
                                     leading: CircleAvatar(
                                       backgroundColor: COLOR_WHITE,

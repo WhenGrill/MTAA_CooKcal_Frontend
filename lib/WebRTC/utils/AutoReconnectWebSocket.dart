@@ -41,10 +41,8 @@ class AutoReconnectWebSocket {
   void _connect() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
-    if (isConnected == false){
-      webSocketChannel = IOWebSocketChannel.connect(_endpoint, headers: {HttpHeaders.authorizationHeader: token});
-      isConnected = true;
-    }
+    webSocketChannel = IOWebSocketChannel.connect(_endpoint, headers: {HttpHeaders.authorizationHeader: token});
+    isConnected = true;
     webSocketChannel!.stream.listen((event) {
       _recipientCtrl.add(event);
     }, onError: (e) async {

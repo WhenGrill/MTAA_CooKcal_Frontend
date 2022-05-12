@@ -7,7 +7,7 @@ import '../Utils/api_const.dart';
 class FoodListOperations {
   final Dio _dio = Dio();
 
-  AddFood(FoodlistIn food) async {
+  AddFood(FoodlistIn food, int offline_Id) async {
 
     Dio dio = Dio();
     dio.options.headers['content-type'] = 'application/json';
@@ -24,6 +24,13 @@ class FoodListOperations {
       return response;
     }
     on DioError catch (e) {
+      failedAPICallsQueue.add({
+        'url': apiURL + '/foodlist/',
+        "id": offline_Id,
+        'token': token,
+        'method': 'POST',
+        'data': food.toJson()
+      });
       return e.response;
     }
   }
@@ -49,13 +56,21 @@ class FoodListOperations {
 
   delete_food(food_id) async {
     Dio d = Dio();
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+
     try{
-      final prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString('token');
+
       d.options.headers['authorization'] = 'Bearer ' + token!;
       Response response = await d.delete(apiURL + '/foodlist/' + food_id.toString());
       return response;
     } on DioError catch(e){
+      failedAPICallsQueue.add({
+        'url': apiURL + '/foodlist/' + food_id.toString(),
+        'id': food_id,
+        'token': token,
+        'method': 'DELETE',
+      });
       return e.response;
     }
 
