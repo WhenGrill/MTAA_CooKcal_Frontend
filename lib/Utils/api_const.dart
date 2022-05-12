@@ -3,8 +3,8 @@ import 'package:cookcal/HTTP/FailedAPICallQueue.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String apiURL = 'http://172.20.10.2';
-const String wbapiURL = 'ws://172.20.10.2';
+const String apiURL = 'http://cookcal.herokuapp.com';
+const String wbapiURL = 'ws://cookcal.herokuapp.com';
 // const String apiURL = 'http://cookcal.herokuapp.com';
 // const String wbapiURL = 'ws://cookcal.herokuapp.com';
 const String webrtc_port = '8086';

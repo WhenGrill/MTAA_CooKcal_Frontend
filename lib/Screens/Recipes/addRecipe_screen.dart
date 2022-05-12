@@ -290,17 +290,18 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             setState(() {
                               isLoading = true;
                             });
-                            Response? response = await recipesOperations.PostRecipe(data);
+                            int recipeid = random(-99999, -9);;
+                            Response? response = await recipesOperations.PostRecipe(data, recipeid);
                             setState(() {
                               isLoading = false;
                             });
                             if(response != null) {
+                              recipeid = response.data['id'];
                               if (response.statusCode == 201 && image != null) {
-                                int recipe_id = response.data['id'];
                                 setState(() {
                                   isLoading = true;
                                 });
-                                http.StreamedResponse? img_response = await recipesOperations.upload_recipe_image(image!, recipe_id);
+                                http.StreamedResponse? img_response = await recipesOperations.upload_recipe_image(image!, recipeid);
                                 await image_handle(context, img_response, this);
                                 setState(() {
                                   isLoading = false;
@@ -321,34 +322,41 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                               }else{
                                 mySnackBar(context, Colors.red,COLOR_WHITE, unknowError, Icons.cloud_off_rounded);
                               }
-                            } else if(response == null){
-                              final prefs = await SharedPreferences.getInstance();
-                              int uId = prefs.getInt('user_id')!;
-                              var RecipesCache = await APICacheManager().getCacheData("Recipes");
-                              var UserCache = await APICacheManager().getCacheData("User${uId}");
-                              var ori_cache_data = json.decode(RecipesCache.syncData);
-                              var user = json.decode(UserCache.syncData);
-                              ori_cache_data['detail'].add(
-                                  {
-                                    "id": random(-99999, -9),
-                                    "title": titleController.text,
-                                    "ingredients": ingredientsController.text,
-                                    "instructions": instructionsController.text,
-                                    "kcal_100g": double.parse(kcalController.text),
-                                    "creator": {
-                                      "id": user["id"],
-                                      "first_name": user["first_name"],
-                                      "last_name": user["last_name"],
-                                      "gender": user["gender"],
-                                      "age": user["age"],
-                                      "state": user["state"],
-                                      "is_nutr_adviser": user["is_nutr_adviser"]
-                                    }
-                                  }
-                              );
-                              APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Recipes", syncData: json.encode(ori_cache_data));
-                              await APICacheManager().addCacheData(cacheDBModel);
+                            }else{
+                              var Cacherecipes = await APICacheManager().isAPICacheKeyExist("Recipes");
+                              if (Cacherecipes){
+                                mySnackBar(context,  Colors.orange, COLOR_WHITE, offline, Icons.storage_rounded);
+                              } else {
+                                mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.cloud_off_rounded);
+                              }
                             }
+                            final prefs = await SharedPreferences.getInstance();
+                            int uId = prefs.getInt('user_id')!;
+                            var RecipesCache = await APICacheManager().getCacheData("Recipes");
+                            var UserCache = await APICacheManager().getCacheData("User${uId}");
+                            var ori_cache_data = json.decode(RecipesCache.syncData);
+                            var user = json.decode(UserCache.syncData);
+
+                            ori_cache_data['detail'].add(
+                                {
+                                  "id": recipeid,
+                                  "title": titleController.text,
+                                  "ingredients": ingredientsController.text,
+                                  "instructions": instructionsController.text,
+                                  "kcal_100g": double.parse(kcalController.text),
+                                  "creator": {
+                                    "id": user["id"],
+                                    "first_name": user["first_name"],
+                                    "last_name": user["last_name"],
+                                    "gender": user["gender"],
+                                    "age": user["age"],
+                                    "state": user["state"],
+                                    "is_nutr_adviser": user["is_nutr_adviser"]
+                                  }
+                                }
+                            );
+                            APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Recipes", syncData: json.encode(ori_cache_data));
+                            await APICacheManager().addCacheData(cacheDBModel);
 
                             titleController.text = "";
                             ingredientsController.text = "";

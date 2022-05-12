@@ -363,6 +363,7 @@ class _EditRecipeScreenState extends State<EditRecipeScreen> {
                                     ori_cache_data['detail'] = cache_data;
                                     APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Recipes", syncData: json.encode(ori_cache_data));
                                     await APICacheManager().addCacheData(cacheDBModel);
+                                    mySnackBar(context,  Colors.orange, COLOR_WHITE, offline, Icons.storage_rounded);
                                   }
                                   setState(() {
                                     isLoading = true;

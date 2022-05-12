@@ -295,6 +295,7 @@ class _RecipeProfileScreenState extends State<RecipeProfileScreen> {
                                                             ori_cache_data["detail"].removeAt(i);
                                                             APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Recipes", syncData: json.encode(ori_cache_data));
                                                             await APICacheManager().addCacheData(cacheDBModel);
+                                                            mySnackBar(context,  Colors.orange, COLOR_WHITE, offline, Icons.storage_rounded);
                                                           }
                                                         }
                                                         else if (response.statusCode == 204){

@@ -25,7 +25,7 @@ class RecipesOperations {
     }
   }
 
-  PostRecipe(RecipeIn recipe) async {
+  PostRecipe(RecipeIn recipe, int id) async {
 
     Dio dio = Dio();
     dio.options.headers['content-type'] = 'application/json';
@@ -47,6 +47,7 @@ class RecipesOperations {
       print(e);
       failedAPICallsQueue.add({
         'url': apiURL + '/recipes/',
+        'id': id,
         'token': token,
         'method': 'POST',
         'data': recipe.toJson()

@@ -56,7 +56,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
   void searchControllerListener() {
     print(myController.text);
     ws.sink.add(myController.text);
-    // ws.startReconnect();
+    ws.startReconnect();
   }
 
 
@@ -202,7 +202,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
 
                           var data = json.decode(snapshot.data);
 
-                          if (myController.text == ""){
+                          if (myController.text == "" && isChecked == false){
                             APICacheDBModel cacheDBModel = new APICacheDBModel(key: "Recipes", syncData: json.encode(data));
                             APICacheManager().addCacheData(cacheDBModel);
                           }
@@ -226,6 +226,7 @@ class _RecipeListScreenState extends State<RecipeListScreen> {
                                       await failedAPICallsQueue.execute_all_pending();
                                       await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecipeProfileScreen(recipe: recipe, curr_id: curr_id, rImage: rImage,)));
                                       ws.sink.add(myController.text);
+                                      ws.startReconnect();
 
                                     },
                                     leading: CircleAvatar(

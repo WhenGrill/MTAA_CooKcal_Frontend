@@ -74,13 +74,15 @@ class FailedAPICallsQueue {
     } else if (method == 'PUT'){
       int id = call['id'];
       for (var x in q){
-        if (x['method'] == 'POST' && x['data']['id'] == id){
+        if (x['method'] == 'POST' && x['id'] == id){
           i = q.indexOf(x);
           break;
         }
       }
       if (i != null){
         q[i]['data'] = call['data'];
+        this.items = Queue.from(q);
+        return true;
       }
     }
 

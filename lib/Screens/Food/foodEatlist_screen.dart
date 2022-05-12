@@ -272,23 +272,32 @@ class _FoodEatListScreenState extends State<FoodEatListScreen> {
                                                             );
                                                             int offline =  random(-99999, -9);
                                                             var response = await foodListOperations.AddFood(data, offline);
-                                                            if (add_food_handle(context, response)){
+                                                            bool boolean = await add_food_handle(context, response);
+                                                            if (boolean){
                                                               mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, 'Food added successfully', Icons.check_circle);
-                                                            } else if (response == null) {
-                                                              final prefs = await SharedPreferences.getInstance();
-                                                              int uId = prefs.getInt('user_id')!;
-                                                              var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Food");
-                                                              print(json.decode(UserWeightCache.syncData));
-                                                              var cache_data = json.decode(UserWeightCache.syncData);
+                                                            }
+                                                            final prefs = await SharedPreferences.getInstance();
+                                                            int uId = prefs.getInt('user_id')!;
+                                                            var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Food");
+                                                            print(json.decode(UserWeightCache.syncData));
+                                                            var cache_data = json.decode(UserWeightCache.syncData);
+                                                            if (response == null) {
                                                               cache_data.add({
                                                                 "id": offline,
                                                                 "title": food.title,
                                                                 "kcal_100g": food.kcal_100g,
                                                                 "amount": double.parse(gramsControler.text),
                                                               });
-                                                              APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}_Food", syncData: json.encode(cache_data));
-                                                              await APICacheManager().addCacheData(cacheDBModel);
+                                                            } else {
+                                                              cache_data.add({
+                                                                "id": response.data["id"],
+                                                                "title": food.title,
+                                                                "kcal_100g": food.kcal_100g,
+                                                                "amount": double.parse(gramsControler.text),
+                                                              });
                                                             }
+                                                            APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}_Food", syncData: json.encode(cache_data));
+                                                            await APICacheManager().addCacheData(cacheDBModel);
                                                             gramsControler.text = "";
                                                             Navigator.pop(context);
                                                           },

@@ -155,6 +155,7 @@ class UsersOperations {
     on DioError catch (e){
       failedAPICallsQueue.add({
         'url': apiURL + '/users/' + id.toString(),
+        'id': -1,
         'token': token,
         'method': 'PUT',
         'data': upUserData

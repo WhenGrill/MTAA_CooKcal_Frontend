@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:api_cache_manager/models/cache_db_model.dart';
@@ -368,19 +369,19 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                   setState(() {
                                                                     isLoading = false;
                                                                   });
-                                                                  if(add_weightmeasurement_handle(context, response)){
+                                                                  bool boolean = await add_weightmeasurement_handle(context, response);
+                                                                  if(boolean){
                                                                     mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Weight updated, please refresh this screen", Icons.check_circle);
                                                                     setState(() {});
-                                                                  } else if (response == null) {
-                                                                    var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Weight");
-                                                                    List<dynamic> data = json.decode(UserWeightCache.syncData);
-                                                                    data.add({
-                                                                      'weight': double.parse(currweightController.text),
-                                                                      'measure_time': DateTime.now().toString(),
-                                                                    });
-                                                                    APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}_Weight", syncData: json.encode(data));
-                                                                    await APICacheManager().addCacheData(cacheDBModel);
                                                                   }
+                                                                  var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Weight");
+                                                                  List<dynamic> data = json.decode(UserWeightCache.syncData);
+                                                                  data.add({
+                                                                    'weight': double.parse(currweightController.text),
+                                                                    'measure_time': DateTime.now().toString(),
+                                                                  });
+                                                                  APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}_Weight", syncData: json.encode(data));
+                                                                  await APICacheManager().addCacheData(cacheDBModel);
 
                                                                   Navigator.pop(context);
 
@@ -505,9 +506,14 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                       setState(() {
                                                                         isLoading = false;
                                                                       });
-                                                                      if(update_user_handle(context, response)){
-
+                                                                      bool boolean = await update_user_handle(context, response);
+                                                                      if(boolean){
                                                                         mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Goal weight updated, please refresh this screen", Icons.check_circle);
+                                                                        var UserCache = await APICacheManager().getCacheData("User${uId}");
+                                                                        Map<String, dynamic> data = json.decode(UserCache.syncData);
+                                                                        data["goal_weight"] = double.parse(goalweightController.text);
+                                                                        APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}", syncData: json.encode(data));
+                                                                        await APICacheManager().addCacheData(cacheDBModel);
                                                                         setState(() {});
 
                                                                       } else if (response == null) {
@@ -635,9 +641,14 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                       };
 
                                                                       var response = await UserOp.update_user_data(upUserData);
-
-                                                                      if (update_user_handle(context, response)){
+                                                                      bool boolean = await update_user_handle(context, response);
+                                                                      if (boolean){
                                                                         mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "State updated, please refresh this screen", Icons.check_circle);
+                                                                        var UserCache = await APICacheManager().getCacheData("User${uId}");
+                                                                        Map<String, dynamic> data = json.decode(UserCache.syncData);
+                                                                        data["state"] = ((stateChose == stateItems[user.state]) ? (stateChose == stateItems[user.state]) : stateItems.indexOf(stateChose));
+                                                                        APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}", syncData: json.encode(data));
+                                                                        await APICacheManager().addCacheData(cacheDBModel);
                                                                         setState(() {});
                                                                       } else if (response == null) {
                                                                         var UserCache = await APICacheManager().getCacheData("User${uId}");
@@ -762,10 +773,16 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                                                     };
 
                                                                     var response = await UserOp.update_user_data(upUserData);
-
-                                                                    if(update_user_handle(context, response)){
+                                                                    bool boolean = await update_user_handle(context, response);
+                                                                    if(boolean){
                                                                       mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, "Updated successfully, please refresh this screen", Icons.check_circle);
                                                                       setState(() {});
+                                                                      var UserCache = await APICacheManager().getCacheData("User${uId}");
+                                                                      Map<String, dynamic> data = json.decode(UserCache.syncData);
+                                                                      data["is_nutr_adviser"] = ((adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) ? (adviserChose == adviserItems[user.is_nutr_adviser ? 0 : 1]) : !user.is_nutr_adviser);
+                                                                      APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}", syncData: json.encode(data));
+                                                                      await APICacheManager().addCacheData(cacheDBModel);
+
                                                                     } else if (response == null) {
                                                                       var UserCache = await APICacheManager().getCacheData("User${uId}");
                                                                       Map<String, dynamic> data = json.decode(UserCache.syncData);

@@ -1,14 +1,17 @@
 
 import 'dart:convert';
 
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:cookcal/Screens/Users/userSettings_screen.dart';
 import 'package:cookcal/Utils/constants.dart';
 import 'package:cookcal/Widgets/mySnackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String loginEx = "Login expired please log in again";
 String unknowError = "Something went wrong, check you network status";
+String offline = "You are offline, request cached";
 
 food_weight_curruser_handle(context, code_food, code_weight, code_user){
 
@@ -155,9 +158,17 @@ image_handle(context, StreamedResponse? resp, var state) async{
 
 }
 
-foodlist_del_handle(context, response){
+foodlist_del_handle(context, response) async {
   if (response == null){
-    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? uId = prefs.getInt("user_id");
+    var CacheFood = await APICacheManager().isAPICacheKeyExist("User${uId}_Food");
+
+    if(CacheFood){
+      mySnackBar(context,  Colors.orange, COLOR_WHITE, offline, Icons.storage_rounded);
+    } else {
+      mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    }
     return false;
   }
 
@@ -201,9 +212,17 @@ foodlist_show_handle(context, response){
 }
 
 
-add_food_handle(context, response){
+add_food_handle(context, response) async {
   if (response == null){
-    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? uId = prefs.getInt("user_id");
+    var CacheFood = await APICacheManager().isAPICacheKeyExist("User${uId}_Weight");
+
+    if(CacheFood){
+      mySnackBar(context,  Colors.orange, COLOR_WHITE, offline, Icons.storage_rounded);
+    } else {
+      mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    }
     return false;
   }
 
@@ -247,9 +266,17 @@ user_search_handle(context, response){
 }
 
 
-update_user_handle(context, response){
+update_user_handle(context, response) async {
   if (response == null){
-    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? uId = prefs.getInt("user_id");
+    var CacheFood = await APICacheManager().isAPICacheKeyExist("User${uId}");
+
+    if(CacheFood){
+      mySnackBar(context,  Colors.orange, COLOR_WHITE, offline, Icons.storage_rounded);
+    } else {
+      mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    }
     return false;
   }
 
@@ -274,9 +301,17 @@ update_user_handle(context, response){
 
 }
 
-add_weightmeasurement_handle(context, response){
+add_weightmeasurement_handle(context, response) async {
   if (response == null){
-    mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? uId = prefs.getInt("user_id");
+    var CacheFood = await APICacheManager().isAPICacheKeyExist("User${uId}_Weight");
+
+    if(CacheFood){
+      mySnackBar(context,  Colors.orange, COLOR_WHITE, offline, Icons.storage_rounded);
+    } else {
+      mySnackBar(context, Colors.red, COLOR_WHITE, unknowError, Icons.close);
+    }
     return false;
   }
 

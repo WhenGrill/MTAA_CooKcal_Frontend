@@ -155,21 +155,21 @@ class _FoodListScreenState extends State<FoodListScreen> with SingleTickerProvid
                                                               setState(() {
                                                                 isLoading = false;
                                                               });
-                                                              if (foodlist_del_handle(context, response)){
+                                                              bool boolean = await foodlist_del_handle(context, response);
+                                                              if (boolean){
                                                                 foods.removeWhere((element) => foods.indexOf(element) == index);
                                                                 mySnackBar(context, COLOR_DARKMINT, COLOR_WHITE, 'Food removed', Icons.check_circle);
-                                                              } else if (response == null) {
-                                                                foods.removeWhere((element) => foods.indexOf(element) == index);
-                                                                final prefs = await SharedPreferences.getInstance();
-                                                                int uId = prefs.getInt('user_id')!;
-                                                                var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Food");
-                                                                List<dynamic> cache_data = json.decode(UserWeightCache.syncData);
-                                                                cache_data.removeAt(index);
-                                                                APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}_Food", syncData: json.encode(cache_data));
-                                                                await APICacheManager().addCacheData(cacheDBModel);
-                                                                setState(() {
-                                                                });
                                                               }
+                                                              foods.removeWhere((element) => foods.indexOf(element) == index);
+                                                              final prefs = await SharedPreferences.getInstance();
+                                                              int uId = prefs.getInt('user_id')!;
+                                                              var UserWeightCache = await APICacheManager().getCacheData("User${uId}_Food");
+                                                              List<dynamic> cache_data = json.decode(UserWeightCache.syncData);
+                                                              cache_data.removeAt(index);
+                                                              APICacheDBModel cacheDBModel = new APICacheDBModel(key: "User${uId}_Food", syncData: json.encode(cache_data));
+                                                              await APICacheManager().addCacheData(cacheDBModel);
+                                                              setState(() {
+                                                              });
                                                               Navigator.pop(context);
                                                             },
                                                             child: const Icon(Icons.check),
